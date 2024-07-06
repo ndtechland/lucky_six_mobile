@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../PlayNow/playnow.dart';
+import '../../game_type/single_dice_game/playnow.dart';
 
 class Private_table extends StatefulWidget {
   const Private_table({Key? key}) : super(key: key);

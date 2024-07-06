@@ -4,7 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../registrationscreen.dart';
+import '../login_email.dart';
 import 'about.dart';
 
 class Setting extends StatefulWidget {
@@ -317,7 +317,7 @@ class _SettingState extends State<Setting> {
     if (data['error'] == '200') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => registration()),
+        MaterialPageRoute(builder: (context) => LoginEmail()),
       );
     }
     print(data);

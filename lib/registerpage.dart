@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:game_app/registrationscreen.dart';
+//import 'package:game_app/registrationscreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'HomePage/homePage.dart';
 import 'const.dart';
+import 'login_email.dart';
 
 class registration_page extends StatefulWidget {
   const registration_page({Key? key}) : super(key: key);
@@ -380,8 +381,7 @@ class _registration_pageState extends State<registration_page> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              registration()));
+                                          builder: (context) => LoginEmail()));
                                 },
                                 child: Text("Login here",
                                     style: TextStyle(

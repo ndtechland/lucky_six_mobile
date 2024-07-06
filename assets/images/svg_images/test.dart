@@ -20,12 +20,12 @@ class _DiceAnimationState extends State<DiceAnimation>
   final Random _random = Random();
   bool _isAnimating = false; // Set the initial state to false
   final List<String> _diceImages = [
-    'assets/images/dice1.png',
-    'assets/images/dice2.png',
-    'assets/images/dice3.png',
-    'assets/images/dice4.png',
-    'assets/images/dice5.png',
-    'assets/images/dice6.png',
+    'assets/images/svg_images/dice1.png',
+    'assets/images/svg_images/dice2.png',
+    'assets/images/svg_images/dice3.png',
+    'assets/images/svg_images/dice4.png',
+    'assets/images/svg_images/dice5.png',
+    'assets/images/svg_images/dice6.png',
   ];
 
   // Map of messages for each dice index

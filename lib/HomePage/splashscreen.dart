@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../registrationscreen.dart';
+import '../login_email.dart';
 
 class Splash_screen extends StatefulWidget {
   const Splash_screen({Key? key}) : super(key: key);
@@ -21,8 +21,7 @@ class _Splash_screenState extends State<Splash_screen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            registration(), // Assume Registration() is defined
+        builder: (context) => LoginEmail(), // Assume Registration() is defined
       ),
     );
   }
@@ -66,7 +65,8 @@ class _Splash_screenState extends State<Splash_screen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               image: const DecorationImage(
-                                image: AssetImage("assets/images/rlg.jpg"),
+                                image: AssetImage(
+                                    "assets/images/svg_images/rlg.jpg"),
                                 fit: BoxFit.fill,
                               ),
                             ),

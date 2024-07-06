@@ -1,15 +1,17 @@
 import 'dart:convert';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../HomePage/animation/test.dart';
+import '../../HomePage/animation/test_2.dart';
+import '../../HomePage/nolimittable/guestprofile.dart';
 import '../../transation/userborer.dart';
-import '../animation/test.dart';
-import '../animation/test_2.dart';
-import '../nolimittable/backbutton.dart';
-import '../nolimittable/guestprofile.dart';
 
 ///import 'package:provider/provider.dart';
 ///
@@ -28,44 +30,22 @@ class _Play_NowState extends State<Play_Now> {
   bool status = true;
   bool isSwitchOn = true;
 
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  bool _isPlaying = true;
-  final String _audioUrl =
-      'https://angavastram.com/images/pirates_bgm.mp3'; // Your music URL
+  ///
 
-  void _togglePlayPause() async {
-    if (_isPlaying) {
-      await _audioPlayer.play(UrlSource(_audioUrl));
-
-      // await _audioPlayer.pause();
-    } else {
-      await _audioPlayer.pause();
-
-      //await _audioPlayer.play(UrlSource(_audioUrl));
-    }
-    setState(() {
-      _isPlaying = !_isPlaying;
-    });
-  }
-
-  @override
-  void dispose() {
-    _audioPlayer.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    _togglePlayPause();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   showTimerDialog(context);
-    // });
-
-    ///AnimatedImageContainer();
-    tablecreate();
-    // TODO: implement initState
-    super.initState();
-  }
+  // @override
+  // void dispose() {
+  //   //  _audioPlayer.dispose();
+  //   super.dispose();
+  // }
+  ///
+  //
+  // @override
+  // void initState() {
+  //   ///AnimatedImageContainer();
+  //   tablecreate();
+  //   // TODO: implement initState
+  //   super.initState();
+  // }
 
   var pos;
   var players;
@@ -250,7 +230,8 @@ class _Play_NowState extends State<Play_Now> {
                       decoration: BoxDecoration(
                         color: Colors.green,
                         image: DecorationImage(
-                            image: AssetImage("assets/images/table22.png"
+                            image: AssetImage(
+                                "assets/images/svg_images/table22.png"
                                 //"assets/images/table2.jpg"
                                 ),
                             fit: BoxFit.cover),
@@ -258,28 +239,28 @@ class _Play_NowState extends State<Play_Now> {
                     )),
 
                 ///music on and off ...
-                Positioned(
-                  top: 25,
-                  right: 100,
-                  left: 410,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.09,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: Colors.transparent,
-                    ),
-                    child: IconButton(
-                      icon: Icon(_isPlaying
-                          ? Icons.volume_off
-                          : Icons.volume_up_sharp),
-                      iconSize: 25.0,
-                      color: _isPlaying
-                          ? Colors.red.shade900
-                          : Colors.orangeAccent.shade700,
-                      onPressed: _togglePlayPause,
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   top: 25,
+                //   right: 100,
+                //   left: 410,
+                //   child: Container(
+                //     height: MediaQuery.of(context).size.height * 0.09,
+                //     decoration: BoxDecoration(
+                //       shape: BoxShape.rectangle,
+                //       color: Colors.transparent,
+                //     ),
+                //     child: IconButton(
+                //       icon: Icon(_isPlaying
+                //           ? Icons.volume_off
+                //           : Icons.volume_up_sharp),
+                //       iconSize: 25.0,
+                //       color: _isPlaying
+                //           ? Colors.red.shade900
+                //           : Colors.orangeAccent.shade700,
+                //       onPressed: _togglePlayPause,
+                //     ),
+                //   ),
+                // ),
 
                 Positioned(
                   top: 0,
@@ -290,14 +271,15 @@ class _Play_NowState extends State<Play_Now> {
                       InkWell(
                         onTap: () {
                           ///todo:comented 3 may ....2024....prince
+                          Get.back();
 
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => Back(
-                                    useid: useid,
-                                    table: table,
-                                    gid: gid,
-                                  ));
+                          // showDialog(
+                          //     context: context,
+                          //     builder: (BuildContext context) => Back(
+                          //           useid: useid,
+                          //           table: table,
+                          //           gid: gid,
+                          //         ));
 
                           ///
                         },
@@ -312,77 +294,77 @@ class _Play_NowState extends State<Play_Now> {
                                   fit: BoxFit.fill)),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          ///todo:comented 3 may ....2024....prince
-                          //
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (BuildContext context) => i2());
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.13,
-                          width: MediaQuery.of(context).size.width * 0.0760,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("assets/images/i2.png"),
-                                  fit: BoxFit.fill)),
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     ///todo:comented 3 may ....2024....prince
+                      //     //
+                      //     // showDialog(
+                      //     //     context: context,
+                      //     //     builder: (BuildContext context) => i2());
+                      //   },
+                      //   child: Container(
+                      //     height: MediaQuery.of(context).size.height * 0.13,
+                      //     width: MediaQuery.of(context).size.width * 0.0760,
+                      //     decoration: BoxDecoration(
+                      //         image: DecorationImage(
+                      //             image: AssetImage("assets/images/i2.png"),
+                      //             fit: BoxFit.fill)),
+                      //   ),
+                      // ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.60,
+                        width: MediaQuery.of(context).size.width * 0.85,
                         height: MediaQuery.of(context).size.height * 0.27,
                       ),
-                      InkWell(
-                        onTap: () {
-                          ///todo:comented 3 may ....2024....prince...buy store
-
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (BuildContext context) => Store());
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.18,
-                          width: MediaQuery.of(context).size.width * 0.13,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/bottom1.png"),
-                                  fit: BoxFit.cover)),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left:
-                                        MediaQuery.of(context).viewInsets.left +
-                                            14,
-                                    bottom: MediaQuery.of(context)
-                                            .viewInsets
-                                            .bottom +
-                                        4),
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.0600,
-                                  width: MediaQuery.of(context).size.width *
-                                      0.0450,
-                                  child: Image.asset(
-                                    "assets/images/roulette.png",
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                " BUY",
-                                style: TextStyle(
-                                    color: Colors.amber,
-                                    fontSize: 15 *
-                                        MediaQuery.textScaleFactorOf(context),
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     ///todo:comented 3 may ....2024....prince...buy store
+                      //
+                      //     // showDialog(
+                      //     //     context: context,
+                      //     //     builder: (BuildContext context) => Store());
+                      //   },
+                      //   child: Container(
+                      //     height: MediaQuery.of(context).size.height * 0.18,
+                      //     width: MediaQuery.of(context).size.width * 0.13,
+                      //     decoration: BoxDecoration(
+                      //         image: DecorationImage(
+                      //             image:
+                      //                 AssetImage("assets/images/bottom1.png"),
+                      //             fit: BoxFit.cover)),
+                      //     child: Row(
+                      //       children: [
+                      //         Padding(
+                      //           padding: EdgeInsets.only(
+                      //               left:
+                      //                   MediaQuery.of(context).viewInsets.left +
+                      //                       14,
+                      //               bottom: MediaQuery.of(context)
+                      //                       .viewInsets
+                      //                       .bottom +
+                      //                   4),
+                      //           child: Container(
+                      //             height: MediaQuery.of(context).size.height *
+                      //                 0.0600,
+                      //             width: MediaQuery.of(context).size.width *
+                      //                 0.0450,
+                      //             child: Image.asset(
+                      //               "assets/images/roulette.png",
+                      //               fit: BoxFit.fill,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Text(
+                      //           " BUY",
+                      //           style: TextStyle(
+                      //               color: Colors.amber,
+                      //               fontSize: 15 *
+                      //                   MediaQuery.textScaleFactorOf(context),
+                      //               fontWeight: FontWeight.bold),
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       InkWell(
                         onTap: () {
                           ///todo:comented 3 may ....2024....prince...
@@ -440,6 +422,7 @@ class _Play_NowState extends State<Play_Now> {
                 ),
 
                 ///todo: animation...
+
                 Positioned(
                   top: 170,
                   right: 327.5,
@@ -467,8 +450,10 @@ class _Play_NowState extends State<Play_Now> {
 
                 ///todo:first user....
 
+                ///todo:first user....
+
                 Positioned(
-                  top: 110,
+                  top: 100,
                   right: 70,
                   left: 70,
                   child: Row(
@@ -477,17 +462,20 @@ class _Play_NowState extends State<Play_Now> {
                       Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 2, top: 35),
+                            padding: EdgeInsets.only(left: 2, top: 30),
                             child: Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.099,
+                              height: MediaQuery.of(context).size.height * 0.11,
                               width: MediaQuery.of(context).size.width * 0.06,
                               decoration: BoxDecoration(
+                                // borderRadius: BorderRadius.circular(2),
+                                border: Border.all(color: Colors.white),
                                 image: players == null
                                     ? DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/person1.png"),
-                                        fit: BoxFit.fill,
+                                        image: NetworkImage(
+                                            "https://cdn.pixabay.com/photo/2015/05/22/18/10/child-779434_1280.jpg"
+                                            // "assets/images/person1.png"
+                                            ),
+                                        fit: BoxFit.cover,
                                       )
                                     : players[player3]['userimage'] == null
                                         ? DecorationImage(
@@ -505,27 +493,31 @@ class _Play_NowState extends State<Play_Now> {
                             ),
                           ),
                           Text(
-                            'User-1',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            'Kartik',
+                            style: GoogleFonts.akshar(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14),
                           )
                         ],
                       ),
                       Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 2, top: 31),
+                            padding: EdgeInsets.only(left: 2, top: 30),
                             child: Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.099,
+                              height: MediaQuery.of(context).size.height * 0.11,
                               width: MediaQuery.of(context).size.width * 0.06,
                               decoration: BoxDecoration(
+                                // borderRadius: BorderRadius.circular(2),
+                                border: Border.all(color: Colors.white),
                                 image: players == null
                                     ? DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/person1.png"),
-                                        fit: BoxFit.fill,
+                                        image: NetworkImage(
+                                            "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
+                                            // "assets/images/person1.png"
+                                            ),
+                                        fit: BoxFit.cover,
                                       )
                                     : players[player3]['userimage'] == null
                                         ? DecorationImage(
@@ -543,10 +535,11 @@ class _Play_NowState extends State<Play_Now> {
                             ),
                           ),
                           Text(
-                            'User-6',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            'Shubham',
+                            style: GoogleFonts.akshar(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14),
                           )
                         ],
                       ),
@@ -556,7 +549,7 @@ class _Play_NowState extends State<Play_Now> {
 
                 ///last sec profile.......
                 Positioned(
-                  top: 250,
+                  top: 239,
                   right: 110,
                   left: 110,
                   child: Row(
@@ -567,15 +560,18 @@ class _Play_NowState extends State<Play_Now> {
                           Padding(
                             padding: EdgeInsets.only(left: 2, top: 35),
                             child: Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.099,
+                              height: MediaQuery.of(context).size.height * 0.11,
                               width: MediaQuery.of(context).size.width * 0.06,
                               decoration: BoxDecoration(
+                                // borderRadius: BorderRadius.circular(2),
+                                border: Border.all(color: Colors.white),
                                 image: players == null
                                     ? DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/person1.png"),
-                                        fit: BoxFit.fill,
+                                        image: NetworkImage(
+                                            "https://cdn.pixabay.com/photo/2019/09/03/01/51/child-4448370_1280.jpg"
+                                            // "assets/images/person1.png"
+                                            ),
+                                        fit: BoxFit.cover,
                                       )
                                     : players[player3]['userimage'] == null
                                         ? DecorationImage(
@@ -593,10 +589,11 @@ class _Play_NowState extends State<Play_Now> {
                             ),
                           ),
                           Text(
-                            'User-2',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            'Prince',
+                            style: GoogleFonts.akshar(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14),
                           )
                         ],
                       ),
@@ -605,15 +602,18 @@ class _Play_NowState extends State<Play_Now> {
                           Padding(
                             padding: EdgeInsets.only(left: 2, top: 36),
                             child: Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.099,
+                              height: MediaQuery.of(context).size.height * 0.11,
                               width: MediaQuery.of(context).size.width * 0.06,
                               decoration: BoxDecoration(
+                                // borderRadius: BorderRadius.circular(2),
+                                border: Border.all(color: Colors.white),
                                 image: players == null
                                     ? DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/person1.png"),
-                                        fit: BoxFit.fill,
+                                        image: NetworkImage(
+                                            "https://cdn.pixabay.com/photo/2014/10/30/17/32/boy-509488_1280.jpg"
+                                            // "assets/images/person1.png"
+                                            ),
+                                        fit: BoxFit.cover,
                                       )
                                     : players[player3]['userimage'] == null
                                         ? DecorationImage(
@@ -631,20 +631,22 @@ class _Play_NowState extends State<Play_Now> {
                             ),
                           ),
                           Text(
-                            'User-5',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            'Vishal',
+                            style: GoogleFonts.akshar(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14),
                           )
                         ],
                       ),
                     ],
                   ),
                 ),
+                //https://cdn.pixabay.com/photo/2024/05/20/16/21/ai-generated-8775720_1280.jpg
 
-                ///last 2 uaer
+                ///last third uaer
                 Positioned(
-                  top: 275,
+                  top: 279,
                   right: 260,
                   left: 260,
                   child: Row(
@@ -653,17 +655,22 @@ class _Play_NowState extends State<Play_Now> {
                       Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 2, top: 35),
+                            padding: EdgeInsets.only(left: 2, top: 23),
                             child: Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.099,
+                              height: MediaQuery.of(context).size.height * 0.11,
                               width: MediaQuery.of(context).size.width * 0.06,
                               decoration: BoxDecoration(
+                                // borderRadius: BorderRadius.circular(2),
+                                border: Border.all(color: Colors.white),
                                 image: players == null
                                     ? DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/person1.png"),
-                                        fit: BoxFit.fill,
+                                        image: NetworkImage(
+                                            "https://cdn.pixabay.com/photo/2017/11/06/13/45/cap-2923682_1280.jpg"
+                                            // "https://cdn.pixabay.com/photo/2024/05/20/16/21/ai-generated-8775720_1280.jpg"
+                                            // "https://cdn.pixabay.com/photo/2019/09/03/01/51/child-4448370_1280.jpg"
+                                            // "assets/images/person1.png"
+                                            ),
+                                        fit: BoxFit.cover,
                                       )
                                     : players[player3]['userimage'] == null
                                         ? DecorationImage(
@@ -681,27 +688,31 @@ class _Play_NowState extends State<Play_Now> {
                             ),
                           ),
                           Text(
-                            'User-3',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            'Madhu',
+                            style: GoogleFonts.akshar(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14),
                           )
                         ],
                       ),
                       Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 2, top: 35),
+                            padding: EdgeInsets.only(left: 2, top: 26),
                             child: Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.099,
+                              height: MediaQuery.of(context).size.height * 0.11,
                               width: MediaQuery.of(context).size.width * 0.06,
                               decoration: BoxDecoration(
+                                // borderRadius: BorderRadius.circular(2),
+                                border: Border.all(color: Colors.white),
                                 image: players == null
                                     ? DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/person1.png"),
-                                        fit: BoxFit.fill,
+                                        image: NetworkImage(
+                                            "https://cdn.pixabay.com/photo/2016/10/14/22/31/cute-1741376_1280.jpg"
+                                            // "assets/images/person1.png"
+                                            ),
+                                        fit: BoxFit.cover,
                                       )
                                     : players[player3]['userimage'] == null
                                         ? DecorationImage(
@@ -719,10 +730,11 @@ class _Play_NowState extends State<Play_Now> {
                             ),
                           ),
                           Text(
-                            'User-4',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            'Akanksha',
+                            style: GoogleFonts.akshar(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14),
                           )
                         ],
                       ),
@@ -736,7 +748,7 @@ class _Play_NowState extends State<Play_Now> {
                   right: 400,
                   left: 110,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.09,
+                    height: MediaQuery.of(context).size.height * 0.10,
                     // Adjust size as needed
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
@@ -2903,6 +2915,43 @@ class _Play_NowState extends State<Play_Now> {
       },
     );
   }
+
+  ///device orientation.....only horizontal not vertical...
+  @override
+  void initState() {
+    ///AnimatedImageContainer();
+    tablecreate();
+    //profile();
+    // TODO: implement initState
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    super.dispose();
+  }
+
+  // var pro;
+  // profile() async {
+  //   final response = await http.get(Uri.parse(ApiConst.baseurl + "view/2"));
+  //   final data = jsonDecode(response.body);
+  //   print(data);
+  //   setState(() {
+  //     pro = data['data'];
+  //   });
+  //   print('laaaaaaa');
+  //   print(pro);
+  // }
 }
 
 ///todo:screen timer....

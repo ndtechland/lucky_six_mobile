@@ -39,7 +39,7 @@ dependencies:
   flutter_switch: ^0.3.2
   pinput:
   http:
-  fluttertoast: ^8.2.1
+  #fluttertoast: ^8.2.1
   shared_preferences: ^2.1.1
   playing_cards_layouts: ^1.0.1
   simple_animations:
@@ -48,6 +48,13 @@ dependencies:
   dimension:
   flutter_svg: ^1.1.6
   audioplayers: ^4.1.0
+  lottie: ^2.3.2
+  google_fonts: ^4.0.4
+  get: ^4.6.5
+  razorpay_flutter: ^1.3.7
+  fluttertoast: ^8.2.5
+  #flutter_cube: ^0.1.1
+
 
 
 

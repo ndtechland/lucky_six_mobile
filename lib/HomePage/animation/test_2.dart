@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TimerScreen extends StatefulWidget {
   @override
@@ -9,8 +10,10 @@ class TimerScreen extends StatefulWidget {
 }
 
 class _TimerScreenState extends State<TimerScreen> {
-  int _timerSeconds = 45;
+  int _timerSeconds = 10;
   late Timer _timer;
+  bool _gameStarted = false;
+  bool _gameEnded = false;
 
   @override
   void initState() {
@@ -22,6 +25,27 @@ class _TimerScreenState extends State<TimerScreen> {
           _timerSeconds--;
         } else {
           timer.cancel();
+          _startGameTimer();
+        }
+      });
+    });
+  }
+
+  void _startGameTimer() {
+    setState(() {
+      _gameStarted = true;
+      _timerSeconds = 6; // Set the timer for 16 seconds
+    });
+
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_timerSeconds > 0) {
+          _timerSeconds--;
+        } else {
+          timer.cancel();
+          setState(() {
+            _gameEnded = true;
+          });
         }
       });
     });
@@ -58,76 +82,75 @@ class _TimerScreenState extends State<TimerScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(
-        child: _timerSeconds > 0
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text.rich(
-                    TextSpan(
-                      text: 'Game starts in ',
-                      style: _getTextStyle(_timerSeconds),
-                      children: <TextSpan>[
-                        // TextSpan(
-                        //   text: '$_timerSeconds',
-                        //   style: _getTextStyle(_timerSeconds)
-                        //       .copyWith(color: Colors.red)
-                        //       .copyWith(fontSize: 18),
-                        // ),
-                        // TextSpan(
-                        //   text: ' seconds',
-                        //   style: _getTextStyle(_timerSeconds),
-                        // ),
-                      ],
-                    ),
+        child: _gameEnded
+            ? Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Game ended!',
+                  style: GoogleFonts.nunitoSans(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red.shade900,
                   ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CircularProgressIndicator(
-                        value: _timerSeconds / 45,
-                        strokeWidth: 6,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                        backgroundColor: Colors.grey[300],
+                ),
+              )
+            : _gameStarted
+                ? Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Game started!',
+                      style: GoogleFonts.nunitoSans(
+                        fontSize: 16,
+                        //backgroundColor: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
-                      Text(
-                        '$_timerSeconds',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          text: 'Game starts in ',
+                          style: _getTextStyle(_timerSeconds),
+                        ),
+                      ),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            value: _timerSeconds / 10,
+                            strokeWidth: 6,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.red),
+                            backgroundColor: Colors.grey[300],
+                          ),
+                          Text(
+                            '$_timerSeconds',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Text.rich(
+                        TextSpan(
+                          text: '',
+                          style: _getTextStyle(_timerSeconds),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: ' seconds',
+                              style: _getTextStyle(_timerSeconds),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
-                  Text.rich(
-                    TextSpan(
-                      text: '',
-                      style: _getTextStyle(_timerSeconds),
-                      children: <TextSpan>[
-                        // TextSpan(
-                        //   text: '$_timerSeconds',
-                        //   style: _getTextStyle(_timerSeconds)
-                        //       .copyWith(color: Colors.red)
-                        //       .copyWith(fontSize: 18),
-                        // ),
-                        TextSpan(
-                          text: ' seconds',
-                          style: _getTextStyle(_timerSeconds),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            : Text(
-                'Now the game has been started!',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
       ),
     );
   }
