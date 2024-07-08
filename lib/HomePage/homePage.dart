@@ -4,8 +4,12 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../contact_us_suppport_page/support_page.dart';
+import '../earn_money/earn_money_page.dart';
 import '../price_listts/price_listfor_twodice.dart';
 import '../price_listts/price_listtss.dart';
+import '../profiles/profile_user.dart';
+import '../settingss/settings_page.dart';
 import '../wallet_pages/walet_user/wallet_user.dart';
 
 class Home_Page extends StatefulWidget {
@@ -261,15 +265,44 @@ class _Home_PageState extends State<Home_Page> {
         );
         break;
       case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Profile(),
+          ),
+        );
+        //Profile
         // Navigate to chips bank page
         break;
       case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Settingsss(),
+          ),
+        );
+
+        //Settingsss
         // Navigate to tournament page
         break;
       case 4:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EarnMoney(),
+          ),
+        );
+        //EarnMoney
         // Navigate to another page or perform another action
         break;
       case 5:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SupportPageComman(),
+          ),
+        );
+        //SupportPageComman
         // Navigate to another page or perform another action
         break;
       default:
