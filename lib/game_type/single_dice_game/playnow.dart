@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,6 +26,11 @@ class Play_Now extends StatefulWidget {
 }
 
 class _Play_NowState extends State<Play_Now> {
+  late AudioPlayer _audioPlayer;
+  Timer? _startTimer;
+  Timer? _stopTimer;
+  late Timer _speedTimer;
+
   bool isSwitched = true;
   Color _textColor = Colors.green;
   Color _appBarColor = Colors.green;
@@ -238,30 +245,6 @@ class _Play_NowState extends State<Play_Now> {
                       ),
                     )),
 
-                ///music on and off ...
-                // Positioned(
-                //   top: 25,
-                //   right: 100,
-                //   left: 410,
-                //   child: Container(
-                //     height: MediaQuery.of(context).size.height * 0.09,
-                //     decoration: BoxDecoration(
-                //       shape: BoxShape.rectangle,
-                //       color: Colors.transparent,
-                //     ),
-                //     child: IconButton(
-                //       icon: Icon(_isPlaying
-                //           ? Icons.volume_off
-                //           : Icons.volume_up_sharp),
-                //       iconSize: 25.0,
-                //       color: _isPlaying
-                //           ? Colors.red.shade900
-                //           : Colors.orangeAccent.shade700,
-                //       onPressed: _togglePlayPause,
-                //     ),
-                //   ),
-                // ),
-
                 Positioned(
                   top: 0,
                   right: 0,
@@ -272,14 +255,6 @@ class _Play_NowState extends State<Play_Now> {
                         onTap: () {
                           ///todo:comented 3 may ....2024....prince
                           Get.back();
-
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (BuildContext context) => Back(
-                          //           useid: useid,
-                          //           table: table,
-                          //           gid: gid,
-                          //         ));
 
                           ///
                         },
@@ -294,104 +269,38 @@ class _Play_NowState extends State<Play_Now> {
                                   fit: BoxFit.fill)),
                         ),
                       ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     ///todo:comented 3 may ....2024....prince
-                      //     //
-                      //     // showDialog(
-                      //     //     context: context,
-                      //     //     builder: (BuildContext context) => i2());
-                      //   },
-                      //   child: Container(
-                      //     height: MediaQuery.of(context).size.height * 0.13,
-                      //     width: MediaQuery.of(context).size.width * 0.0760,
-                      //     decoration: BoxDecoration(
-                      //         image: DecorationImage(
-                      //             image: AssetImage("assets/images/i2.png"),
-                      //             fit: BoxFit.fill)),
-                      //   ),
-                      // ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.85,
                         height: MediaQuery.of(context).size.height * 0.27,
                       ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     ///todo:comented 3 may ....2024....prince...buy store
-                      //
-                      //     // showDialog(
-                      //     //     context: context,
-                      //     //     builder: (BuildContext context) => Store());
-                      //   },
-                      //   child: Container(
-                      //     height: MediaQuery.of(context).size.height * 0.18,
-                      //     width: MediaQuery.of(context).size.width * 0.13,
-                      //     decoration: BoxDecoration(
-                      //         image: DecorationImage(
-                      //             image:
-                      //                 AssetImage("assets/images/bottom1.png"),
-                      //             fit: BoxFit.cover)),
-                      //     child: Row(
-                      //       children: [
-                      //         Padding(
-                      //           padding: EdgeInsets.only(
-                      //               left:
-                      //                   MediaQuery.of(context).viewInsets.left +
-                      //                       14,
-                      //               bottom: MediaQuery.of(context)
-                      //                       .viewInsets
-                      //                       .bottom +
-                      //                   4),
-                      //           child: Container(
-                      //             height: MediaQuery.of(context).size.height *
-                      //                 0.0600,
-                      //             width: MediaQuery.of(context).size.width *
-                      //                 0.0450,
-                      //             child: Image.asset(
-                      //               "assets/images/roulette.png",
-                      //               fit: BoxFit.fill,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         Text(
-                      //           " BUY",
-                      //           style: TextStyle(
-                      //               color: Colors.amber,
-                      //               fontSize: 15 *
-                      //                   MediaQuery.textScaleFactorOf(context),
-                      //               fontWeight: FontWeight.bold),
-                      //         )
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
                       InkWell(
                         onTap: () {
                           ///todo:comented 3 may ....2024....prince...
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (BuildContext context) => Setting());
                         },
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.0960,
                           width: MediaQuery.of(context).size.width * 0.0600,
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/setting.png"),
-                                  fit: BoxFit.fill)),
+                              // image: DecorationImage(
+                              //     image: AssetImage(""
+                              //         // "assets/images/setting.png"
+                              //         ),
+                              //     fit: BoxFit.fill)
+                              ),
                         ),
                       ),
                     ],
                   ),
                 ),
+
+                ///todo: host..
                 Positioned(
-                  top: 62,
-                  right: 250,
-                  left: 250,
+                  top: 23,
+                  right: 225,
+                  left: 225,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.30,
-                    width: MediaQuery.of(context).size.width * 0.01,
+                    // height: MediaQuery.of(context).size.height * 0.30,
+                    width: MediaQuery.of(context).size.width * 0.013,
                     decoration: BoxDecoration(
                         //color: Colors.green,
                         ),
@@ -404,13 +313,16 @@ class _Play_NowState extends State<Play_Now> {
                       ),
                       child: players == null
                           ? Image.asset(
-                              "assets/images/gamere.png",
+                              "assets/images/svg_images/hostt.png",
+
+                              //"assets/images/gamere.png",
                               fit: BoxFit.cover,
-                              color: Colors.white,
+                              // color: Colors.white,
                             )
                           : players[player3]['userimage'] == null
                               ? Image.asset(
-                                  "assets/images/gamere.png",
+                                  "assets/images/svg_images/hostt.png",
+                                  //"assets/images/gamere.png",
                                   fit: BoxFit.fill,
                                 )
                               : Image.network(
@@ -443,12 +355,13 @@ class _Play_NowState extends State<Play_Now> {
                               Border.all(color: Colors.red.shade200, width: 4)
                           //color: Colors.green,
                           ),
+
+                      ///todo: dice animation.
+
                       child: DiceAnimation(),
                     ),
                   ),
                 ),
-
-                ///todo:first user....
 
                 ///todo:first user....
 
@@ -589,7 +502,7 @@ class _Play_NowState extends State<Play_Now> {
                             ),
                           ),
                           Text(
-                            'Prince',
+                            'Rakesh',
                             style: GoogleFonts.akshar(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
@@ -742,7 +655,7 @@ class _Play_NowState extends State<Play_Now> {
                   ),
                 ),
 
-                ///timer...
+                ///todo:timer...
                 Positioned(
                   top: 40,
                   right: 400,
@@ -2268,616 +2181,7 @@ class _Play_NowState extends State<Play_Now> {
                                 ),
                               ),
 
-                ///
-//                 gamestart == true
-//                     ? Positioned(
-//                         bottom: MediaQuery.of(context).size.width * 0.0,
-//                         left: MediaQuery.of(context).size.width * 0.00,
-//                         child: Container(
-//                           height: MediaQuery.of(context).size.height * 0.14,
-//                           width: MediaQuery.of(context).size.width,
-//                           decoration: BoxDecoration(
-//                             image: DecorationImage(
-//                                 image: AssetImage(
-//                                     "assets/images/playbottombar.png"),
-//                                 fit: BoxFit.fill),
-//                           ),
-//                           child: Column(
-//                             children: [
-//                               Padding(
-//                                 padding: EdgeInsets.only(
-//                                     top: MediaQuery.of(context).viewInsets.top +
-//                                         12,
-//                                     left:
-//                                         MediaQuery.of(context).viewInsets.top +
-//                                             50),
-//                                 child: Row(
-//                                   children: [
-//                                     SizedBox(
-//                                       width: MediaQuery.of(context).size.width *
-//                                           0.0100,
-//                                     ),
-//                                     InkWell(
-//                                       onTap: () {
-//                                         ///todo:comented 3 may ....2024....prince
-//
-//                                         /// packapi();
-//
-//                                         // packed();
-//                                       },
-//                                       child: Container(
-//                                         height:
-//                                             MediaQuery.of(context).size.height *
-//                                                 0.0900,
-//                                         width:
-//                                             MediaQuery.of(context).size.width *
-//                                                 0.12,
-//                                         decoration: BoxDecoration(
-//                                           image: pack == true
-//                                               ? DecorationImage(
-//                                                   image: AssetImage(
-//                                                       "assets/images/pack1.png"),
-//                                                   colorFilter: ColorFilter.mode(
-//                                                     Colors.grey,
-//                                                     BlendMode.modulate,
-//                                                   ),
-//                                                   fit: BoxFit.fill)
-//                                               : DecorationImage(
-//                                                   image: AssetImage(
-//                                                       "assets/images/pack1.png"),
-//                                                   fit: BoxFit.fill),
-//                                         ),
-//                                         child: Center(
-//                                             child: Text(
-//                                           "Pack",
-//                                           style: TextStyle(
-//                                               color: Colors.white,
-//                                               fontSize: 18 *
-//                                                   MediaQuery.textScaleFactorOf(
-//                                                       context),
-//                                               fontWeight: FontWeight.bold),
-//                                         )),
-//                                       ),
-//                                     ),
-//                                     SizedBox(
-//                                       width: MediaQuery.of(context).size.width *
-//                                           0.0500,
-//                                     ),
-//                                     Row(
-//                                       children: [
-//                                         InkWell(
-//                                           onTap: () {
-//                                             int amo1 = chaal;
-//                                             int dev = 2;
-//                                             var amo = amo1 / dev;
-//                                             if (inc == true && pack == false) {
-//                                               setState(() {
-//                                                 chaal = amo.toInt();
-//                                                 inc = false;
-//                                               });
-//                                             }
-//                                           },
-//                                           child: Container(
-//                                             height: MediaQuery.of(context)
-//                                                     .size
-//                                                     .height *
-//                                                 0.0720,
-//                                             width: MediaQuery.of(context)
-//                                                     .size
-//                                                     .width *
-//                                                 0.0520,
-//                                             decoration: BoxDecoration(
-//                                                 image: pack == true
-//                                                     ? DecorationImage(
-//                                                         image: AssetImage(
-//                                                             "assets/images/minusboot.png"),
-//                                                         colorFilter:
-//                                                             ColorFilter.mode(
-//                                                           Colors.grey,
-//                                                           BlendMode.modulate,
-//                                                         ),
-//                                                         fit: BoxFit.fill)
-//                                                     : inc != true
-//                                                         ? DecorationImage(
-//                                                             image: AssetImage(
-//                                                                 "assets/images/minusboot.png"),
-//                                                             colorFilter:
-//                                                                 ColorFilter
-//                                                                     .mode(
-//                                                               Colors.grey,
-//                                                               BlendMode
-//                                                                   .modulate,
-//                                                             ),
-//                                                             fit: BoxFit.fill)
-//                                                         : DecorationImage(
-//                                                             image: AssetImage(
-//                                                                 "assets/images/minusboot.png"),
-//                                                             fit: BoxFit.fill)),
-//                                           ),
-//                                         ),
-//                                         Padding(
-//                                           padding: EdgeInsets.only(
-//                                               top: MediaQuery.of(context)
-//                                                       .viewInsets
-//                                                       .top +
-//                                                   3.0),
-//                                           child: Container(
-//                                             height: MediaQuery.of(context)
-//                                                     .size
-//                                                     .height *
-//                                                 0.0550,
-//                                             width: MediaQuery.of(context)
-//                                                     .size
-//                                                     .width *
-//                                                 0.13,
-//                                             decoration: BoxDecoration(
-//                                                 image: DecorationImage(
-//                                                     image: AssetImage(
-//                                                         "assets/images/bootbutton.png"),
-//                                                     fit: BoxFit.fill)),
-//                                             child: Center(
-//                                                 child: Text(
-//                                               chaal.toString(),
-//                                               style: TextStyle(
-//                                                   color: Colors.white,
-//                                                   fontWeight: FontWeight.bold),
-//                                             )),
-//                                           ),
-//                                         ),
-//                                         InkWell(
-//                                           onTap: () {
-//                                             var amo = chaal * 2;
-//                                             if (inc == false && pack == false) {
-//                                               setState(() {
-//                                                 chaal = amo;
-//                                                 inc = true;
-//                                               });
-//                                             }
-//                                           },
-//
-//                                           ///6
-//                                           child: Container(
-//                                             height: MediaQuery.of(context)
-//                                                     .size
-//                                                     .height *
-//                                                 0.0710,
-//                                             width: MediaQuery.of(context)
-//                                                     .size
-//                                                     .width *
-//                                                 0.0500,
-//                                             decoration: BoxDecoration(
-//                                                 image: pack == true
-//                                                     ? DecorationImage(
-//                                                         image: AssetImage(
-//                                                             "assets/images/plusboot.png"),
-//                                                         colorFilter:
-//                                                             ColorFilter.mode(
-//                                                           Colors.grey,
-//                                                           BlendMode.modulate,
-//                                                         ),
-//                                                         fit: BoxFit.fill)
-//                                                     : inc != false
-//                                                         ? DecorationImage(
-//                                                             image: AssetImage(
-//                                                                 "assets/images/plusboot.png"),
-//                                                             colorFilter:
-//                                                                 ColorFilter
-//                                                                     .mode(
-//                                                               Colors.grey,
-//                                                               BlendMode
-//                                                                   .modulate,
-//                                                             ),
-//                                                             fit: BoxFit.fill)
-//                                                         : DecorationImage(
-//                                                             image: AssetImage(
-//                                                                 "assets/images/plusboot.png"),
-//                                                             fit: BoxFit.fill)),
-//                                           ),
-//                                         ),
-//                                       ],
-//                                     ),
-//                                     SizedBox(
-//                                       width: MediaQuery.of(context).size.width *
-//                                           0.0500,
-//                                     ),
-//                                     InkWell(
-//                                       onTap: () {
-//                                         setState(() {
-//                                           inc = false;
-//                                         });
-//                                         chaalblind();
-//                                       },
-//                                       child: Container(
-//                                         height:
-//                                             MediaQuery.of(context).size.height *
-//                                                 0.0900,
-//                                         width:
-//                                             MediaQuery.of(context).size.width *
-//                                                 0.12,
-//                                         decoration: BoxDecoration(
-//                                           image: pack == true
-//                                               ? DecorationImage(
-//                                                   image: AssetImage(
-//                                                       "assets/images/pack1.png"),
-//                                                   colorFilter: ColorFilter.mode(
-//                                                     Colors.grey,
-//                                                     BlendMode.modulate,
-//                                                   ),
-//                                                   fit: BoxFit.fill)
-//                                               : DecorationImage(
-//                                                   // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.modulate,),
-//
-//                                                   image: AssetImage(
-//                                                       "assets/images/pack1.png"),
-//                                                   fit: BoxFit.fill),
-//                                         ),
-//                                         child: Center(
-//                                             child: Text(
-//                                           show == true ? "Chaal" : "Blind",
-//                                           style: TextStyle(
-//                                               color: Colors.white,
-//                                               fontSize: 18 *
-//                                                   MediaQuery.textScaleFactorOf(
-//                                                       context),
-//                                               fontWeight: FontWeight.bold),
-//                                         )),
-//                                       ),
-//                                     ),
-//                                     show == false
-//                                         ? InkWell(
-//                                             onTap: () {
-//                                               setState(() {
-//                                                 show = true;
-//                                               });
-//                                             },
-//                                             child: Padding(
-//                                               padding: EdgeInsets.only(
-//                                                   left: MediaQuery.of(context)
-//                                                           .size
-//                                                           .width *
-//                                                       0.05),
-//                                               child: Container(
-//                                                 height: MediaQuery.of(context)
-//                                                         .size
-//                                                         .height *
-//                                                     0.0900,
-//                                                 width: MediaQuery.of(context)
-//                                                         .size
-//                                                         .width *
-//                                                     0.12,
-//                                                 decoration: BoxDecoration(
-//                                                   image: pack == true
-//                                                       ? DecorationImage(
-//                                                           image: AssetImage(
-//                                                               "assets/images/pack1.png"),
-//                                                           colorFilter:
-//                                                               ColorFilter.mode(
-//                                                             Colors.grey,
-//                                                             BlendMode.modulate,
-//                                                           ),
-//                                                           fit: BoxFit.fill)
-//                                                       : DecorationImage(
-//                                                           // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.modulate,),
-//
-//                                                           image: AssetImage(
-//                                                               "assets/images/pack1.png"),
-//                                                           fit: BoxFit.fill),
-//                                                 ),
-//                                                 child: Center(
-//                                                     child: Text(
-//                                                   "Show",
-//                                                   style: TextStyle(
-//                                                       color: Colors.white,
-//                                                       fontSize: 18 *
-//                                                           MediaQuery
-//                                                               .textScaleFactorOf(
-//                                                                   context),
-//                                                       fontWeight:
-//                                                           FontWeight.bold),
-//                                                 )),
-//                                               ),
-//                                             ),
-//                                           )
-//                                         : InkWell(
-//                                             onTap: () {
-//                                               setState(() {
-//                                                 sideshow = true;
-//                                               });
-//                                             },
-//                                             child: Padding(
-//                                               padding: EdgeInsets.only(
-//                                                   left: MediaQuery.of(context)
-//                                                           .size
-//                                                           .width *
-//                                                       0.05),
-//                                               child: Container(
-//                                                 height: MediaQuery.of(context)
-//                                                         .size
-//                                                         .height *
-//                                                     0.0900,
-//                                                 width: MediaQuery.of(context)
-//                                                         .size
-//                                                         .width *
-//                                                     0.16,
-//                                                 decoration: BoxDecoration(
-//                                                   image: pack == true
-//                                                       ? DecorationImage(
-//                                                           image: AssetImage(
-//                                                               "assets/images/pack1.png"),
-//                                                           colorFilter:
-//                                                               ColorFilter.mode(
-//                                                             Colors.grey,
-//                                                             BlendMode.modulate,
-//                                                           ),
-//                                                           fit: BoxFit.fill)
-//                                                       : DecorationImage(
-//                                                           // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.modulate,),
-//
-//                                                           image: AssetImage(
-//                                                               "assets/images/pack1.png"),
-//                                                           fit: BoxFit.fill),
-//                                                 ),
-//                                                 child: Center(
-//                                                     child: Text(
-//                                                   "Side Show",
-//                                                   style: TextStyle(
-//                                                       color: Colors.white,
-//                                                       fontSize: 18 *
-//                                                           MediaQuery
-//                                                               .textScaleFactorOf(
-//                                                                   context),
-//                                                       fontWeight:
-//                                                           FontWeight.bold),
-//                                                 )),
-//                                               ),
-//                                             ),
-//                                           ),
-//                                   ],
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                       )
-//                     : Positioned(
-//                         bottom: MediaQuery.of(context).size.width * 0.0,
-//                         // left: MediaQuery.of(context).size.width * 0.0,
-//                         //right: MediaQuery.of(context).size.width * 0.0,
-//
-//                         left: MediaQuery.of(context).size.width * 0.13,
-//                         child: Container(
-//                           height: MediaQuery.of(context).size.height * 0.14,
-//                           width: MediaQuery.of(context).size.width,
-//                           decoration: BoxDecoration(
-//                             image: DecorationImage(
-//                                 image: AssetImage(
-//                                     "assets/images/playbottombar.png"),
-//                                 fit: BoxFit.fill),
-//                           ),
-//                           child: Column(
-//                             children: [
-//                               Row(
-//                                 children: [
-//                                   Padding(
-//                                     padding: EdgeInsets.only(
-//                                         left: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .left +
-//                                             60,
-//                                         top: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .top +
-//                                             7),
-//                                     child: Text(
-//                                       "Max Blind",
-//                                       style: TextStyle(
-//                                           color: Colors.white,
-//                                           fontSize: 16 *
-//                                               MediaQuery.textScaleFactorOf(
-//                                                   context),
-//                                           fontWeight: FontWeight.w300),
-//                                     ),
-//                                   ),
-//                                   Padding(
-//                                     padding: EdgeInsets.only(
-//                                         left: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .left +
-//                                             17,
-//                                         top: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .top +
-//                                             5),
-//                                     child: Text(
-//                                       pos == null ? 0 : pos['blind_limite'],
-//                                       style: TextStyle(
-//                                           color: Colors.amber,
-//                                           fontSize: 17 *
-//                                               MediaQuery.textScaleFactorOf(
-//                                                   context),
-//                                           fontWeight: FontWeight.w500),
-//                                     ),
-//                                   ),
-//                                   Padding(
-//                                     padding: EdgeInsets.only(
-//                                         left: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .left +
-//                                             130,
-//                                         top: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .top +
-//                                             5),
-//                                     child: Text(
-//                                       "Boot Amount",
-//                                       style: TextStyle(
-//                                           color: Colors.white,
-//                                           fontSize: 16 *
-//                                               MediaQuery.textScaleFactorOf(
-//                                                   context),
-//                                           fontWeight: FontWeight.w300),
-//                                     ),
-//                                   ),
-//                                   Padding(
-//                                     padding: EdgeInsets.only(
-//                                         left: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .left +
-//                                             17,
-//                                         top: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .top +
-//                                             5),
-//                                     child: Text(
-//                                       pos == null ? 0 : pos['start_price'],
-//                                       style: TextStyle(
-//                                           color: Colors.amber,
-//                                           fontSize: 17 *
-//                                               MediaQuery.textScaleFactorOf(
-//                                                   context),
-//                                           fontWeight: FontWeight.w500),
-//                                     ),
-//                                   )
-//                                 ],
-//                               ),
-//                               Row(
-//                                 children: [
-//                                   Padding(
-//                                     padding: EdgeInsets.only(
-//                                         left: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .left +
-//                                             60,
-//                                         top: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .top +
-//                                             0),
-//                                     child: Text(
-//                                       "Max Chaal",
-//                                       style: TextStyle(
-//                                           color: Colors.white,
-//                                           fontSize: 16 *
-//                                               MediaQuery.textScaleFactorOf(
-//                                                   context),
-//                                           fontWeight: FontWeight.w300),
-//                                     ),
-//                                   ),
-//                                   Padding(
-//                                     padding: EdgeInsets.only(
-//                                         left: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .left +
-//                                             14,
-//                                         top: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .top +
-//                                             0),
-//                                     child: Text(
-//                                       pos == null ? 0 : pos['end_price'],
-//                                       style: TextStyle(
-//                                           color: Colors.amber,
-//                                           fontSize: 17 *
-//                                               MediaQuery.textScaleFactorOf(
-//                                                   context),
-//                                           fontWeight: FontWeight.w500),
-//                                     ),
-//                                   ),
-//                                   Padding(
-//                                     padding: EdgeInsets.only(
-//                                         left: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .left +
-//                                             72,
-//                                         top: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .top +
-//                                             0),
-//                                     child: Text(
-//                                       "Max Pot",
-//                                       style: TextStyle(
-//                                           color: Colors.white,
-//                                           fontSize: 16 *
-//                                               MediaQuery.textScaleFactorOf(
-//                                                   context),
-//                                           fontWeight: FontWeight.w300),
-//                                     ),
-//                                   ),
-//                                   Padding(
-//                                     padding: EdgeInsets.only(
-//                                         left: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .left +
-//                                             17,
-//                                         top: MediaQuery.of(context)
-//                                                 .viewInsets
-//                                                 .top +
-//                                             0),
-//                                     child: Text(
-//                                       pos == null ? 0 : pos['gamelimit'],
-//                                       style: TextStyle(
-//                                           color: Colors.amber,
-//                                           fontSize: 17 *
-//                                               MediaQuery.textScaleFactorOf(
-//                                                   context),
-//                                           fontWeight: FontWeight.w500),
-//                                     ),
-//                                   ),
-//                                   // Padding(
-//                                   //   padding:  EdgeInsets.only(left: MediaQuery.of(context).viewInsets.left + 42, bottom: MediaQuery.of(context).viewInsets.bottom + 8),
-//                                   //   child: Text(
-//                                   //     "Please wait for next game",
-//                                   //     style: TextStyle(
-//                                   //         color: Colors.amber,
-//                                   //         fontSize: 11* MediaQuery.textScaleFactorOf(context),
-//                                   //         fontWeight: FontWeight.w500),
-//                                   //   ),
-//                                   // )
-//                                 ],
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                       ),
-
-                ///
-                // Positioned(
-                //   top: 311,
-                //   left: 20,
-                //   child: InkWell(
-                //     onTap: () {},
-                //     child: Container(
-                //       height: MediaQuery.of(context).size.height*0.11,
-                //       width:  MediaQuery.of(context).size.width*0.0600,
-                //       decoration: BoxDecoration(
-                //           image: DecorationImage(
-                //               image: AssetImage("assets/images/nocomment.png"),
-                //               fit: BoxFit.fill)),
-                //     ),
-                //   ),
-                // ),
-
                 ///todo: message... comented 22 may 2024..
-
-                // Positioned(
-                //   top: MediaQuery.of(context).size.width * 0.43,
-                //   left: MediaQuery.of(context).size.width * 0.0400,
-                //   child: InkWell(
-                //     onTap: () {
-                //       refreshcreate();
-                //       // showDialog(
-                //       //     context: context,
-                //       //     builder: (BuildContext context) => Comment());
-                //     },
-                //     child: Container(
-                //       height: MediaQuery.of(context).size.height * 0.15,
-                //       width: MediaQuery.of(context).size.width * 0.0900,
-                //       decoration: BoxDecoration(
-                //           image: DecorationImage(
-                //               image: AssetImage("assets/images/comment.png"),
-                //               fit: BoxFit.fill)),
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -2924,10 +2228,32 @@ class _Play_NowState extends State<Play_Now> {
     //profile();
     // TODO: implement initState
     super.initState();
+    //_audioPlayer = AudioPlayer();
+    //_startRollingMusic();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+  }
+
+  ///todo: roll dice qfter 10 second
+  void _startRollingMusic() {
+    _startTimer = Timer(Duration(seconds: 7), () {
+      _audioPlayer.play(UrlSource(
+          'https://admin.hirejobindia.com/BannerImages/gamemusic.mp3'));
+
+      // Speed up the audio for 1 second at 1.5x speed
+      _audioPlayer.setPlaybackRate(1.2);
+      _speedTimer = Timer(Duration(seconds: 1), () {
+        // Return to normal speed after 1 second
+        _audioPlayer.setPlaybackRate(1.2);
+      });
+
+      // Stop the audio after 15 seconds
+      _stopTimer = Timer(Duration(seconds: 12), () {
+        _audioPlayer.stop();
+      });
+    });
   }
 
   @override
@@ -2938,6 +2264,9 @@ class _Play_NowState extends State<Play_Now> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+    _startTimer?.cancel();
+    _stopTimer?.cancel();
+    _audioPlayer.dispose();
     super.dispose();
   }
 

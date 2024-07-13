@@ -97,6 +97,9 @@ class TwiceNumberSelection extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
             child: GestureDetector(
               onTap: () {
+                ///Get.to(Play_Now_2dice());
+
+                ///
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => CupertinoAlertDialog(
@@ -202,14 +205,26 @@ class TwiceNumberSelection extends StatelessWidget {
           )
         ],
       ),
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          if (orientation == Orientation.portrait) {
-            return buildGridView();
-          } else {
-            return buildListView();
-          }
-        },
+      body: Stack(
+        children: [
+          // Background image
+          Positioned.fill(
+            child: Image.network(
+              "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Foreground content
+          OrientationBuilder(
+            builder: (context, orientation) {
+              if (orientation == Orientation.portrait) {
+                return buildGridView();
+              } else {
+                return buildListView();
+              }
+            },
+          ),
+        ],
       ),
     );
   }

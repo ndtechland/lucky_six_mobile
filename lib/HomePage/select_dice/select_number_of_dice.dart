@@ -39,19 +39,19 @@ class NumberSelection extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
-
-      //backgroundColor: Colors.grey.shade00,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.red.shade300,
-        //toolbarHeight: 40.0,
         title: Text('Select Number'),
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
             child: GestureDetector(
               onTap: () {
+                // Get.to(Play_Now());
+
+                ///todo downward sshow dilog
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => CupertinoAlertDialog(
@@ -83,16 +83,13 @@ class NumberSelection extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Your Selected dice is  1,3,4 \n You have to pay your payable Amount for start your game and your payable Amount is\n ₹300."
-                              //"If you will win the game then we will send wining amount to your account after deduct 28% of total transaction amount."
-                              ,
+                              "Your Selected dice is  1,3,4 \n You have to pay your payable Amount for start your game and your payable Amount is\n ₹300.",
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 color: Colors.black,
                               ),
                             ),
                           ),
-                          //SizedBox(height: 0),
                         ],
                       ),
                     ),
@@ -113,12 +110,7 @@ class NumberSelection extends StatelessWidget {
                       CupertinoDialogAction(
                         onPressed: () {
                           Get.back();
-
                           _rozarpayamountController.openCheckout();
-                          // Get.to(Play_Now());
-
-                          // Navigate to a new screen when the OK button is pressed
-                          // Get.to(SomeOtherScreen()); // Replace SomeOtherScreen with your desired screen
                         },
                         child: Text(
                           "Pay",
@@ -157,14 +149,29 @@ class NumberSelection extends StatelessWidget {
           )
         ],
       ),
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          if (orientation == Orientation.portrait) {
-            return buildGridView();
-          } else {
-            return buildListView();
-          }
-        },
+      body: Stack(
+        children: [
+          // Background image
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(
+                    "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                  ),
+                  fit: BoxFit.cover),
+            ),
+          ),
+          // Content
+          OrientationBuilder(
+            builder: (context, orientation) {
+              if (orientation == Orientation.portrait) {
+                return buildGridView();
+              } else {
+                return buildListView();
+              }
+            },
+          ),
+        ],
       ),
     );
   }
@@ -192,7 +199,6 @@ class NumberSelection extends StatelessWidget {
                 elevation: 12,
                 color: isSelected ? Colors.red.shade300 : Colors.grey.shade300,
                 shadowColor: Colors.black,
-                //clipBehavior: Clip.none,
                 borderRadius: BorderRadius.circular(10),
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
@@ -204,18 +210,15 @@ class NumberSelection extends StatelessWidget {
                             "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                           ),
                           fit: BoxFit.cover),
-
+                      // image: DecorationImage(
+                      //   image: NetworkImage(
+                      //     "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                      //   ),
+                      //   fit: BoxFit.cover,
+                      // ),
                       color: isSelected
                           ? Colors.red.shade100
                           : Colors.grey.shade300,
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //     offset: Offset(0, 0),
-                      //     blurRadius: 1,
-                      //     color: Color.fromRGBO(0, 0, 0, 0.16),
-                      //   )
-                      // ],
-                      //borderRadius: BorderRadius.circular(6),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -226,27 +229,28 @@ class NumberSelection extends StatelessWidget {
                           shape: BoxShape.circle,
                           shadowColor: Colors.white,
                           child: Container(
-                              height: MediaQuery.of(context).size.height * 0.1,
-                              width: MediaQuery.of(context).size.width * 0.21,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: isSelected
-                                      ? Colors.red.shade300
-                                      : Colors.white,
-                                  // color: Colors.red.shade300,
-                                  border: Border.all(color: Colors.white)),
-                              child: Center(
-                                  child: Text(
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            width: MediaQuery.of(context).size.width * 0.21,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isSelected
+                                  ? Colors.red.shade300
+                                  : Colors.white,
+                              border: Border.all(color: Colors.white),
+                            ),
+                            child: Center(
+                              child: Text(
                                 _priceList[index],
                                 style: GoogleFonts.alatsi(
                                   fontSize: 19,
-                                  //fontStyle: FontStyle.italic,
                                   fontWeight: FontWeight.w200,
                                   color: isSelected
                                       ? Colors.white
                                       : Colors.grey.shade900,
                                 ),
-                              ))),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -280,7 +284,6 @@ class NumberSelection extends StatelessWidget {
                   color:
                       isSelected ? Colors.red.shade300 : Colors.grey.shade300,
                   shadowColor: Colors.black,
-                  //clipBehavior: Clip.none,
                   borderRadius: BorderRadius.circular(10),
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -292,44 +295,36 @@ class NumberSelection extends StatelessWidget {
                               "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                             ),
                             fit: BoxFit.cover),
-
                         color: isSelected
                             ? Colors.red.shade100
                             : Colors.grey.shade300,
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //     offset: Offset(0, 0),
-                        //     blurRadius: 1,
-                        //     color: Color.fromRGBO(0, 0, 0, 0.16),
-                        //   )
-                        // ],
-                        //borderRadius: BorderRadius.circular(6),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                              height: MediaQuery.of(context).size.height * 0.2,
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: isSelected
-                                      ? Colors.red.shade300
-                                      : Colors.white,
-                                  // color: Colors.red.shade300,
-                                  border: Border.all(color: Colors.white)),
-                              child: Center(
-                                  child: Text(
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isSelected
+                                  ? Colors.red.shade300
+                                  : Colors.white,
+                              border: Border.all(color: Colors.white),
+                            ),
+                            child: Center(
+                              child: Text(
                                 _priceList[index],
                                 style: GoogleFonts.alatsi(
                                   fontSize: 19,
-                                  //fontStyle: FontStyle.italic,
                                   fontWeight: FontWeight.w200,
                                   color: isSelected
                                       ? Colors.white
                                       : Colors.grey.shade900,
                                 ),
-                              ))),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -339,105 +334,6 @@ class NumberSelection extends StatelessWidget {
             );
           });
         },
-      ),
-    );
-  }
-
-  Widget buildImageContainer(
-      _priceList, double height, double width, bool isPortrait) {
-    double containerHeight = isPortrait ? height * 0.2 : height * 0.4;
-    double containerWidth = isPortrait ? width * 0.34 : width * 0.24;
-    double containerHeight2 = isPortrait ? height * 0.2 : height * 0.4;
-    double containerWidth2 = isPortrait ? width * 0.34 : width * 0.24;
-
-    double containerHeight3 = isPortrait ? height * 0.04 : height * 0.08;
-    double containerWidth3 = isPortrait ? width : width;
-
-    return Padding(
-      padding: EdgeInsets.all(6.0),
-      child: PhysicalModel(
-        elevation: 12,
-        color: Colors.white,
-        shadowColor: Colors.black,
-        //clipBehavior: Clip.none,
-        borderRadius: BorderRadius.circular(10),
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Container(
-            width: containerWidth2,
-            height: containerHeight2,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey.shade300,
-              // image: DecorationImage(
-              //   image: AssetImage(imagePath),
-              //   fit: BoxFit.contain,
-              // ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                    height: containerHeight * 0.6,
-                    width: containerWidth * 0.7,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.red.shade300,
-                        border: Border.all(color: Colors.white)),
-                    child: Center(
-                        child: Text(
-                      _priceList,
-                      style: GoogleFonts.alata(
-                        fontSize: 15,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white,
-                      ),
-                    ))),
-                Spacer(),
-                Container(
-                    height: containerHeight3 * 0.9,
-                    width: containerWidth3 * 0.2,
-                    decoration: BoxDecoration(
-                        //shape: BoxShape.circle,
-                        color: Colors.black26,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.white)),
-                    child: Center(
-                        child: Text(
-                      "GO!",
-                      style: GoogleFonts.alata(
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white,
-                      ),
-                    ))),
-                Spacer(),
-                Container(
-                    height: containerHeight3,
-                    width: containerWidth3,
-                    decoration: BoxDecoration(
-                        //shape: BoxShape.circle,
-                        color: Colors.red.shade300,
-                        borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(10),
-                            bottomLeft: Radius.circular(10)),
-                        border: Border.all(color: Colors.white)),
-                    child: Center(
-                        child: Text(
-                      "Wining Amount",
-                      style: GoogleFonts.alata(
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white,
-                      ),
-                    )))
-              ],
-            ),
-            // Optionally, you can add a child widget here if needed
-          ),
-        ),
       ),
     );
   }

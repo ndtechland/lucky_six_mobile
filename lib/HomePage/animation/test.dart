@@ -54,7 +54,7 @@ class _DiceAnimationState extends State<DiceAnimation>
       });
 
     // Start the animation after 10 seconds
-    Timer(Duration(seconds: 10), () {
+    Timer(Duration(seconds: 13), () {
       setState(() {
         _isAnimating = true;
         _controller.forward(from: 0);
@@ -78,7 +78,7 @@ class _DiceAnimationState extends State<DiceAnimation>
   void _changeImage() {
     setState(() {
       _currentIndex = _random.nextInt(_diceImages.length);
-      _controller.duration = Duration(milliseconds: _random.nextInt(200) + 200);
+      _controller.duration = Duration(milliseconds: _random.nextInt(200) + 300);
     });
   }
 

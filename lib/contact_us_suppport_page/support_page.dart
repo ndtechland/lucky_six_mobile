@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:game_app/constantt/color_text.dart';
 import 'package:game_app/contact_us_suppport_page/website_page.dart';
 import 'package:get/get.dart';
@@ -7,11 +8,36 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../Controllersss/support_us_controller.dart';
 
-SupportEmployeeController _supportEmployeeController =
-    Get.put(SupportEmployeeController());
-
-class SupportPageComman extends StatelessWidget {
+class SupportPageComman extends StatefulWidget {
   const SupportPageComman({Key? key}) : super(key: key);
+
+  @override
+  State<SupportPageComman> createState() => _SupportPageCommanState();
+}
+
+class _SupportPageCommanState extends State<SupportPageComman> {
+  final SupportEmployeeController _supportEmployeeController =
+      Get.put(SupportEmployeeController());
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +56,18 @@ class SupportPageComman extends StatelessWidget {
                         clipBehavior: Clip.none,
                         children: [
                           Positioned(
-                            top: -constraints.maxHeight * 0.02,
-                            right: -constraints.maxWidth * 0.124,
+                            top: constraints.maxHeight * 0.01,
+                            right: -constraints.maxWidth * 0.01,
                             child: Container(
-                              height: constraints.maxHeight * 0.22,
-                              width: constraints.maxWidth * 0.75,
+                              height: constraints.maxHeight * 0.10,
+                              width: constraints.maxWidth * 0.20,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(20),
                                 ),
                                 image: DecorationImage(
                                   image: AssetImage(
-                                    'lib/assets/background_stack_png/contactus.png',
+                                    'assets/images/svg_images/play_store_512.png',
                                   ),
                                   fit: BoxFit.cover,
                                 ),
@@ -111,8 +137,7 @@ class SupportPageComman extends StatelessWidget {
                             ),
                             SizedBox(height: constraints.maxHeight * 0.005),
                             Text(
-                              "Noida Sector 2 near priya gold office",
-                              //"${_supportEmployeeController.supportModel?.response?.location.toString()}",
+                              "Noida Sector 2 near Priya Gold office",
                               style: GoogleFonts.roboto(
                                 color: appColor,
                                 fontSize: constraints.maxWidth * 0.037,
@@ -130,8 +155,7 @@ class SupportPageComman extends StatelessWidget {
                             ),
                             SizedBox(height: constraints.maxHeight * 0.005),
                             Text(
-                              "Gurugram hayryana sector 132",
-                              // "${_supportEmployeeController.supportModel?.response?.location.toString()}",
+                              "Gurugram, Haryana sector 132",
                               style: GoogleFonts.roboto(
                                 color: appColor,
                                 fontSize: constraints.maxWidth * 0.037,
@@ -143,7 +167,6 @@ class SupportPageComman extends StatelessWidget {
                               children: [
                                 Text(
                                   "Contact: +9149008899",
-                                  //" ${_supportEmployeeController.supportModel?.response?.callNumber.toString()}",
                                   style: GoogleFonts.poppins(
                                     color: appColor,
                                     fontSize: constraints.maxWidth * 0.04,
@@ -167,15 +190,14 @@ class SupportPageComman extends StatelessWidget {
                                             child: InkWell(
                                               onTap: () async {
                                                 String telephoneNumber =
-                                                    "1111111111".toString();
-                                                // "${_supportEmployeeController.supportModel?.response?.callNumber.toString()}";
+                                                    "1111111111";
                                                 String telephoneUrl =
                                                     "tel:$telephoneNumber";
                                                 if (await canLaunch(
                                                     telephoneUrl)) {
                                                   await launch(telephoneUrl);
                                                 } else {
-                                                  throw "Error occured trying to call that number.";
+                                                  throw "Error occurred trying to call that number.";
                                                 }
                                               },
                                               child: Container(
@@ -285,7 +307,7 @@ class SupportPageComman extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                       ),
                                       middleTextStyle: TextStyle(
-                                        color: Colors.grey,
+                                        color: Colors.white,
                                       ),
                                       radius: 10,
                                     );
@@ -319,9 +341,8 @@ class SupportPageComman extends StatelessWidget {
                                 InkWell(
                                   onTap: () async {
                                     String email = "luckysix@gmail.com";
-                                    //"${_supportEmployeeController.supportModel?.response?.email.toString()}";
-                                    String subject = 'This is a email';
-                                    String body = 'This is a  email body';
+                                    String subject = 'This is an email';
+                                    String body = 'This is an email body';
 
                                     String emailUrl =
                                         "mailto:$email?subject=$subject&body=$body";
@@ -329,14 +350,13 @@ class SupportPageComman extends StatelessWidget {
                                     if (await canLaunch(emailUrl)) {
                                       await launch(emailUrl);
                                     } else {
-                                      throw "Error occured sending an email";
+                                      throw "Error occurred sending an email";
                                     }
                                   },
                                   child: Row(
                                     children: [
                                       Text(
-                                        "Luckysix@gmail.com",
-                                        //"${_supportEmployeeController.supportModel?.response?.email.toString()}",
+                                        "luckysix@gmail.com",
                                         style: GoogleFonts.poppins(
                                           color: appColor,
                                           fontSize: constraints.maxWidth * 0.04,
@@ -424,23 +444,23 @@ class SupportPageComman extends StatelessWidget {
       ),
     );
   }
-}
 
-_launchWhatsapp() async {
-  var whatsapp =
-      "+91${_supportEmployeeController.supportModel?.response?.callNumber.toString()}";
-  var whatsappAndroid =
-      Uri.parse("whatsapp://send?phone=$whatsapp&text=Hi HireJob India");
-  if (await canLaunch(whatsappAndroid.toString())) {
-    await launch(whatsappAndroid.toString());
-  } else {
-    Get.snackbar(
-      "Whats App not installed",
-      "Please install the what's app Prince",
-      colorText: Colors.red.shade400,
-      backgroundColor: Colors.white10,
-      icon: Icon(Icons.person, color: Colors.red),
-      snackPosition: SnackPosition.TOP,
-    );
+  void _launchWhatsapp() async {
+    var whatsapp =
+        "+91${_supportEmployeeController.supportModel?.response?.callNumber.toString()}";
+    var whatsappAndroid =
+        Uri.parse("whatsapp://send?phone=$whatsapp&text=Hi LuckySix");
+    if (await canLaunch(whatsappAndroid.toString())) {
+      await launch(whatsappAndroid.toString());
+    } else {
+      Get.snackbar(
+        "WhatsApp not installed",
+        "Please install WhatsApp",
+        colorText: Colors.red.shade400,
+        backgroundColor: Colors.white10,
+        icon: Icon(Icons.person, color: Colors.red),
+        snackPosition: SnackPosition.TOP,
+      );
+    }
   }
 }

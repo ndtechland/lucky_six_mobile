@@ -66,8 +66,10 @@ class _Splash_screenState extends State<Splash_screen> {
                               borderRadius: BorderRadius.circular(15),
                               image: const DecorationImage(
                                 image: AssetImage(
-                                    "assets/images/svg_images/rlg.jpg"),
-                                fit: BoxFit.fill,
+                                    "assets/images/svg_images/logoposterporgtrait.jpg"
+                                    //"assets/images/svg_images/rlg.jpg"
+                                    ),
+                                fit: BoxFit.contain,
                               ),
                             ),
                           ),

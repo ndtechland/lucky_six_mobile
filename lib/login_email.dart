@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_app/constantt/responsive_text_color.dart';
 import 'package:game_app/registerpage.dart';
 
 import 'HomePage/homePage.dart';
@@ -50,10 +51,10 @@ class _LoginEmailState extends State<LoginEmail> {
           // Calculating sizes based on orientation
           var imageWidth = orientation == Orientation.portrait
               ? screenWidth * 0.4
-              : screenWidth * 0.2;
+              : screenWidth * 0.19;
           var imageHeight = orientation == Orientation.portrait
               ? screenHeight * 0.15
-              : screenHeight * 0.22;
+              : screenHeight * 0.28;
 
           var imageWidth2 = orientation == Orientation.portrait
               ? screenWidth * 0.86
@@ -93,15 +94,29 @@ class _LoginEmailState extends State<LoginEmail> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: screenHeight * 0.13),
-                      Container(
-                        height: imageHeight,
-                        width: imageWidth,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
-                            image:
-                                AssetImage("assets/images/svg_images/rlg.jpg"),
-                            fit: BoxFit.fill,
+                      PhysicalModel(
+                        color: appColor2,
+                        clipBehavior: Clip.none,
+                        borderRadius: BorderRadius.circular(12),
+                        elevation: 10,
+                        shadowColor: Colors.black,
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Container(
+                            height: imageHeight * 0.6,
+                            width: imageWidth * 0.8,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.red.shade300),
+                              borderRadius: BorderRadius.circular(12),
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/svg_images/logoposterlandscape.jpg"
+                                    //"assets/images/svg_images/logoposterporgtrait.jpg"
+                                    //"assets/images/svg_images/rlg.jpg"
+                                    ),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
                           ),
                         ),
                       ),

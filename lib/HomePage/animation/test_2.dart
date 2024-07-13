@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TimerScreen extends StatefulWidget {
@@ -12,13 +13,29 @@ class TimerScreen extends StatefulWidget {
 class _TimerScreenState extends State<TimerScreen> {
   int _timerSeconds = 10;
   late Timer _timer;
+  late AudioPlayer _audioPlayer;
+  Timer? _speedTimer;
+  Timer? _startTimer;
+  Timer? _stopTimer;
   bool _gameStarted = false;
   bool _gameEnded = false;
 
   @override
   void initState() {
     super.initState();
+    //  AudioPlayer _audioPlayer;
 
+    // Lock the device orientation to landscape
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
+    // Initialize the audio player
+    _audioPlayer = AudioPlayer();
+    _preloadAudio();
+
+    // Start the countdown timer
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         if (_timerSeconds > 0) {
@@ -31,11 +48,43 @@ class _TimerScreenState extends State<TimerScreen> {
     });
   }
 
+  void _preloadAudio() async {
+    await _audioPlayer.setSourceUrl(
+        'https://admin.hirejobindia.com/BannerImages/gamemusic.mp3');
+  }
+
+  ///todo:.....................................
+
+  void _startRollingMusic() {
+    _startTimer = Timer(Duration(seconds: 0), () {
+      _audioPlayer.play(UrlSource(
+          'https://admin.hirejobindia.com/BannerImages/gamemusic.mp3'));
+
+      // Speed up the audio for 1 second at 1.5x speed
+      _audioPlayer.setPlaybackRate(1.6);
+      _speedTimer = Timer(Duration(milliseconds: 1600), () {
+        // Return to normal speed after 1 second
+        _audioPlayer.setPlaybackRate(1.6);
+      });
+
+      // Stop the audio after 12 seconds
+      _stopTimer = Timer(Duration(seconds: 8), () {
+        _audioPlayer.stop();
+      });
+    });
+  }
+
   void _startGameTimer() {
     setState(() {
       _gameStarted = true;
-      _timerSeconds = 6; // Set the timer for 16 seconds
+      _timerSeconds = 7;
+
+      ///
+      // Set the timer for 6 seconds
     });
+
+    // Start the music rolling
+    _startRollingMusic();
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
@@ -53,7 +102,19 @@ class _TimerScreenState extends State<TimerScreen> {
 
   @override
   void dispose() {
+    // Restore the device orientation to default
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
     _timer.cancel();
+    _speedTimer?.cancel();
+    _startTimer?.cancel();
+    _stopTimer?.cancel();
+    _audioPlayer.dispose();
     super.dispose();
   }
 

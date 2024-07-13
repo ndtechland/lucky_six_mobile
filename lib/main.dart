@@ -28,7 +28,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         // You can customize more theme settings here if needed
       ),
-      home: Splash_screen(), // Initial screen when the app starts
+      home:
+          //DiceRollingMusic(),
+
+          Splash_screen(), // Initial screen when the app starts
     );
   }
 }

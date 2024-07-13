@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:game_app/constantt/color_text.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -42,8 +43,8 @@ class _Home_PageState extends State<Home_Page> {
         width: width,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(
-                "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            image: AssetImage("assets/images/svg_images/backgroundddice.jpeg"
+                // "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 //"assets/images/svg_images/backgroundddice.jpeg"
                 // "assets/images/backgroundhome2.jpg"
                 ),
@@ -89,16 +90,24 @@ class _Home_PageState extends State<Home_Page> {
                         right: MediaQuery.of(context).viewInsets.left +
                             (isPortrait ? 80 : 250),
                       ),
-                      child: Container(
-                        height: isPortrait ? height * 0.15 : height * 0.25,
-                        width: isPortrait ? width * 0.32 : width * 0.2,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 2),
-                          borderRadius: BorderRadius.circular(7),
-                          image: DecorationImage(
-                            image:
-                                AssetImage("assets/images/svg_images/rlg.jpg"),
-                            fit: BoxFit.fill,
+                      child: PhysicalModel(
+                        color: appColor2,
+                        elevation: 14,
+                        borderRadius: BorderRadius.circular(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Container(
+                            height: isPortrait ? height * 0.13 : height * 0.25,
+                            width: isPortrait ? width * 0.30 : width * 0.2,
+                            decoration: BoxDecoration(
+                              //border: Border.all(width: 0),
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/svg_images/rlg.jpg"),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -164,7 +173,9 @@ class _Home_PageState extends State<Home_Page> {
           context: context,
           builder: (BuildContext context) => CupertinoAlertDialog(
             title: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                // Get.to(Loadingone());
+              },
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(

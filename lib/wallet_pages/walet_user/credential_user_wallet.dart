@@ -17,9 +17,10 @@ class WalletCredentials extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(top: 40),
+          padding: EdgeInsets.only(top: 0),
           child: OrientationBuilder(
             builder: (context, orientation) {
               return LayoutBuilder(
@@ -41,7 +42,7 @@ class WalletCredentials extends StatelessWidget {
                       ? screenWidth * 0.4
                       : screenWidth * 0.2;
                   var imageHeight = orientation == Orientation.portrait
-                      ? screenHeight * 0.15
+                      ? screenHeight * 0.06
                       : screenHeight * 0.22;
 
                   var imageWidth2 = orientation == Orientation.portrait
@@ -55,23 +56,40 @@ class WalletCredentials extends StatelessWidget {
                       ? screenWidth * 0.77
                       : screenWidth * 0.5;
                   var imageHeight3 = orientation == Orientation.portrait
-                      ? screenHeight * 0.33
-                      : screenHeight * 0.45;
+                      ? screenHeight * 0.5
+                      : screenHeight * 0.03;
 
                   return SingleChildScrollView(
-                    child: Form(
-                      key: wallet2Controller.walletformkey,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: size.height * 0.02),
+                    child: Container(
+                      height: screenHeight,
+                      width: screenWidth,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              "assets/images/svg_images/backgroundddice.jpeg"
+                              // "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                              //"assets/images/svg_images/backgroundddice.jpeg"
+                              // "assets/images/backgroundhome2.jpg"
+                              ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: Form(
+                        key: wallet2Controller.walletformkey,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: imageHeight * 0.12,
+                              horizontal: imageWidth * 0.09),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: imageHeight3 * 0.2),
 
-                            /// Add amount
-                            buildAmountContainer(context, size),
-                            SizedBox(height: size.height * 0.018),
-                          ],
+                              /// Add amount
+                              buildAmountContainer(context, size),
+                              //SizedBox(height: size.height * 0.0),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -92,7 +110,7 @@ class WalletCredentials extends StatelessWidget {
       },
       child: Container(
         width: size.width,
-        padding: EdgeInsets.symmetric(vertical: size.height * 0.004),
+        padding: EdgeInsets.symmetric(vertical: size.height * 0.002),
         decoration: BoxDecoration(
           color: Colors.red.shade100,
           borderRadius: BorderRadius.circular(10),
@@ -113,7 +131,7 @@ class WalletCredentials extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: size.width * 0.03,
-                vertical: size.height * 0.03,
+                vertical: size.height * 0.01,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,36 +170,50 @@ class WalletCredentials extends StatelessWidget {
     bool isLandscape = size.width > size.height;
 
     // Define dimensions based on screen orientation
-    // double paddingVertical =
-    //     isLandscape ? size.height * 0.02 : size.height * 0.03;
+    double paddingVertical =
+        isLandscape ? size.height * 0.01 : size.height * 0.01;
     double containerHeight =
-        isLandscape ? size.height * 0.3 : size.height * 0.089;
+        isLandscape ? size.height * 0.23 : size.height * 0.06;
     double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
-    double fontSize = isLandscape ? size.width * 0.023 : size.width * 0.06;
+    double fontSize = isLandscape ? size.width * 0.11 : size.width * 0.18;
+
+    double containerHeight2 =
+        isLandscape ? size.height * 0.20 : size.height * 0.06;
+
+    // Define dimensions based on screen orientation
+    // double paddingVertical =
 
     return PhysicalModel(
       color: Colors.black26,
       // shape: BoxShape.circle,
       shadowColor: Colors.black,
       elevation: 15,
+      borderRadius: BorderRadius.circular(5),
+
       child: Container(
-        height: containerHeight,
-        width: containerWidth * 0.8,
+        height: containerHeight2 * 0.88,
+        //width: containerWidth * 0.5,
+        padding: EdgeInsets.symmetric(
+          horizontal: size.width * 0.04,
+          vertical: paddingVertical * 0.1,
+        ),
         decoration: BoxDecoration(
-          color: Colors.white,
-          //  shape: BoxShape.circle,
-          border: Border.all(color: Colors.greenAccent),
+          color: Colors.orange.shade300,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade100,
+              offset: const Offset(2, 2),
+            ),
+          ],
         ),
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              '3000',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: fontSize * 0.9,
-              ),
+          child: Text(
+            "300",
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+              fontSize: fontSize * 0.3,
             ),
           ),
         ),
@@ -194,17 +226,22 @@ class WalletCredentials extends StatelessWidget {
 
     // Define dimensions based on screen orientation
     double paddingVertical =
-        isLandscape ? size.height * 0.02 : size.height * 0.03;
+        isLandscape ? size.height * 0.01 : size.height * 0.03;
     double containerHeight =
         isLandscape ? size.height * 0.3 : size.height * 0.10;
     double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
+    double containerHeight2 =
+        isLandscape ? size.height * 0.025 : size.height * 0.03;
+    double containerWidth2 =
+        isLandscape ? size.width * 0.02 : size.width * 0.03;
     double fontSize = isLandscape ? size.width * 0.08 : size.width * 0.16;
 
     return Padding(
-      padding: const EdgeInsets.all(6.0),
+      padding: EdgeInsets.symmetric(
+          horizontal: containerWidth2, vertical: containerHeight2),
       child: Container(
         width: double.infinity,
-        margin: const EdgeInsets.symmetric(vertical: 20),
+        margin: EdgeInsets.symmetric(vertical: paddingVertical),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
@@ -251,7 +288,7 @@ class WalletCredentials extends StatelessWidget {
               ),
               contentPadding: EdgeInsets.symmetric(
                 horizontal: containerWidth,
-                vertical: containerHeight * 0.2,
+                vertical: containerHeight * 0.24,
               ),
               hintText: 'Amount',
               hintStyle: TextStyle(
@@ -272,11 +309,23 @@ class WalletCredentials extends StatelessWidget {
   }
 
   Widget buildAmountButtons(Size size) {
+    bool isLandscape = size.width > size.height;
+
+    // Define dimensions based on screen orientation
+    double paddingVertical =
+        isLandscape ? size.height * 0.01 : size.height * 0.03;
+    double containerHeight =
+        isLandscape ? size.height * 0.3 : size.height * 0.10;
+    double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
+    double containerHeight2 =
+        isLandscape ? size.height * 0.025 : size.height * 0.01;
+    double containerWidth2 =
+        isLandscape ? size.width * 0.02 : size.width * 0.03;
+    double fontSize = isLandscape ? size.width * 0.08 : size.width * 0.16;
+
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: size.width * 0.03,
-        vertical: size.height * 0.03,
-      ),
+          horizontal: containerWidth2, vertical: containerHeight2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -299,24 +348,28 @@ class WalletCredentials extends StatelessWidget {
     double containerHeight =
         isLandscape ? size.height * 0.2 : size.height * 0.08;
     double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
+    double containerHeight2 =
+        isLandscape ? size.height * 0.25 : size.height * 0.08;
+    double containerWidth2 =
+        isLandscape ? size.width * 0.12 : size.width * 0.26;
     double fontSize = isLandscape ? size.width * 0.06 : size.width * 0.18;
     return InkWell(
       onTap: () {
         controller.walletAmount.text = amountValue;
       },
       child: Container(
-        height: containerHeight * 0.6,
+        height: containerHeight2 * 0.6,
         //width: containerWidth * 0.5,
         padding: EdgeInsets.symmetric(
           horizontal: size.width * 0.03,
           vertical: paddingVertical,
         ),
         decoration: BoxDecoration(
-          color: Colors.green.shade100,
+          color: Colors.red.shade200,
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(
-              color: Colors.green.shade300,
+              color: Colors.grey.shade100,
               offset: const Offset(2, 2),
             ),
           ],
@@ -326,7 +379,7 @@ class WalletCredentials extends StatelessWidget {
             amountText,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: Colors.green,
+              color: Colors.white,
               fontSize: fontSize * 0.25,
             ),
           ),
@@ -340,15 +393,17 @@ class WalletCredentials extends StatelessWidget {
 
     // Define dimensions based on screen orientation
     double paddingVertical =
-        isLandscape ? size.height * 0.01 : size.height * 0.01;
+        isLandscape ? size.height * 0.07 : size.height * 0.05;
+    double paddingHorizontal =
+        isLandscape ? size.width * 0.04 : size.width * 0.02;
     double containerHeight =
-        isLandscape ? size.height * 0.2 : size.height * 0.08;
+        isLandscape ? size.height * 0.122 : size.height * 0.08;
     double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
     double fontSize = isLandscape ? size.width * 0.025 : size.width * 0.05;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: size.width * 0.03,
-        vertical: size.height * 0.051,
+        horizontal: paddingHorizontal,
+        vertical: paddingVertical,
       ),
       child: InkWell(
         onTap: () {
@@ -359,12 +414,12 @@ class WalletCredentials extends StatelessWidget {
           height: containerHeight,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
                 Colors.white,
-                Colors.green,
+                Colors.red.shade500,
               ],
             ),
             boxShadow: [
@@ -384,7 +439,7 @@ class WalletCredentials extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              'ADD+',
+              'ADD Coins',
               style: TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.w800,
