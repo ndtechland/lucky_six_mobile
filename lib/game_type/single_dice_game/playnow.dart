@@ -238,6 +238,7 @@ class _Play_NowState extends State<Play_Now> {
                         color: Colors.green,
                         image: DecorationImage(
                             image: AssetImage(
+                                //"assets/images/svg_images/tablee222.png"
                                 "assets/images/svg_images/table22.png"
                                 //"assets/images/table2.jpg"
                                 ),

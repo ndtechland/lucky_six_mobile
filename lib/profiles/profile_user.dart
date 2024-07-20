@@ -20,7 +20,9 @@ class Profile extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/images/svg_images/backgroundddice.jpeg',
+            'assets/images/svg_images/ludobackblack.png'
+            //'assets/images/svg_images/backgroundddice.jpeg'
+            ,
             fit: BoxFit.cover,
           ),
           Obx(
@@ -73,7 +75,7 @@ class Profile extends StatelessWidget {
                                       Text(
                                         "Name:",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 15,
                                             fontFamily: 'medium',
                                             color: Colors.grey.shade600),
                                       ),
@@ -83,7 +85,7 @@ class Profile extends StatelessWidget {
                                       Text(
                                         "Kumar Prince",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 13,
                                             fontFamily: 'medium',
                                             color: Colors.black),
                                       ),
@@ -111,7 +113,7 @@ class Profile extends StatelessWidget {
                                       Text(
                                         "Email:",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 15,
                                             fontFamily: 'medium',
                                             color: Colors.grey.shade600),
                                       ),
@@ -121,7 +123,7 @@ class Profile extends StatelessWidget {
                                       Text(
                                         "kumar@gmail.com",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 13,
                                             fontFamily: 'medium',
                                             color: Colors.black),
                                       ),
@@ -149,7 +151,7 @@ class Profile extends StatelessWidget {
                                       Text(
                                         "Phone:",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 15,
                                             fontFamily: 'medium',
                                             color: Colors.grey.shade600),
                                       ),
@@ -159,7 +161,7 @@ class Profile extends StatelessWidget {
                                       Text(
                                         "9897665532",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 13,
                                             fontFamily: 'medium',
                                             color: Colors.black),
                                       ),
@@ -187,7 +189,7 @@ class Profile extends StatelessWidget {
                                       Text(
                                         "DOB:",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 15,
                                             fontFamily: 'medium',
                                             color: Colors.grey.shade600),
                                       ),
@@ -197,7 +199,7 @@ class Profile extends StatelessWidget {
                                       Text(
                                         "12/12/2002",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 13,
                                             fontFamily: 'medium',
                                             color: Colors.black),
                                       ),
@@ -228,7 +230,7 @@ class Profile extends StatelessWidget {
                                       Text(
                                         "Address:",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 15,
                                             fontFamily: 'medium',
                                             color: Colors.grey.shade600),
                                       ),

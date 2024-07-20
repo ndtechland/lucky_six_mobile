@@ -3,6 +3,8 @@ import 'package:game_app/constantt/responsive_text_color.dart';
 import 'package:game_app/registerpage.dart';
 
 import 'HomePage/homePage.dart';
+import 'constantt/buttonns/regular_button2.dart';
+import 'constantt/buttonns/regular_buttons.dart';
 
 class LoginEmail extends StatefulWidget {
   const LoginEmail({Key? key}) : super(key: key);
@@ -20,21 +22,15 @@ class _LoginEmailState extends State<LoginEmail> {
   TextEditingController _email = TextEditingController();
   TextEditingController _pin = TextEditingController();
 
-  // TextEditingController phoneNumber = TextEditingController();
-
-  var phone = "";
-
   @override
   void initState() {
-    // TODO: implement initState
-    //countrycode.text = "+91";
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, // Prevent resizing when keyboard appears
+      resizeToAvoidBottomInset: false,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           var screenWidth = constraints.maxWidth;
@@ -48,7 +44,6 @@ class _LoginEmailState extends State<LoginEmail> {
               ? screenHeight * 0.22
               : screenHeight * 0.45;
 
-          // Calculating sizes based on orientation
           var imageWidth = orientation == Orientation.portrait
               ? screenWidth * 0.4
               : screenWidth * 0.19;
@@ -68,7 +63,7 @@ class _LoginEmailState extends State<LoginEmail> {
               : screenWidth * 0.5;
           var imageHeight3 = orientation == Orientation.portrait
               ? screenHeight * 0.33
-              : screenHeight * 0.45;
+              : screenHeight * 0.5;
 
           return SingleChildScrollView(
             child: ConstrainedBox(
@@ -82,9 +77,8 @@ class _LoginEmailState extends State<LoginEmail> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(
-                          "assets/images/svg_images/backgroundddice.jpeg"
-                          //"https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                          //"https://burst.shopifycdn.com/photos/dice-games.jpg?width=746&format=pjpg&exif=0&iptc=0"
+                          "assets/images/svg_images/ludobackblack.png"
+                          //"assets/images/svg_images/backgroundddice.jpeg"
                           ),
                       fit: BoxFit.cover,
                     ),
@@ -93,29 +87,22 @@ class _LoginEmailState extends State<LoginEmail> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: screenHeight * 0.13),
+                      SizedBox(height: screenHeight * 0.1),
                       PhysicalModel(
                         color: appColor2,
                         clipBehavior: Clip.none,
                         borderRadius: BorderRadius.circular(12),
                         elevation: 10,
-                        shadowColor: Colors.black,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Container(
-                            height: imageHeight * 0.6,
-                            width: imageWidth * 0.8,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.red.shade300),
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/svg_images/logoposterlandscape.jpg"
-                                    //"assets/images/svg_images/logoposterporgtrait.jpg"
-                                    //"assets/images/svg_images/rlg.jpg"
-                                    ),
-                                fit: BoxFit.contain,
-                              ),
+                        shadowColor: Colors.white,
+                        child: Container(
+                          height: imageHeight * 0.7,
+                          width: imageWidth * 0.7,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  "assets/images/svg_images/play_store_512.png"),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
@@ -146,17 +133,13 @@ class _LoginEmailState extends State<LoginEmail> {
                                 Icons.email,
                                 color: Colors.white,
                               ),
-                              hintText: "  Email",
+                              hintText: "  Username",
                               hintStyle: TextStyle(color: Colors.white70),
                             ),
                           ),
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.025),
-
-                      // SizedBox(
-                      //   height: MediaQuery.of(context).size.height * 0.0180,
-                      // ),
                       Container(
                         height: textfieldHeight * 0.38,
                         width: textfieldWidth * 0.85,
@@ -174,7 +157,7 @@ class _LoginEmailState extends State<LoginEmail> {
                           child: TextFormField(
                             controller: _pin,
                             validator: (val) {
-                              if (val!.isEmpty) return 'enter pin';
+                              if (val!.isEmpty) return 'Password';
                               return null;
                             },
                             obscureText: !_obscured,
@@ -206,92 +189,75 @@ class _LoginEmailState extends State<LoginEmail> {
                           ),
                         ),
                       ),
-                      SizedBox(height: screenHeight * 0.01),
-                      InkWell(
-                        onTap: () {
+                      SizedBox(height: screenHeight * 0.03),
+                      RectangularButton(
+                        text: 'Sign In',
+                        press: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => Home_Page(),
-                              // Pin(mobile: phone),
                             ),
                           );
                         },
-                        child: Container(
-                          height: imageHeight3 * 0.27,
-                          width: imageWidth3 * 0.6,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  "assets/images/svg_images/buttonlogin.png"),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "LOGIN",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: imageHeight2 * 0.07,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                color: Colors.white,
-                                size: imageHeight2 * 0.06,
-                              )
-                            ],
-                          ),
-                        ),
                       ),
-                      SizedBox(height: imageWidth2 * 0.1),
-                      Container(
-                        height: imageHeight3 * 0.16,
-                        width: imageWidth3 * 0.95,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/registerhere.png"),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Don't have an account? ",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      SizedBox(height: screenHeight * 0.03),
+
+                      RectangularButton2(
+                        text: 'Don\'t Have an account?',
+                        text2: "SignUP",
+                        press: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegistrationPage(),
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => registration_page(),
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                "SignUp here",
-                                style: TextStyle(
-                                  color: Colors.blue.shade900,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
+
+                      /// SizedBox(height: imageWidth2 * 0.1),
+                      // Container(
+                      //   height: imageHeight3 * 0.15,
+                      //   width: imageWidth3 * 0.95,
+                      //   decoration: BoxDecoration(
+                      //     image: DecorationImage(
+                      //       image: AssetImage("assets/images/registerhere.png"),
+                      //       fit: BoxFit.fill,
+                      //     ),
+                      //   ),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Text(
+                      //         "Don't have an account? ",
+                      //         style: TextStyle(
+                      //           color: Colors.white,
+                      //           fontSize: 13,
+                      //           fontWeight: FontWeight.bold,
+                      //         ),
+                      //       ),
+                      //       InkWell(
+                      //         onTap: () {
+                      //           Navigator.push(
+                      //             context,
+                      //             MaterialPageRoute(
+                      //               builder: (context) => registration_page(),
+                      //             ),
+                      //           );
+                      //         },
+                      //         child: Text(
+                      //           "SignUp here",
+                      //           style: TextStyle(
+                      //             color: Colors.blue.shade900,
+                      //             fontWeight: FontWeight.bold,
+                      //             decoration: TextDecoration.underline,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

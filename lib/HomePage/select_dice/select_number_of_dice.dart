@@ -12,15 +12,15 @@ class NumberSelection extends StatelessWidget {
   final HomeeeController _homeeeController = Get.put(HomeeeController());
   final RozarpayamountController _rozarpayamountController =
       Get.put(RozarpayamountController());
-
-  final List<String> _priceList = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-  ];
+  //
+  // final List<String> _priceList = [
+  //   '1',
+  //   '2',
+  //   '3',
+  //   '4',
+  //   '5',
+  //   '6',
+  // ];
 
   final List<String> _diceImages2 = [
     'assets/images/dice1.png',
@@ -33,25 +33,18 @@ class NumberSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.red.shade300,
-        title: Text('Select Number'),
+        title: const Text('Select Dices'),
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
             child: GestureDetector(
               onTap: () {
-                // Get.to(Play_Now());
-
-                ///todo downward sshow dilog
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => CupertinoAlertDialog(
@@ -155,19 +148,18 @@ class NumberSelection extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(
-                    "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                  ),
-                  fit: BoxFit.cover),
+                image: AssetImage("assets/images/svg_images/ludobackblack.png"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           // Content
           OrientationBuilder(
             builder: (context, orientation) {
               if (orientation == Orientation.portrait) {
-                return buildGridView();
+                return buildGridView(context);
               } else {
-                return buildListView();
+                return buildListView(context);
               }
             },
           ),
@@ -176,18 +168,18 @@ class NumberSelection extends StatelessWidget {
     );
   }
 
-  Widget buildGridView() {
+  Widget buildGridView(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(7.0),
+      padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
+          crossAxisSpacing: 18.0,
+          mainAxisSpacing: 18.0,
           childAspectRatio: 1.0,
         ),
-        itemCount: _priceList.length,
+        itemCount: _diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
             bool isSelected = _homeeeController.selectedIndices.contains(index);
@@ -195,58 +187,97 @@ class NumberSelection extends StatelessWidget {
               onTap: () {
                 _homeeeController.toggleSelection(index);
               },
-              child: PhysicalModel(
-                elevation: 12,
-                color: isSelected ? Colors.red.shade300 : Colors.grey.shade300,
-                shadowColor: Colors.black,
-                borderRadius: BorderRadius.circular(10),
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                transform:
+                    isSelected ? Matrix4.identity() : Matrix4.rotationX(0.1)
+                      ..rotateY(0.1),
+                transformAlignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.grey.shade300,
+                      isSelected ? Colors.red.shade200 : Colors.grey.shade300,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      offset: Offset(4, 4),
+                      blurRadius: 10,
+                      spreadRadius: 1,
+                    ),
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.7),
+                      offset: Offset(-4, -4),
+                      blurRadius: 10,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                          image: NetworkImage(
-                            "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                          ),
-                          fit: BoxFit.cover),
-                      // image: DecorationImage(
-                      //   image: NetworkImage(
-                      //     "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                      //   ),
-                      //   fit: BoxFit.cover,
-                      // ),
-                      color: isSelected
-                          ? Colors.red.shade100
-                          : Colors.grey.shade300,
+                        image: AssetImage(
+                          "assets/images/svg_images/ludobackblack.png",
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                      color: isSelected ? Colors.red.shade100 : Colors.white,
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        PhysicalModel(
-                          color: Colors.black,
-                          elevation: 19,
-                          shape: BoxShape.circle,
-                          shadowColor: Colors.white,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.1,
-                            width: MediaQuery.of(context).size.width * 0.21,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          transform: isSelected
+                              ? Matrix4.identity()
+                              : Matrix4.rotationX(0.1)
+                            ..rotateY(0.1),
+                          transformAlignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: isSelected
+                                    ? Colors.red.shade300
+                                    : Colors.grey.shade400,
+                                offset: Offset(4, 4),
+                                blurRadius: 10,
+                                spreadRadius: 1,
+                              ),
+                              BoxShadow(
+                                color: Colors.white.withOpacity(0.7),
+                                offset: Offset(-4, -4),
+                                blurRadius: 10,
+                                spreadRadius: 1,
+                              ),
+                            ],
+                            color:
+                                isSelected ? Colors.red.shade300 : Colors.grey,
+                            border: Border.all(
                               color: isSelected
                                   ? Colors.red.shade300
                                   : Colors.white,
-                              border: Border.all(color: Colors.white),
+                              width: 4,
                             ),
-                            child: Center(
-                              child: Text(
-                                _priceList[index],
-                                style: GoogleFonts.alatsi(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w200,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.grey.shade900,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.12,
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: AssetImage(_diceImages2[index]),
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                             ),
@@ -264,7 +295,7 @@ class NumberSelection extends StatelessWidget {
     );
   }
 
-  Widget buildListView() {
+  Widget buildListView(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 2, vertical: 30),
       child: ListView.builder(
@@ -278,54 +309,98 @@ class NumberSelection extends StatelessWidget {
                 _homeeeController.toggleSelection(index);
               },
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: PhysicalModel(
-                  elevation: 12,
-                  color:
-                      isSelected ? Colors.red.shade300 : Colors.grey.shade300,
-                  shadowColor: Colors.black,
-                  borderRadius: BorderRadius.circular(10),
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 13),
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  transform:
+                      isSelected ? Matrix4.identity() : Matrix4.rotationX(0.1)
+                        ..rotateY(0.1),
+                  transformAlignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.grey.shade300,
+                        isSelected ? Colors.red.shade700 : Colors.grey.shade100,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        offset: Offset(2, 2),
+                        blurRadius: 10,
+                        spreadRadius: 3,
+                      ),
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.7),
+                        offset: Offset(-2, -2),
+                        blurRadius: 10,
+                        spreadRadius: 3,
+                      ),
+                    ],
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
-                            image: NetworkImage(
-                              "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            ),
-                            fit: BoxFit.cover),
-                        color: isSelected
-                            ? Colors.red.shade100
-                            : Colors.grey.shade300,
+                          image: AssetImage(
+                            "assets/images/svg_images/ludobackblack.png",
+                          ),
+                          fit: BoxFit.fill,
+                        ),
+                        color: isSelected ? Colors.red.shade100 : Colors.white,
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.2,
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        transform: isSelected
+                            ? Matrix4.identity()
+                            : Matrix4.rotationX(0.1)
+                          ..rotateY(0.1),
+                        transformAlignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
                               color: isSelected
                                   ? Colors.red.shade300
-                                  : Colors.white,
-                              border: Border.all(color: Colors.white),
+                                  : Colors.grey.shade400,
+                              offset: Offset(4, 4),
+                              blurRadius: 4,
+                              spreadRadius: 12,
                             ),
-                            child: Center(
-                              child: Text(
-                                _priceList[index],
-                                style: GoogleFonts.alatsi(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w200,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.grey.shade900,
-                                ),
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.7),
+                              offset: Offset(-4, -4),
+                              blurRadius: 4,
+                              spreadRadius: 12,
+                            ),
+                          ],
+                          color: isSelected ? Colors.red.shade300 : Colors.grey,
+                          border: Border.all(
+                            color:
+                                isSelected ? Colors.red.shade300 : Colors.white,
+                            width: 4,
+                          ),
+                        ),
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.40,
+                            width: MediaQuery.of(context).size.width * 0.21,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: AssetImage(_diceImages2[index]),
+                                fit: BoxFit.fill,
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),

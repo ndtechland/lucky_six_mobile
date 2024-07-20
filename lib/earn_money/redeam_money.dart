@@ -59,7 +59,7 @@ class _RedeemeRequestState extends State<RedeemeRequest> {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/images/svg_images/backgroundddice.jpeg',
+            "assets/images/svg_images/ludobackblack.png",
             fit: BoxFit.cover,
           ),
           Obx(

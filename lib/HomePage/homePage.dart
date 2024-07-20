@@ -22,12 +22,20 @@ class Home_Page extends StatefulWidget {
 
 class _Home_PageState extends State<Home_Page> {
   final List<String> imagePaths = [
-    "assets/images/svg_images/5.png",
-    "assets/images/svg_images/1.png",
-    "assets/images/svg_images/2.png",
-    "assets/images/svg_images/3.png",
-    "assets/images/svg_images/4.png",
-    "assets/images/svg_images/6.png",
+    //"assets/images/svg_images/playnow.gif",
+    "assets/images/svg_images/11.gif",
+    "assets/images/svg_images/2.gif",
+    "assets/images/svg_images/3.gif",
+    "assets/images/svg_images/4444.gif",
+    "assets/images/svg_images/5.gif",
+    "assets/images/svg_images/6.gif",
+
+    //"assets/images/svg_images/5.png",
+    // "assets/images/svg_images/1.png",
+    // "assets/images/svg_images/2.png",
+    // "assets/images/svg_images/3.png",
+    // "assets/images/svg_images/4.png",
+    // "assets/images/svg_images/6.png",
   ];
 
   @override
@@ -43,7 +51,8 @@ class _Home_PageState extends State<Home_Page> {
         width: width,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/svg_images/backgroundddice.jpeg"
+            image: AssetImage("assets/images/svg_images/ludobackblack.png"
+                //"assets/images/svg_images/backgroundddice.jpeg"
                 // "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 //"assets/images/svg_images/backgroundddice.jpeg"
                 // "assets/images/backgroundhome2.jpg"
@@ -70,6 +79,7 @@ class _Home_PageState extends State<Home_Page> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.red,
+                          shape: BoxShape.circle,
                         ),
                         child: Center(
                           child: Icon(
@@ -84,29 +94,27 @@ class _Home_PageState extends State<Home_Page> {
                     flex: 1,
                     child: Padding(
                       padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).viewInsets.top + 12,
+                        top: MediaQuery.of(context).viewInsets.top + 4,
                         left: MediaQuery.of(context).viewInsets.left +
-                            (isPortrait ? 50 : 250),
+                            (isPortrait ? 80 : 280),
                         right: MediaQuery.of(context).viewInsets.left +
-                            (isPortrait ? 80 : 250),
+                            (isPortrait ? 100 : 280),
                       ),
                       child: PhysicalModel(
                         color: appColor2,
-                        elevation: 14,
-                        borderRadius: BorderRadius.circular(10),
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: Container(
-                            height: isPortrait ? height * 0.13 : height * 0.25,
-                            width: isPortrait ? width * 0.30 : width * 0.2,
-                            decoration: BoxDecoration(
-                              //border: Border.all(width: 0),
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/images/svg_images/rlg.jpg"),
-                                fit: BoxFit.cover,
-                              ),
+                        clipBehavior: Clip.none,
+                        borderRadius: BorderRadius.circular(12),
+                        elevation: 10,
+                        shadowColor: Colors.white,
+                        child: Container(
+                          height: isPortrait ? height * 0.15 : height * 0.277,
+                          width: isPortrait ? width * 0.05 : width * 0.04,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  "assets/images/svg_images/play_store_512.png"),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
@@ -194,7 +202,7 @@ class _Home_PageState extends State<Home_Page> {
               ),
             ),
             content: Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.only(top: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -220,7 +228,7 @@ class _Home_PageState extends State<Home_Page> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
                       Get.back();
@@ -230,7 +238,7 @@ class _Home_PageState extends State<Home_Page> {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.green.shade800,
+                        color: Colors.black87,
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       padding: EdgeInsets.all(16.0),

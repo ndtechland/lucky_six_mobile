@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:game_app/splash_pages/splash_screens.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-
-import 'HomePage/splashscreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,10 +27,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         // You can customize more theme settings here if needed
       ),
-      home:
-          //DiceRollingMusic(),
+      home: SplashScreen(),
+      //DiceRollingMusic(),
 
-          Splash_screen(), // Initial screen when the app starts
+      ///Splash_screen(), // Initial screen when the app starts
     );
   }
 }

@@ -14,6 +14,7 @@ class Settingsss extends StatelessWidget {
     'Profile',
     'Logout',
     'Feedback',
+    'Add Bank',
   ];
 
   @override
@@ -26,7 +27,8 @@ class Settingsss extends StatelessWidget {
             // Background Image
             Positioned.fill(
               child: Image.asset(
-                'assets/images/svg_images/backgroundddice.jpeg',
+                "assets/images/svg_images/ludobackblack.png",
+                // 'assets/images/svg_images/backgroundddice.jpeg',
                 fit: BoxFit.cover,
               ),
             ),
@@ -71,14 +73,14 @@ class Settingsss extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 0),
+                                    vertical: 02, horizontal: 0),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 19),
                                   margin: const EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 4),
                                   decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
+                                    color: Colors.grey.shade900,
                                     border: Border.all(
                                         color: Colors.red.shade300, width: 2),
                                     boxShadow: [
@@ -112,13 +114,14 @@ class Settingsss extends StatelessWidget {
                                               items[index],
                                               style: GoogleFonts.alata(
                                                 fontSize: textsize,
-                                                color: Colors.grey.shade900,
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
                                             Icon(
                                               Icons.arrow_forward_ios_rounded,
                                               size: 17,
+                                              color: Colors.white,
                                             ),
                                           ],
                                         ),
@@ -145,9 +148,16 @@ class Settingsss extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+      //padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       width: double.infinity,
-      decoration: BoxDecoration(color: appColor
+      decoration: BoxDecoration(
+          color: appColor,
+          image: DecorationImage(
+              image: AssetImage(
+                "assets/images/svg_images/ludobackblack.png",
+              ),
+              fit: BoxFit.cover)
+
           // gradient: LinearGradient(
           //   begin: Alignment.topCenter,
           //   end: Alignment.bottomCenter,
@@ -167,13 +177,26 @@ class Settingsss extends StatelessWidget {
               ),
               Expanded(
                 child: Center(
-                  child: Text(
-                    'Setting',
-                    style: GoogleFonts.roboto(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      // fontFamily: 'medium',
-                      fontSize: 20,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(
+                          'Setting',
+                          style: GoogleFonts.roboto(
+                            color: Colors.white,
+                            //backgroundColor: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            // fontFamily: 'medium',
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -188,11 +211,11 @@ class Settingsss extends StatelessWidget {
               heightLandscape: MediaQuery.of(context).size.height * 0.20,
               widthLandscape: MediaQuery.of(context).size.width * 0.10,
               child: Image.asset(
-                'assets/images/svg_images/rlg.jpg',
+                'assets/images/svg_images/play_store_512.png',
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
-                    'assets/images/svg_images/rlg.jpg',
+                    'assets/images/svg_images/play_store_512.png',
                     fit: BoxFit.cover,
                   );
                 },

@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../Controllersss/pricelist_controller.dart';
 import '../HomePage/homePage.dart';
-import '../HomePage/select_dice/select_no_twice_dice.dart';
+import '../HomePage/select_dice/select_21_dice.dart';
 
 class PriceListssfortwodice extends StatelessWidget {
   static const String id = 'Company';
@@ -63,15 +63,15 @@ class PriceListssfortwodice extends StatelessWidget {
           height: height,
           width: width,
           decoration: BoxDecoration(
-              // image: DecorationImage(
-              //   image: NetworkImage(
-              //       "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              //       //"assets/images/svg_images/backgroundddice.jpeg"
-              //       // "assets/images/backgroundhome2.jpg"
-              //       ),
-              //   fit: BoxFit.cover,
-              // ),
-              ),
+            image: DecorationImage(
+              image: AssetImage("assets/images/svg_images/ludobackblack.png"
+                  //  "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  //"assets/images/svg_images/backgroundddice.jpeg"
+                  // "assets/images/backgroundhome2.jpg"
+                  ),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: SafeArea(
             child: Column(
               children: [
@@ -448,8 +448,8 @@ class PriceListssfortwodice extends StatelessWidget {
 
   Widget buildImageContainer(String _priceList2, _priceList, double height,
       double width, bool isPortrait) {
-    double containerHeight = isPortrait ? height * 0.2 : height * 0.4;
-    double containerWidth = isPortrait ? width * 0.34 : width * 0.24;
+    double containerHeight = isPortrait ? height * 0.2 : height * 0.43;
+    double containerWidth = isPortrait ? width * 0.34 : width * 0.18;
     double containerHeight2 = isPortrait ? height * 0.2 : height * 0.4;
     double containerWidth2 = isPortrait ? width * 0.34 : width * 0.24;
 
@@ -472,20 +472,35 @@ class PriceListssfortwodice extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.grey.shade300,
-              // image: DecorationImage(
-              //   image: AssetImage(imagePath),
-              //   fit: BoxFit.contain,
-              // ),
+              image: DecorationImage(
+                image: AssetImage("assets/images/svg_images/ludobackblack.png"
+                    //  "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    //"assets/images/svg_images/backgroundddice.jpeg"
+                    // "assets/images/backgroundhome2.jpg"
+                    ),
+                fit: BoxFit.cover,
+              ),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                    height: containerHeight * 0.6,
-                    width: containerWidth * 0.7,
+                    height: containerHeight * 0.8,
+                    width: containerWidth * 0.99,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.red.shade300,
-                        border: Border.all(color: Colors.white)),
+                      shape: BoxShape.circle,
+                      // color: Colors.black,
+                      image: DecorationImage(
+                        image: AssetImage(
+                            "assets/images/svg_images/rupiesbackground.png"
+                            //  "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            //"assets/images/svg_images/backgroundddice.jpeg"
+                            // "assets/images/backgroundhome2.jpg"
+                            ),
+                        fit: BoxFit.fill,
+                      ),
+                      //border: Border.all(color: Colors.white)
+                    ),
                     child: Center(
                         child: Text(
                       _priceList,
@@ -496,26 +511,26 @@ class PriceListssfortwodice extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ))),
-                Spacer(),
-                Container(
-                    height: containerHeight3 * 0.9,
-                    width: containerWidth3 * 0.2,
-                    decoration: BoxDecoration(
-                        //shape: BoxShape.circle,
-                        color: Colors.black26,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.white)),
-                    child: Center(
-                        child: Text(
-                      "GO!",
-                      style: GoogleFonts.alata(
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white,
-                      ),
-                    ))),
-                Spacer(),
+                // Spacer(),
+                // Container(
+                //     height: containerHeight3 * 0.9,
+                //     width: containerWidth3 * 0.2,
+                //     decoration: BoxDecoration(
+                //         //shape: BoxShape.circle,
+                //         color: Colors.black45,
+                //         borderRadius: BorderRadius.circular(10),
+                //         border: Border.all(color: Colors.white)),
+                //     child: Center(
+                //         child: Text(
+                //       "GO!",
+                //       style: GoogleFonts.alata(
+                //         fontSize: 13,
+                //         fontStyle: FontStyle.italic,
+                //         fontWeight: FontWeight.w200,
+                //         color: Colors.white,
+                //       ),
+                //     ))),
+                // Spacer(),
                 Container(
                     height: containerHeight3,
                     width: containerWidth3,

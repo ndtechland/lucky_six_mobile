@@ -66,7 +66,8 @@ class WalletCredentials extends StatelessWidget {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
-                              "assets/images/svg_images/backgroundddice.jpeg"
+                              "assets/images/svg_images/ludobackblack.png"
+                              //"assets/images/svg_images/backgroundddice.jpeg"
                               // "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                               //"assets/images/svg_images/backgroundddice.jpeg"
                               // "assets/images/backgroundhome2.jpg"
@@ -169,6 +170,8 @@ class WalletCredentials extends StatelessWidget {
     // Determine whether the device is in landscape or portrait mode
     bool isLandscape = size.width > size.height;
 
+    bool isPortrait = size.width > size.height;
+
     // Define dimensions based on screen orientation
     double paddingVertical =
         isLandscape ? size.height * 0.01 : size.height * 0.01;
@@ -177,48 +180,42 @@ class WalletCredentials extends StatelessWidget {
     double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
     double fontSize = isLandscape ? size.width * 0.11 : size.width * 0.18;
 
+    double containerHeight3 =
+        isPortrait ? size.height * 0.4 : size.height * 0.19;
+    double containerWidth3 = isPortrait ? size.width * 0.12 : size.width * 0.28;
+
     double containerHeight2 =
         isLandscape ? size.height * 0.20 : size.height * 0.06;
 
     // Define dimensions based on screen orientation
     // double paddingVertical =
 
-    return PhysicalModel(
-      color: Colors.black26,
-      // shape: BoxShape.circle,
-      shadowColor: Colors.black,
-      elevation: 15,
-      borderRadius: BorderRadius.circular(5),
-
-      child: Container(
-        height: containerHeight2 * 0.88,
-        //width: containerWidth * 0.5,
-        padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.04,
-          vertical: paddingVertical * 0.1,
-        ),
+    return Container(
+        height: containerHeight3 * 0.8,
+        width: containerWidth3 * 0.99,
         decoration: BoxDecoration(
-          color: Colors.orange.shade300,
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade100,
-              offset: const Offset(2, 2),
-            ),
-          ],
+          shape: BoxShape.circle,
+          // color: Colors.black,
+          image: DecorationImage(
+            image: AssetImage("assets/images/svg_images/rupiesbackground.png"
+                //  "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                //"assets/images/svg_images/backgroundddice.jpeg"
+                // "assets/images/backgroundhome2.jpg"
+                ),
+            fit: BoxFit.fill,
+          ),
+          //border: Border.all(color: Colors.white)
         ),
         child: Center(
-          child: Text(
-            "300",
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
-              fontSize: fontSize * 0.3,
-            ),
+            child: Text(
+          "300",
+          style: GoogleFonts.alata(
+            fontSize: 15,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w200,
+            color: Colors.white,
           ),
-        ),
-      ),
-    );
+        )));
   }
 
   Widget buildAmountInput(Size size) {
@@ -226,7 +223,7 @@ class WalletCredentials extends StatelessWidget {
 
     // Define dimensions based on screen orientation
     double paddingVertical =
-        isLandscape ? size.height * 0.01 : size.height * 0.03;
+        isLandscape ? size.height * 0.00 : size.height * 0.03;
     double containerHeight =
         isLandscape ? size.height * 0.3 : size.height * 0.10;
     double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
@@ -318,7 +315,7 @@ class WalletCredentials extends StatelessWidget {
         isLandscape ? size.height * 0.3 : size.height * 0.10;
     double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
     double containerHeight2 =
-        isLandscape ? size.height * 0.025 : size.height * 0.01;
+        isLandscape ? size.height * 0.014 : size.height * 0.01;
     double containerWidth2 =
         isLandscape ? size.width * 0.02 : size.width * 0.03;
     double fontSize = isLandscape ? size.width * 0.08 : size.width * 0.16;
@@ -344,7 +341,7 @@ class WalletCredentials extends StatelessWidget {
 
     // Define dimensions based on screen orientation
     double paddingVertical =
-        isLandscape ? size.height * 0.01 : size.height * 0.01;
+        isLandscape ? size.height * 0.0 : size.height * 0.0;
     double containerHeight =
         isLandscape ? size.height * 0.2 : size.height * 0.08;
     double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
@@ -393,11 +390,11 @@ class WalletCredentials extends StatelessWidget {
 
     // Define dimensions based on screen orientation
     double paddingVertical =
-        isLandscape ? size.height * 0.07 : size.height * 0.05;
+        isLandscape ? size.height * 0.018 : size.height * 0.05;
     double paddingHorizontal =
-        isLandscape ? size.width * 0.04 : size.width * 0.02;
+        isLandscape ? size.width * 0.24 : size.width * 0.03;
     double containerHeight =
-        isLandscape ? size.height * 0.122 : size.height * 0.08;
+        isLandscape ? size.height * 0.122 : size.height * 0.055;
     double containerWidth = isLandscape ? size.width * 0.12 : size.width * 0.26;
     double fontSize = isLandscape ? size.width * 0.025 : size.width * 0.05;
     return Padding(
@@ -409,40 +406,43 @@ class WalletCredentials extends StatelessWidget {
         onTap: () {
           rozarwalletController.openCheckout();
         },
-        child: Container(
-          width: double.infinity,
-          height: containerHeight,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.white,
-                Colors.red.shade500,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 99),
+          child: Container(
+            width: double.infinity,
+            height: containerHeight,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.white,
+                  Colors.red.shade500,
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  offset: const Offset(0, 0),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  color: Colors.grey,
+                ),
+                BoxShadow(
+                  offset: const Offset(-1, -1),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  color: Colors.black12,
+                ),
               ],
             ),
-            boxShadow: [
-              BoxShadow(
-                offset: const Offset(0, 0),
-                spreadRadius: 1,
-                blurRadius: 1,
-                color: Colors.grey,
-              ),
-              BoxShadow(
-                offset: const Offset(-1, -1),
-                spreadRadius: 1,
-                blurRadius: 1,
-                color: Colors.black12,
-              ),
-            ],
-          ),
-          child: Center(
-            child: Text(
-              'ADD Coins',
-              style: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.w800,
+            child: Center(
+              child: Text(
+                'ADD Coins',
+                style: TextStyle(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
           ),

@@ -118,50 +118,50 @@ class _SupportPageCommanState extends State<SupportPageComman> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Address:',
-                              style: GoogleFonts.poppins(
-                                color: appColor,
-                                fontSize: constraints.maxWidth * 0.06,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            // Text(
+                            //   'Address:',
+                            //   style: GoogleFonts.poppins(
+                            //     color: appColor,
+                            //     fontSize: constraints.maxWidth * 0.06,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
                             SizedBox(height: constraints.maxHeight * 0.03),
-                            Text(
-                              'Registered Office:-',
-                              style: GoogleFonts.poppins(
-                                color: appColor,
-                                fontSize: constraints.maxWidth * 0.04,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            // Text(
+                            //   'Registered Office:-',
+                            //   style: GoogleFonts.poppins(
+                            //     color: appColor,
+                            //     fontSize: constraints.maxWidth * 0.04,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
                             SizedBox(height: constraints.maxHeight * 0.005),
-                            Text(
-                              "Noida Sector 2 near Priya Gold office",
-                              style: GoogleFonts.roboto(
-                                color: appColor,
-                                fontSize: constraints.maxWidth * 0.037,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
+                            // Text(
+                            //   "Noida Sector 2 near Priya Gold office",
+                            //   style: GoogleFonts.roboto(
+                            //     color: appColor,
+                            //     fontSize: constraints.maxWidth * 0.037,
+                            //     fontWeight: FontWeight.w400,
+                            //   ),
+                            // ),
                             SizedBox(height: constraints.maxHeight * 0.03),
-                            Text(
-                              'Corporate Office',
-                              style: GoogleFonts.poppins(
-                                color: appColor,
-                                fontSize: constraints.maxWidth * 0.04,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            // Text(
+                            //   'Corporate Office',
+                            //   style: GoogleFonts.poppins(
+                            //     color: appColor,
+                            //     fontSize: constraints.maxWidth * 0.04,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
                             SizedBox(height: constraints.maxHeight * 0.005),
-                            Text(
-                              "Gurugram, Haryana sector 132",
-                              style: GoogleFonts.roboto(
-                                color: appColor,
-                                fontSize: constraints.maxWidth * 0.037,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
+                            // Text(
+                            //   "Gurugram, Haryana sector 132",
+                            //   style: GoogleFonts.roboto(
+                            //     color: appColor,
+                            //     fontSize: constraints.maxWidth * 0.037,
+                            //     fontWeight: FontWeight.w400,
+                            //   ),
+                            // ),
                             SizedBox(height: constraints.maxHeight * 0.03),
                             Row(
                               children: [

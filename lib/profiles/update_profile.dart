@@ -81,7 +81,8 @@ class _EditProfileState extends State<EditProfile> {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/images/svg_images/backgroundddice.jpeg',
+            "assets/images/svg_images/ludobackblack.png",
+            //'assets/images/svg_images/backgroundddice.jpeg',
             fit: BoxFit.cover,
           ),
           Obx(

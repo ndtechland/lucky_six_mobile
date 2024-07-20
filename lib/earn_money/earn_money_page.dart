@@ -55,7 +55,8 @@ class EarnMoney extends StatelessWidget {
             // Background Image
             Positioned.fill(
               child: Image.asset(
-                'assets/images/svg_images/backgroundddice.jpeg',
+                "assets/images/svg_images/ludobackblack.png",
+                //'assets/images/svg_images/backgroundddice.jpeg',
                 fit: BoxFit.cover,
               ),
             ),
@@ -79,7 +80,7 @@ class EarnMoney extends StatelessWidget {
                                   margin: const EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 3),
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black12,
@@ -113,7 +114,7 @@ class EarnMoney extends StatelessWidget {
                                                 items[index],
                                                 style: GoogleFonts.roboto(
                                                   fontSize: 14,
-                                                  color: Colors.grey.shade900,
+                                                  color: Colors.white,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
@@ -121,7 +122,7 @@ class EarnMoney extends StatelessWidget {
                                                 items2[index],
                                                 style: GoogleFonts.alata(
                                                   fontSize: 14,
-                                                  color: Colors.grey.shade900,
+                                                  color: Colors.white,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
@@ -129,7 +130,7 @@ class EarnMoney extends StatelessWidget {
                                                 items3[index],
                                                 style: GoogleFonts.alata(
                                                   fontSize: 14,
-                                                  color: Colors.grey.shade900,
+                                                  color: Colors.white,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
@@ -210,11 +211,11 @@ class EarnMoney extends StatelessWidget {
                           MediaQuery.of(context).size.height * 0.20,
                       widthLandscape: MediaQuery.of(context).size.width * 0.10,
                       child: Image.asset(
-                        'assets/images/svg_images/rlg.jpg',
+                        'assets/images/svg_images/play_store_512.png',
                         fit: BoxFit.fill,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
-                            'assets/images/svg_images/rlg.jpg',
+                            'assets/images/svg_images/play_store_512.png',
                             fit: BoxFit.fill,
                           );
                         },
