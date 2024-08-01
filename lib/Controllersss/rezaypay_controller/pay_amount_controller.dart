@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-import '../../game_type/single_dice_game/playnow.dart';
+import '../../game_type/single_dice_game/player_lists.dart';
 
 //import '../post_order_controller/post_order_controller.dart';
 
@@ -82,7 +82,9 @@ class RozarpayamountController extends GetxController {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     Get.snackbar("SUCCESS", "ID: ${response.paymentId}");
     print('payment sucess');
-    Get.to(Play_Now());
+    Get.to(PlayerLists());
+
+    ///Get.to(Play_Now());
     // _walletController.walletPostApi().then((statusCode) {
     //   // _postOrderController.postOrderApi().then((statusCode) {
     //   if (statusCode == 200) {

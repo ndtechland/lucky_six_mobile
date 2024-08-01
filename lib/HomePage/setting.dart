@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:audioplayers/audioplayers.dart';
+//import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,32 +19,32 @@ class _SettingState extends State<Setting> {
   bool isSwitch = true;
   bool status = false;
   bool isSwitchOn = true;
-  late AudioPlayer _audioPlayer;
+  // late AudioPlayer _audioPlayer;
 
   @override
   void initState() {
     super.initState();
-    _audioPlayer = AudioPlayer();
-    _playBackgroundMusic();
+    //_audioPlayer = AudioPlayer();
+    // _playBackgroundMusic();
   }
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
+    //_audioPlayer.dispose();
     super.dispose();
   }
 
-  Future<void> _playBackgroundMusic() async {
-    const url = 'https://angavastram.com/images/pirates_bgm.mp3';
-    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
-    await _audioPlayer.play(UrlSource(url));
-
-    if (isSwitched) {
-      await _audioPlayer.play(UrlSource(url));
-    } else {
-      await _audioPlayer.stop();
-    }
-  }
+  // Future<void> _playBackgroundMusic() async {
+  //   const url = 'https://angavastram.com/images/pirates_bgm.mp3';
+  //   await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+  //   await _audioPlayer.play(UrlSource(url));
+  //
+  //   if (isSwitched) {
+  //     await _audioPlayer.play(UrlSource(url));
+  //   } else {
+  //     await _audioPlayer.stop();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +147,7 @@ class _SettingState extends State<Setting> {
                             onChanged: (value) {
                               setState(() {
                                 isSwitched = value;
-                                _playBackgroundMusic();
+                                //_playBackgroundMusic();
                               });
                             },
                           ),

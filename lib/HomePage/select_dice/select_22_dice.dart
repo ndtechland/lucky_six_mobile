@@ -4,14 +4,15 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../Controllersss/home_controllers.dart';
-import '../../Controllersss/rezaypay_controller/pay_amount_controller.dart';
+import '../../Controllersss/rezaypay_controller/pay_twicw_amount_controller.dart';
+import '../../game_type/double_gamee/player_list_for2dice.dart';
 
 class TwiceNumberSelection2 extends StatelessWidget {
   // static const String id = 'Company';
 
   final HomeeeController _homeeeController = Get.put(HomeeeController());
-  final RozarpayamountController _rozarpayamountController =
-      Get.put(RozarpayamountController());
+  final RozarpaytwiceamountController _rozarpayamountController =
+      Get.put(RozarpaytwiceamountController());
   //
   // final List<String> _priceList = [
   //   '1',
@@ -33,6 +34,10 @@ class TwiceNumberSelection2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var fontheight = isPortrait
+        ? MediaQuery.of(context).size.height * 0.21
+        : MediaQuery.of(context).size.height * 0.5;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -53,17 +58,30 @@ class TwiceNumberSelection2 extends StatelessWidget {
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.red.shade300,
+                          color: Colors.black,
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          "NOTE!",
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Avl Balance : ",
+                              style: GoogleFonts.abyssinicaSil(
+                                fontSize: fontheight * 0.11,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              "500",
+                              style: GoogleFonts.abyssinicaSil(
+                                fontSize: fontheight * 0.12,
+                                color: Colors.red.shade300,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -78,7 +96,7 @@ class TwiceNumberSelection2 extends StatelessWidget {
                             child: Text(
                               "Your Selected dice is  1-2,3-4,4-1 \n You have to pay your payable Amount for start your game and your payable Amount is\n ₹200.",
                               style: GoogleFonts.poppins(
-                                fontSize: 14,
+                                fontSize: 13,
                                 color: Colors.black,
                               ),
                             ),
@@ -103,7 +121,9 @@ class TwiceNumberSelection2 extends StatelessWidget {
                       CupertinoDialogAction(
                         onPressed: () {
                           Get.back();
-                          _rozarpayamountController.openCheckout();
+
+                          /// _rozarpayamountController.openCheckout();
+                          Get.to(PlayerLists2dice());
                         },
                         child: Text(
                           "Pay",

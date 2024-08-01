@@ -4,9 +4,14 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:game_app/price_listts/price_listfor_twodice.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
+
+import '../../HomePage/homePage.dart';
 
 class DiceAnimation2 extends StatefulWidget {
   @override
@@ -24,21 +29,21 @@ class _DiceAnimation2State extends State<DiceAnimation2>
   final Random _random = Random();
   bool _isAnimating = false;
   final List<String> _diceImages = [
-    'assets/images/svg_images/dice1.png',
-    'assets/images/svg_images/dice2.png',
-    'assets/images/svg_images/dice3.png',
-    'assets/images/svg_images/dice4.png',
-    'assets/images/svg_images/dice5.png',
-    'assets/images/svg_images/dice6.png',
+    'assets/images/svg_images/dice_1.png',
+    'assets/images/svg_images/dice_2.png',
+    'assets/images/svg_images/dice_3.png',
+    'assets/images/svg_images/dice_4.png',
+    'assets/images/svg_images/dice_5.png',
+    'assets/images/svg_images/dice_6.png',
   ];
 
   final Map<int, String> _messages = {
-    0: 'No. 1 ',
-    1: 'No. 2 ',
-    2: 'No. 3 ',
-    3: 'No. 4 ',
-    4: 'No. 5 ',
-    5: 'No. 6 ',
+    0: 'Dice No. 1 ',
+    1: 'Dice No. 2 ',
+    2: 'Dice No. 3 ',
+    3: 'Dice No. 4 ',
+    4: 'Dice No. 5 ',
+    5: 'Dice No. 6 ',
   };
 
   final Map<int, String> _messages2 = {
@@ -75,7 +80,7 @@ class _DiceAnimation2State extends State<DiceAnimation2>
       });
 
     // Start the animation after 10 seconds
-    Timer(Duration(seconds: 12), () {
+    Timer(Duration(seconds: 11), () {
       setState(() {
         _isAnimating = true;
         _controller.forward(from: 0);
@@ -83,7 +88,7 @@ class _DiceAnimation2State extends State<DiceAnimation2>
       });
 
       // Stop the animation after 6 seconds
-      Timer(Duration(seconds: 6), () {
+      Timer(Duration(milliseconds: 7300), () {
         setState(() {
           _isAnimating = false;
           _controller.stop();
@@ -102,7 +107,7 @@ class _DiceAnimation2State extends State<DiceAnimation2>
   void _changeImage() {
     setState(() {
       _currentIndex = _random.nextInt(_diceImages.length);
-      _controller.duration = Duration(milliseconds: _random.nextInt(200) + 300);
+      _controller.duration = Duration(milliseconds: _random.nextInt(200) + 100);
     });
   }
 
@@ -110,7 +115,7 @@ class _DiceAnimation2State extends State<DiceAnimation2>
     setState(() {
       _currentIndex2 = _random.nextInt(_diceImages.length);
       _controller2.duration =
-          Duration(milliseconds: _random.nextInt(200) + 200);
+          Duration(milliseconds: _random.nextInt(200) + 100);
     });
   }
 
@@ -128,8 +133,14 @@ class _DiceAnimation2State extends State<DiceAnimation2>
 
   void _showMessage(BuildContext context, String message, String message2) {
     showCupertinoDialog(
+      // barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
+        var isPortrait =
+            MediaQuery.of(context).orientation == Orientation.portrait;
+        var fontheight = isPortrait
+            ? MediaQuery.of(context).size.height * 0.21
+            : MediaQuery.of(context).size.height * 0.5;
         return CupertinoAlertDialog(
           content: Container(
             width: 300,
@@ -198,9 +209,30 @@ class _DiceAnimation2State extends State<DiceAnimation2>
           actions: <Widget>[
             CupertinoDialogAction(
               onPressed: () {
-                Navigator.of(context).pop();
+                Get.to(PriceListssfortwodice());
+                //Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: Text('Play Again',
+                  style: GoogleFonts.abyssinicaSil(
+                    fontSize: fontheight * 0.08,
+                    color: Colors.green.shade600,
+                    fontWeight: FontWeight.w500,
+                  )),
+            ),
+            CupertinoDialogAction(
+              onPressed: () {
+                Get.to(Home_Page());
+
+                // Navigator.of(context).pop();
+              },
+              child: Text(
+                "Exit",
+                style: GoogleFonts.abyssinicaSil(
+                  fontSize: fontheight * 0.08,
+                  color: Colors.red,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ],
         );
@@ -219,60 +251,74 @@ class _DiceAnimation2State extends State<DiceAnimation2>
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Row(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.18,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.red,
-                  border: Border.all(color: Colors.red.shade200, width: 4)),
-              child: Padding(
-                padding: const EdgeInsets.all(9.0),
-                child: AnimatedBuilder(
-                  animation: _controller,
-                  builder: (context, child) {
-                    return Transform.rotate(
-                      angle: _controller.value * 2 * 3.14159,
-                      child: Image.asset(
-                        _diceImages[_currentIndex],
-                        width: 60,
-                        height: 60,
-                        color: Colors.black,
-                        fit: BoxFit.contain,
-                      ),
-                    );
-                  },
+        padding:
+            EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.375),
+        child: SizedBox(
+          height: 70,
+          width: 180,
+          child: Align(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.18,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    //color: Colors.red,
+                    //border: Border.all(color: Colors.red.shade200, width: 4)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: AnimatedBuilder(
+                      animation: _controller,
+                      builder: (context, child) {
+                        return Transform.rotate(
+                          angle: _controller.value * 2 * 3.14159,
+                          child: Image.asset(
+                            _diceImages[_currentIndex],
+                            width: 60,
+                            height: 60,
+                            //color: Colors.black,
+                            fit: BoxFit.contain,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.18,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.red,
-                  border: Border.all(color: Colors.red.shade200, width: 4)),
-              child: Padding(
-                padding: const EdgeInsets.all(9.0),
-                child: AnimatedBuilder(
-                  animation: _controller2,
-                  builder: (context, child) {
-                    return Transform.rotate(
-                      angle: _controller2.value * 2 * 3.14159,
-                      child: Image.asset(
-                        _diceImages[_currentIndex2],
-                        width: 60,
-                        height: 60,
-                        color: Colors.black,
-                        fit: BoxFit.contain,
-                      ),
-                    );
-                  },
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.022,
                 ),
-              ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.18,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    //color: Colors.red,
+                    // border: Border.all(color: Colors.red.shade200, width: 4)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: AnimatedBuilder(
+                      animation: _controller2,
+                      builder: (context, child) {
+                        return Transform.rotate(
+                          angle: _controller2.value * 2 * 3.14159,
+                          child: Image.asset(
+                            _diceImages[_currentIndex2],
+                            width: 60,
+                            height: 60,
+                            // color: Colors.black,
+                            fit: BoxFit.contain,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

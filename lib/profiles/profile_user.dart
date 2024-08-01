@@ -6,10 +6,10 @@ import '../Controllersss/profiles/profile_controller.dart';
 import '../constantt/responsive_container_text.dart';
 import 'update_profile.dart';
 
-class Profile extends StatelessWidget {
+class Profileuserr extends StatelessWidget {
   final ProfileController _getprofilee = Get.put(ProfileController());
 
-  Profile({Key? key}) : super(key: key);
+  Profileuserr({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

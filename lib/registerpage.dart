@@ -84,9 +84,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       child: Form(
                         key: _formkey,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(height: screenHeight * 0.03),
+                            SizedBox(height: screenHeight * 0.05),
                             PhysicalModel(
                               color: appColor2,
                               clipBehavior: Clip.none,

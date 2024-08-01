@@ -177,6 +177,50 @@ Container responsiveContainer3({
   );
 }
 
+///list player..
+Container responsiveContainer4({
+  required BuildContext context,
+  String? text,
+  double? fontSizePortrait,
+  double? fontSizeLandscape,
+  Color color = Colors.black,
+  Widget? child,
+  double? heightPortrait, // Optional height in portrait mode
+  double? widthPortrait, // Optional width in portrait mode
+  double? heightLandscape, // Optional height in landscape mode
+  double? widthLandscape, // Optional width in landscape mode
+}) {
+  return Container(
+    height: MediaQuery.of(context).orientation == Orientation.portrait
+        ? heightPortrait ??
+            MediaQuery.of(context).size.height *
+                0.2 // Default height for portrait mode
+        : heightLandscape ??
+            MediaQuery.of(context).size.height *
+                0.3, // Default height for landscape mode
+    width: MediaQuery.of(context).orientation == Orientation.portrait
+        ? widthPortrait ??
+            MediaQuery.of(context).size.width *
+                0.3 // Default width for portrait mode
+        : widthLandscape ?? MediaQuery.of(context).size.width * 0.2,
+    decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/images/svg_images/lisplayer.png"),
+            fit: BoxFit.cover)), // Default width for landscape mode
+    child: child ??
+        (text != null
+            ? responsiveText(
+                context: context,
+                text: text,
+                fontSizePortrait: fontSizePortrait,
+                fontSizeLandscape: fontSizeLandscape,
+                color: color,
+              )
+            : null),
+    //decoration: BoxDecoration(border: Border.all(color: appColor)),
+  );
+}
+
 // Example usage of the responsive text widget
 class MyWidget3 extends StatelessWidget {
   @override

@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:game_app/constantt/responsive_text_color.dart';
-import 'package:game_app/earn_money/redeam_money.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../constantt/responsive_container_text.dart';
 
 class EarnMoney extends StatelessWidget {
   EarnMoney({Key? key}) : super(key: key);
-  //GetProfileModel? getprofileModel;
 
-  // Define a list of items
   final List<String> items = [
     '22-06-2023',
     '23-07-2023',
@@ -52,11 +46,9 @@ class EarnMoney extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // Background Image
             Positioned.fill(
               child: Image.asset(
-                "assets/images/svg_images/ludobackblack.png",
-                //'assets/images/svg_images/backgroundddice.jpeg',
+                "assets/images/svg_images/ludobackwhite.png",
                 fit: BoxFit.cover,
               ),
             ),
@@ -162,16 +154,11 @@ class EarnMoney extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       width: double.infinity,
-      decoration: BoxDecoration(color: appColor
-          // gradient: LinearGradient(
-          //   begin: Alignment.topCenter,
-          //   end: Alignment.bottomCenter,
-          //   colors: <Color>[appColor, appColor2],
-          // ),
-          ),
+      decoration: BoxDecoration(
+        color: Colors.black54,
+      ),
       child: Column(
         children: [
-          //const SizedBox(height: 1),
           Row(
             children: [
               IconButton(
@@ -187,7 +174,6 @@ class EarnMoney extends StatelessWidget {
                     style: GoogleFonts.roboto(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      // fontFamily: 'medium',
                       fontSize: 18,
                     ),
                   ),
@@ -224,36 +210,90 @@ class EarnMoney extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(
-                  child: Text(
-                    'Total Points: 3000',
-                    style: GoogleFonts.roboto(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      // fontFamily: 'medium',
-                      fontSize: 15,
+                Material(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  elevation: 19,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.green.shade200),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(
+                          'Earn Coins: 3000',
+                          style: GoogleFonts.abyssinicaSil(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(RedeemeRequest());
+                    showCustomModalBottomSheet(context);
+                    // showModalBottomSheet(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return Container(
+                    //       color: Colors.white30,
+                    //       padding: EdgeInsets.all(16),
+                    //       child: Column(
+                    //         mainAxisSize: MainAxisSize.min,
+                    //         children: [
+                    //           Text(
+                    //             'Redeem Coins',
+                    //             style: GoogleFonts.abyssinicaSil(
+                    //               fontSize: 18,
+                    //               fontWeight: FontWeight.bold,
+                    //             ),
+                    //           ),
+                    //           SizedBox(height: 16),
+                    //           Text(
+                    //             'Choose your preferred method to redeem:',
+                    //             textAlign: TextAlign.center,
+                    //           ),
+                    //           SizedBox(height: 16),
+                    //           ListTile(
+                    //             leading: Icon(Icons.account_balance),
+                    //             title: Text('Bank Account'),
+                    //             onTap: () {
+                    //               Navigator.pop(context);
+                    //               _showBankAccountDialog(context);
+                    //             },
+                    //           ),
+                    //           ListTile(
+                    //             leading: Icon(Icons.account_balance_wallet),
+                    //             title: Text('UPI ID'),
+                    //             onTap: () {
+                    //               Navigator.pop(context);
+                    //               _showUpiIdDialog(context);
+                    //             },
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     );
+                    //   },
+                    // );
                   },
                   child: Container(
-                    height: 30,
-                    width: 70,
+                    height: 35,
+                    width: 78,
                     decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(
                       child: Text(
-                        'Redeem',
-                        style: GoogleFonts.roboto(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          // fontFamily: 'medium',
-                          fontSize: 14,
+                        'Redeem Now',
+                        style: GoogleFonts.abyssinicaSil(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 11,
                         ),
                       ),
                     ),
@@ -268,93 +308,513 @@ class EarnMoney extends StatelessWidget {
     );
   }
 
-  Widget _buildListItem(
-      BuildContext context, int index, Orientation orientation) {
-    String label, value;
-    switch (index) {
-      case 0:
-        label = "Name:";
-        value = "Kumar Prince";
-        break;
-      case 1:
-        label = "Email:";
-        value = "Kumar@gmail.com";
-        break;
-      case 2:
-        label = "Phone:";
-        value = "9897665532";
-        break;
-      case 3:
-        label = "DOB:";
-        value = "12/12/2002";
-        break;
-      case 4:
-        label = "Address:";
-        value = "Noida sector 15, near priya gold office";
-        break;
-      default:
-        label = "Item $index:";
-        value = "Value $index";
-    }
+  void showCustomModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        // Get screen orientation and dimensions
+        final isLandscape =
+            MediaQuery.of(context).orientation == Orientation.landscape;
+        final screenWidth = MediaQuery.of(context).size.width;
+        final containerWidth = isLandscape
+            ? screenWidth * 0.7
+            : screenWidth * 0.9; // Adjust width based on orientation
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 20.0,
+        return Container(
+          width: containerWidth,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white, Colors.grey],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-          ],
-          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-        ),
-        child: Column(
-          children: [
-            responsiveContainer2(
-              heightPortrait: MediaQuery.of(context).size.height * 0.070,
-              widthPortrait: MediaQuery.of(context).size.width,
-              heightLandscape: MediaQuery.of(context).size.height * 0.09,
-              widthLandscape: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Row(
-                  children: [
-                    Text(
-                      label,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'medium',
-                        color: Colors.grey.shade600,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 15,
+                offset: Offset(0, -3),
+              ),
+            ],
+          ),
+          padding: EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Redeem Coins',
+                  style: GoogleFonts.abyssinicaSil(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Choose your preferred method to redeem:',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.abyssinicaSil(
+                    fontSize: 16,
+                    color: Colors.black54,
+                  ),
+                ),
+                SizedBox(height: 16),
+                SizedBox(
+                  width: containerWidth * 0.8, // Fixed width for the buttons
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent, // Use transparent background
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      side: BorderSide(
+                        color: Colors.white, // Border color
+                        width: 1,
+                      ),
+                      elevation: 0, // Remove elevation
+                    ).copyWith(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.transparent),
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          EdgeInsets.symmetric(vertical: 1)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
-                    SizedBox(width: 10),
-                    SizedBox(
-                      width: orientation == Orientation.portrait
-                          ? MediaQuery.of(context).size.width * 0.63
-                          : MediaQuery.of(context).size.width * 0.6,
-                      child: Align(
-                        child: responsiveText(
-                          text: value,
-                          fontSizeLandscape:
-                              MediaQuery.of(context).size.height * 0.033,
-                          fontSizePortrait:
-                              MediaQuery.of(context).size.height * 0.015,
-                          context: context,
+                    onPressed: () {},
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.black, Colors.black12],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: ListTile(
+                          leading:
+                              Icon(Icons.account_balance, color: Colors.white),
+                          title: Text('Bank Account',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {
+                            Navigator.pop(context);
+                            _showBankAccountDialog(context);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12),
+                SizedBox(
+                  width: containerWidth * 0.8, // Fixed width for the buttons
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent, // Use transparent background
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      side: BorderSide(
+                        color: Colors.white, // Border color
+                        width: 1,
+                      ),
+                      elevation: 0, // Remove elevation
+                    ).copyWith(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.transparent),
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          EdgeInsets.symmetric(vertical: 1)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.black, Colors.black12],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: ListTile(
+                          leading: Icon(Icons.account_balance_wallet,
+                              color: Colors.white),
+                          title: Text('UPI ID',
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {
+                            Navigator.pop(context);
+                            _showUpiIdDialog(context);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showBankAccountDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            bool isLandscape = constraints.maxWidth > constraints.maxHeight;
+
+            return AlertDialog(
+              backgroundColor:
+                  Colors.grey[200], // Change dialog background color
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              titlePadding: EdgeInsets.only(top: 16, left: 16, right: 16),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Bank Account Details',
+                    style: GoogleFonts.roboto(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.close, color: Colors.black87),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              content: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: isLandscape ? 400 : double.infinity,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Account Holder Name',
+                          labelStyle: TextStyle(color: Colors.black54),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Account Number',
+                          labelStyle: TextStyle(color: Colors.black54),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'IFSC Code',
+                          labelStyle: TextStyle(color: Colors.black54),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red, // Cancel button background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary:
+                              Colors.green, // Submit button background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pop(); // Close the Bank Account dialog
+                          _showConfirmationDialog(
+                              context); // Show confirmation dialog
+                        },
                       ),
                     ),
                   ],
                 ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showUpiIdDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            bool isLandscape = constraints.maxWidth > constraints.maxHeight;
+
+            return AlertDialog(
+              backgroundColor:
+                  Colors.grey[200], // Change dialog background color
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-              context: context,
+              titlePadding: EdgeInsets.only(
+                  top: 16, left: 16, right: 16), // Adjust title padding
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'UPI ID Details',
+                    style: GoogleFonts.roboto(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.close, color: Colors.black87),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+              content: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: isLandscape ? 400 : double.infinity,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'UPI ID',
+                          labelStyle: TextStyle(color: Colors.black54),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Confirm UPI ID',
+                          labelStyle: TextStyle(color: Colors.black54),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red, // Cancel button background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 8), // Spacing between buttons
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary:
+                              Colors.green, // Submit button background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pop(); // Close the UPI ID dialog
+                          _showConfirmationDialog(
+                              context); // Show confirmation dialog
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor:
+              Colors.grey[200], // Change confirmation dialog background color
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text(
+            'Confirm Submission',
+            style: GoogleFonts.roboto(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to submit these details?',
+            style: TextStyle(color: Colors.black54),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red, // Cancel button background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop(); // Close the confirmation dialog
+                    },
+                  ),
+                ),
+                SizedBox(width: 8), // Spacing between buttons
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green, // Confirm button background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      'Confirm',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      // Handle the confirmed submission here
+                      Navigator.of(context)
+                          .pop(); // Close the confirmation dialog
+                      // Additional actions for confirmed submission can be added here
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }

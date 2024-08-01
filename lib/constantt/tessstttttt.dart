@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
+//import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 class DiceRollingMusic extends StatefulWidget {
@@ -9,32 +9,33 @@ class DiceRollingMusic extends StatefulWidget {
 }
 
 class _DiceRollingMusicState extends State<DiceRollingMusic> {
-  late AudioPlayer _audioPlayer;
+  // late AudioPlayer _audioPlayer;
   Timer? _startTimer;
   Timer? _stopTimer;
 
   @override
   void initState() {
     super.initState();
-    _audioPlayer = AudioPlayer();
-    _startRollingMusic();
+    // _audioPlayer = AudioPlayer();
+    //_startRollingMusic();
   }
 
-  void _startRollingMusic() {
-    _startTimer = Timer(Duration(seconds: 15), () {
-      _audioPlayer.play(UrlSource(
-          'https://admin.hirejobindia.com/BannerImages/gamemusic.mp3'));
-      _stopTimer = Timer(Duration(seconds: 15), () {
-        _audioPlayer.stop();
-      });
-    });
-  }
+  // void _startRollingMusic() {
+  //   _startTimer = Timer(Duration(seconds: 15), () {
+  //     _audioPlayer.play(UrlSource(
+  //         'https://admin.hirejobindia.com/BannerImages/gamemusic.mp3'));
+  //     _stopTimer = Timer(Duration(seconds: 15), () {
+  //       _audioPlayer.stop();
+  //     });
+  //   });
+  // }
 
   @override
   void dispose() {
     _startTimer?.cancel();
     _stopTimer?.cancel();
-    _audioPlayer.dispose();
+
+    ///_audioPlayer.dispose();
     super.dispose();
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_app/splash_pages/splash_screens.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void main() {
@@ -27,10 +28,27 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         // You can customize more theme settings here if needed
       ),
-      home: SplashScreen(),
+      home:
+          //Dice3DAnimation(),
+
+          ///PaymentHistory(),
+          //Play_Now_2dice(),
+          // HomePageDicetest(),
+          /// Play_Now_test(),
+
+          ///Play_Now_2dice(),
+
+          ///Play_Now_2dice(),
+          ///Play_Now()
+          SplashScreen(),
+
+      ///PlayerLists(),
       //DiceRollingMusic(),
 
       ///Splash_screen(), // Initial screen when the app starts
     );
   }
 }
+
+///
+///

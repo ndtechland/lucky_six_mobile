@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:game_app/constantt/responsive_text_color.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../add_bank.dart';
+import '../change_password.dart';
 import '../constantt/responsive_container_text.dart';
+import '../profiles/profile_user.dart';
 
 class Settingsss extends StatelessWidget {
   Settingsss({Key? key}) : super(key: key);
@@ -10,11 +15,12 @@ class Settingsss extends StatelessWidget {
 
   // Define a list of items
   final List<String> items = [
-    'Account',
+    'Delete Account',
     'Profile',
     'Logout',
     'Feedback',
     'Add Bank',
+    'Change Password'
   ];
 
   @override
@@ -74,60 +80,86 @@ class Settingsss extends StatelessWidget {
                               return Padding(
                                 padding: EdgeInsets.symmetric(
                                     vertical: 02, horizontal: 0),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 19),
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade900,
-                                    border: Border.all(
-                                        color: Colors.red.shade300, width: 2),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 20.0,
-                                      ),
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      responsiveContainer2(
-                                        heightPortrait:
-                                            MediaQuery.of(context).size.height *
-                                                0.080,
-                                        widthPortrait:
-                                            MediaQuery.of(context).size.width,
-                                        heightLandscape:
-                                            MediaQuery.of(context).size.height *
-                                                0.16,
-                                        widthLandscape:
-                                            MediaQuery.of(context).size.width,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              items[index],
-                                              style: GoogleFonts.alata(
-                                                fontSize: textsize,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.arrow_forward_ios_rounded,
-                                              size: 17,
-                                              color: Colors.white,
-                                            ),
-                                          ],
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (index == 0) {
+                                      //
+                                      // Get.to(
+                                      //        () => NurseBoooking1()
+                                      // );
+                                    } else if (index == 1) {
+                                      Get.to(() => Profileuserr());
+                                    } else if (index == 2) {
+                                      //Get.to(() => Profile());
+                                    } else if (index == 3) {
+                                      //Get.to(() => Profile());
+                                    } else if (index == 4) {
+                                      Get.to(() => AddBank());
+                                    } else if (index == 5) {
+                                      Get.to(() => ChangePassword());
+                                    }
+                                    // ForgetPassword                   Get.to(RedeemeRequest());
+                                    //Profile
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 19),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade900,
+                                      border: Border.all(
+                                          color: Colors.red.shade300, width: 2),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          blurRadius: 20.0,
                                         ),
-                                        context: context,
-                                      ),
-                                    ],
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        responsiveContainer2(
+                                          heightPortrait: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.080,
+                                          widthPortrait:
+                                              MediaQuery.of(context).size.width,
+                                          heightLandscape:
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.16,
+                                          widthLandscape:
+                                              MediaQuery.of(context).size.width,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                items[index],
+                                                style: GoogleFonts.alata(
+                                                  fontSize: textsize,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.arrow_forward_ios_rounded,
+                                                size: 17,
+                                                color: Colors.white,
+                                              ),
+                                            ],
+                                          ),
+                                          context: context,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:game_app/constantt/responsive_text_color.dart';
 import 'package:game_app/registerpage.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'HomePage/homePage.dart';
 import 'constantt/buttonns/regular_button2.dart';
 import 'constantt/buttonns/regular_buttons.dart';
+import 'forget_password.dart';
 
 class LoginEmail extends StatefulWidget {
   const LoginEmail({Key? key}) : super(key: key);
@@ -21,6 +25,8 @@ class _LoginEmailState extends State<LoginEmail> {
 
   TextEditingController _email = TextEditingController();
   TextEditingController _pin = TextEditingController();
+  // PaymentDetailController _paymentcontroller =
+  //     Get.put(PaymentDetailController());
 
   @override
   void initState() {
@@ -53,14 +59,14 @@ class _LoginEmailState extends State<LoginEmail> {
 
           var imageWidth2 = orientation == Orientation.portrait
               ? screenWidth * 0.86
-              : screenWidth * 0.1;
+              : screenWidth * 1.7;
           var imageHeight2 = orientation == Orientation.portrait
               ? screenHeight * 0.25
               : screenHeight * 0.5;
 
           var imageWidth3 = orientation == Orientation.portrait
               ? screenWidth * 0.77
-              : screenWidth * 0.5;
+              : screenWidth * 0.4;
           var imageHeight3 = orientation == Orientation.portrait
               ? screenHeight * 0.33
               : screenHeight * 0.5;
@@ -184,6 +190,40 @@ class _LoginEmailState extends State<LoginEmail> {
                                     _obscured = !_obscured;
                                   });
                                 },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: imageWidth2 * 0.18),
+                          child: GestureDetector(
+                            onTap: () async {
+                              // await _paymentcontroller.paymentdetailApi();
+                              //await Get.to(PaymentHistory());
+
+                              Get.to(ForgotPassword());
+                            },
+                            child: Container(
+                              height: screenHeight * 0.036,
+                              width: imageWidth3 * 0.40,
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Forgot Password',
+                                  style: GoogleFonts.abyssinicaSil(
+                                    color: Colors.white,
+                                    //backgroundColor: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    // fontFamily: 'medium',
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                             ),
                           ),

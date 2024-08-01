@@ -438,7 +438,7 @@ class WalletCredentials extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                'ADD Coins',
+                'ADD +',
                 style: TextStyle(
                   fontSize: fontSize,
                   fontWeight: FontWeight.w800,

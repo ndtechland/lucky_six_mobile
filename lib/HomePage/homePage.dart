@@ -74,17 +74,17 @@ class _Home_PageState extends State<Home_Page> {
                     padding: const EdgeInsets.all(4.0),
                     child: GestureDetector(
                       onTap: () {
-                        Get.back();
+                        //Get.back();
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Colors.transparent,
                           shape: BoxShape.circle,
                         ),
                         child: Center(
                           child: Icon(
                             Icons.arrow_back,
-                            color: Colors.white,
+                            color: Colors.transparent,
                           ),
                         ),
                       ),
@@ -214,12 +214,12 @@ class _Home_PageState extends State<Home_Page> {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.red.shade800,
+                        color: Colors.red.shade900,
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        "Single Game   >",
+                        "Single Dice Game   >",
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -238,12 +238,12 @@ class _Home_PageState extends State<Home_Page> {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.black87,
+                        color: Colors.black54,
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        "Double Game   >",
+                        "Double Dice Game   >",
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -287,7 +287,7 @@ class _Home_PageState extends State<Home_Page> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Profile(),
+            builder: (context) => Profileuserr(),
           ),
         );
         //Profile

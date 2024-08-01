@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:game_app/constantt/color_text.dart';
-import 'package:game_app/contact_us_suppport_page/website_page.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -42,7 +40,7 @@ class _SupportPageCommanState extends State<SupportPageComman> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -92,17 +90,17 @@ class _SupportPageCommanState extends State<SupportPageComman> {
                                     child: Icon(
                                       Icons.arrow_back_ios_outlined,
                                       size: constraints.maxHeight * 0.022,
-                                      color: appColor,
+                                      color: Colors.red,
                                     ),
                                   ),
                                 ),
                                 SizedBox(width: constraints.maxWidth * 0.03),
                                 Text(
                                   'CONTACT SUPPORT LuckySix',
-                                  style: GoogleFonts.alatsi(
+                                  style: GoogleFonts.abyssinicaSil(
                                     fontSize: constraints.maxHeight * 0.025,
                                     fontWeight: FontWeight.w600,
-                                    color: appColor,
+                                    color: Colors.red,
                                   ),
                                 ),
                               ],
@@ -118,199 +116,23 @@ class _SupportPageCommanState extends State<SupportPageComman> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Text(
-                            //   'Address:',
-                            //   style: GoogleFonts.poppins(
-                            //     color: appColor,
-                            //     fontSize: constraints.maxWidth * 0.06,
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            // ),
                             SizedBox(height: constraints.maxHeight * 0.03),
-                            // Text(
-                            //   'Registered Office:-',
-                            //   style: GoogleFonts.poppins(
-                            //     color: appColor,
-                            //     fontSize: constraints.maxWidth * 0.04,
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            // ),
                             SizedBox(height: constraints.maxHeight * 0.005),
-                            // Text(
-                            //   "Noida Sector 2 near Priya Gold office",
-                            //   style: GoogleFonts.roboto(
-                            //     color: appColor,
-                            //     fontSize: constraints.maxWidth * 0.037,
-                            //     fontWeight: FontWeight.w400,
-                            //   ),
-                            // ),
-                            SizedBox(height: constraints.maxHeight * 0.03),
-                            // Text(
-                            //   'Corporate Office',
-                            //   style: GoogleFonts.poppins(
-                            //     color: appColor,
-                            //     fontSize: constraints.maxWidth * 0.04,
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            // ),
-                            SizedBox(height: constraints.maxHeight * 0.005),
-                            // Text(
-                            //   "Gurugram, Haryana sector 132",
-                            //   style: GoogleFonts.roboto(
-                            //     color: appColor,
-                            //     fontSize: constraints.maxWidth * 0.037,
-                            //     fontWeight: FontWeight.w400,
-                            //   ),
-                            // ),
                             SizedBox(height: constraints.maxHeight * 0.03),
                             Row(
                               children: [
                                 Text(
                                   "Contact: +9149008899",
-                                  style: GoogleFonts.poppins(
-                                    color: appColor,
+                                  style: GoogleFonts.abyssinicaSil(
+                                    color: Colors.red,
                                     fontSize: constraints.maxWidth * 0.04,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 SizedBox(width: constraints.maxWidth * 0.03),
                                 InkWell(
-                                  onTap: () async {
-                                    Get.defaultDialog(
-                                      barrierDismissible: true,
-                                      title: "Welcome to LuckySix",
-                                      confirm: Padding(
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: PhysicalModel(
-                                          color: appColor,
-                                          shadowColor: Colors.blueGrey,
-                                          elevation: 0,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(3.0),
-                                            child: InkWell(
-                                              onTap: () async {
-                                                String telephoneNumber =
-                                                    "1111111111";
-                                                String telephoneUrl =
-                                                    "tel:$telephoneNumber";
-                                                if (await canLaunch(
-                                                    telephoneUrl)) {
-                                                  await launch(telephoneUrl);
-                                                } else {
-                                                  throw "Error occurred trying to call that number.";
-                                                }
-                                              },
-                                              child: Container(
-                                                height: constraints.maxHeight *
-                                                    0.04,
-                                                width:
-                                                    constraints.maxWidth * 0.26,
-                                                color: appColor,
-                                                child: Center(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.phone,
-                                                        color: Colors.white,
-                                                        size: constraints
-                                                                .maxWidth *
-                                                            0.05,
-                                                      ),
-                                                      SizedBox(
-                                                        width: constraints
-                                                                .maxWidth *
-                                                            0.03,
-                                                      ),
-                                                      Text(
-                                                        'Call',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: constraints
-                                                                  .maxWidth *
-                                                              0.03,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      cancel: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: PhysicalModel(
-                                          color: appColor,
-                                          shadowColor: Colors.blueGrey,
-                                          elevation: 0,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(3.0),
-                                            child: InkWell(
-                                              onTap: () {
-                                                _launchWhatsapp();
-                                              },
-                                              child: Container(
-                                                height: constraints.maxHeight *
-                                                    0.04,
-                                                width:
-                                                    constraints.maxWidth * 0.26,
-                                                color: appColor,
-                                                child: Center(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.message,
-                                                        color: Colors.white,
-                                                        size: constraints
-                                                                .maxHeight *
-                                                            0.03,
-                                                      ),
-                                                      SizedBox(
-                                                        width: constraints
-                                                                .maxWidth *
-                                                            0.03,
-                                                      ),
-                                                      Text(
-                                                        'Whatsapp',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: constraints
-                                                                  .maxWidth *
-                                                              0.03,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      middleText:
-                                          "We are giving two options to our User for contact with us.",
-                                      backgroundColor: appColor,
-                                      titleStyle: GoogleFonts.alatsi(
-                                        color: Colors.white,
-                                        fontSize: constraints.maxHeight * 0.03,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      middleTextStyle: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                      radius: 10,
-                                    );
+                                  onTap: () {
+                                    _showContactDialog();
                                   },
                                   child: Container(
                                     height: constraints.maxHeight * 0.04,
@@ -332,8 +154,8 @@ class _SupportPageCommanState extends State<SupportPageComman> {
                               children: [
                                 Text(
                                   'Email: ',
-                                  style: GoogleFonts.poppins(
-                                    color: appColor,
+                                  style: GoogleFonts.abyssinicaSil(
+                                    color: Colors.red,
                                     fontSize: constraints.maxWidth * 0.04,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -357,8 +179,8 @@ class _SupportPageCommanState extends State<SupportPageComman> {
                                     children: [
                                       Text(
                                         "luckysix@gmail.com",
-                                        style: GoogleFonts.poppins(
-                                          color: appColor,
+                                        style: GoogleFonts.abyssinicaSil(
+                                          color: Colors.red,
                                           fontSize: constraints.maxWidth * 0.04,
                                           fontWeight: FontWeight.w600,
                                           decoration: TextDecoration.underline,
@@ -385,27 +207,77 @@ class _SupportPageCommanState extends State<SupportPageComman> {
                               ],
                             ),
                             SizedBox(height: constraints.maxHeight * 0.03),
+                            // Row(
+                            //   children: [
+                            //     Text(
+                            //       'Website: ',
+                            //       style: GoogleFonts.abyssinicaSil(
+                            //         color: Colors.red,
+                            //         fontSize: constraints.maxWidth * 0.04,
+                            //         fontWeight: FontWeight.w600,
+                            //       ),
+                            //     ),
+                            //     InkWell(
+                            //       onTap: () {
+                            //         Get.to(WebViewHirejobwebsite());
+                            //       },
+                            //       child: Row(
+                            //         children: [
+                            //           Text(
+                            //             'www.luckysix.com',
+                            //             style: GoogleFonts.abyssinicaSil(
+                            //               color: Colors.red,
+                            //               fontSize: constraints.maxWidth * 0.04,
+                            //               fontWeight: FontWeight.w600,
+                            //               decoration: TextDecoration.underline,
+                            //             ),
+                            //           ),
+                            //           SizedBox(
+                            //             width: constraints.maxWidth * 0.02,
+                            //           ),
+                            //           Container(
+                            //             height: constraints.maxHeight * 0.04,
+                            //             width: constraints.maxWidth * 0.08,
+                            //             decoration: BoxDecoration(
+                            //               color: Colors.white30,
+                            //               shape: BoxShape.circle,
+                            //             ),
+                            //             child: Icon(
+                            //               Icons.arrow_right,
+                            //               color: Colors.red,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
                             Row(
                               children: [
                                 Text(
                                   'Website: ',
-                                  style: GoogleFonts.poppins(
-                                    color: appColor,
+                                  style: GoogleFonts.abyssinicaSil(
+                                    color: Colors.red,
                                     fontSize: constraints.maxWidth * 0.04,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {
-                                    Get.to(WebViewHirejobwebsite());
-                                    print("clickios");
+                                  onTap: () async {
+                                    const url = 'https://www.luckysix.com';
+                                    if (await canLaunch(url)) {
+                                      await launch(url);
+                                    } else {
+                                      // Handle the error here
+                                      print('Could not launch $url');
+                                    }
                                   },
                                   child: Row(
                                     children: [
                                       Text(
                                         'www.luckysix.com',
-                                        style: GoogleFonts.poppins(
-                                          color: appColor,
+                                        style: GoogleFonts.abyssinicaSil(
+                                          color: Colors.red,
                                           fontSize: constraints.maxWidth * 0.04,
                                           fontWeight: FontWeight.w600,
                                           decoration: TextDecoration.underline,
@@ -430,7 +302,7 @@ class _SupportPageCommanState extends State<SupportPageComman> {
                                   ),
                                 ),
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -445,22 +317,147 @@ class _SupportPageCommanState extends State<SupportPageComman> {
     );
   }
 
-  void _launchWhatsapp() async {
-    var whatsapp =
-        "+91${_supportEmployeeController.supportModel?.response?.callNumber.toString()}";
-    var whatsappAndroid =
-        Uri.parse("whatsapp://send?phone=$whatsapp&text=Hi LuckySix");
-    if (await canLaunch(whatsappAndroid.toString())) {
-      await launch(whatsappAndroid.toString());
+  void _showContactDialog() {
+    Get.defaultDialog(
+      barrierDismissible: true,
+      title: "Contact Us",
+      middleText: "Choose your preferred method to contact us.",
+      backgroundColor: Colors.white30,
+      titleStyle: GoogleFonts.abyssinicaSil(
+        color: Colors.white,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+      middleTextStyle: TextStyle(
+        color: Colors.white,
+      ),
+      radius: 15,
+      content: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white, Colors.grey],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          children: [
+            _buildDialogButton(
+              icon: Icons.phone,
+              text: 'Call',
+              onPressed: () async {
+                String telephoneNumber = "1111111111";
+                String telephoneUrl = "tel:$telephoneNumber";
+                if (await canLaunch(telephoneUrl)) {
+                  await launch(telephoneUrl);
+                } else {
+                  throw "Error occurred trying to call that number.";
+                }
+              },
+            ),
+            _buildDialogButton(
+              icon: Icons.message,
+              text: 'WhatsApp',
+              onPressed: _showWhatsappOptions,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDialogButton({
+    required IconData icon,
+    required String text,
+    required VoidCallback onPressed,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(6.0),
+      child: Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        child: InkWell(
+          onTap: onPressed,
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.black, Colors.black12],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon, color: Colors.white),
+                  SizedBox(width: 8),
+                  Text(
+                    text,
+                    style: GoogleFonts.abyssinicaSil(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showWhatsappOptions() {
+    Get.defaultDialog(
+      barrierDismissible: true,
+      title: "WhatsApp Options",
+      middleText: "Choose a WhatsApp option",
+      backgroundColor: Colors.green.shade800, // Change this color as needed
+      titleStyle: GoogleFonts.abyssinicaSil(
+        color: Colors.white,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+      middleTextStyle: TextStyle(
+        color: Colors.white,
+      ),
+      radius: 15,
+      content: Column(
+        children: [
+          _buildDialogButton(
+            icon: Icons.message,
+            text: 'WhatsApp (Normal)',
+            onPressed: _launchWhatsapp,
+          ),
+          _buildDialogButton(
+            icon: Icons.business,
+            text: 'WhatsApp (Business)',
+            onPressed: _launchWhatsappBusiness,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _launchWhatsapp() async {
+    const url = 'https://wa.me/9149008899';
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
-      Get.snackbar(
-        "WhatsApp not installed",
-        "Please install WhatsApp",
-        colorText: Colors.red.shade400,
-        backgroundColor: Colors.white10,
-        icon: Icon(Icons.person, color: Colors.red),
-        snackPosition: SnackPosition.TOP,
-      );
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<void> _launchWhatsappBusiness() async {
+    const url = 'https://wa.me/9149008899?business=1';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 }

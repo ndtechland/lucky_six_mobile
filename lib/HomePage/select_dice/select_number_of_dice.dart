@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../Controllersss/home_controllers.dart';
 import '../../Controllersss/rezaypay_controller/pay_amount_controller.dart';
+import '../../game_type/single_dice_game/player_lists.dart';
 
 class NumberSelection extends StatelessWidget {
   static const String id = 'Company';
@@ -33,6 +34,10 @@ class NumberSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var fontheight = isPortrait
+        ? MediaQuery.of(context).size.height * 0.21
+        : MediaQuery.of(context).size.height * 0.5;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -53,17 +58,30 @@ class NumberSelection extends StatelessWidget {
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.red.shade300,
+                          color: Colors.black,
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          "NOTE!",
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Avl Balance : ",
+                              style: GoogleFonts.abyssinicaSil(
+                                fontSize: fontheight * 0.12,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              "500",
+                              style: GoogleFonts.abyssinicaSil(
+                                fontSize: fontheight * 0.13,
+                                color: Colors.red.shade300,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -76,7 +94,7 @@ class NumberSelection extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Your Selected dice is  1,3,4 \n You have to pay your payable Amount for start your game and your payable Amount is\n ₹300.",
+                              "Your Selected dice is  1,3,4 \n You have to pay your payable Coins for start your game and your payable Coins is\n 300.",
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 color: Colors.black,
@@ -103,7 +121,9 @@ class NumberSelection extends StatelessWidget {
                       CupertinoDialogAction(
                         onPressed: () {
                           Get.back();
-                          _rozarpayamountController.openCheckout();
+
+                          /// _rozarpayamountController.openCheckout();
+                          Get.to(PlayerLists());
                         },
                         child: Text(
                           "Pay",

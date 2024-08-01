@@ -1,19 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:audioplayers/audioplayers.dart';
+///import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../HomePage/PlayNow/guestprofile.dart';
-import '../../HomePage/animation/test_2.dart';
-import '../../transation/userborer.dart';
-import 'dice_animation2.dart';
+import '../3d_dice/3d_button_exit.dart';
+import '../3d_dice/3dbutton_playagain.dart';
+import '../3d_dice/double_dice_3d.dart';
+import '../animation/time_animation_common.dart';
 
 ///import 'package:provider/provider.dart';
 ///
@@ -32,2019 +27,895 @@ class _Play_Now_2diceState extends State<Play_Now_2dice> {
   bool status = true;
   bool isSwitchOn = true;
 
-  late AudioPlayer _audioPlayer;
+  ///late AudioPlayer _audioPlayer;
   Timer? _startTimer;
   Timer? _stopTimer;
   late Timer _speedTimer;
 
-  ///
-
-  // @override
-  // void dispose() {
-  //   //_audioPlayer.dispose();
-  //   super.dispose();
-  // }
-
-  ///
-
-  // @override
-  // void initState() {
-  //   // WidgetsBinding.instance.addPostFrameCallback((_) {
-  //   //   showTimerDialog(context);
-  //   // });
-  //
-  //   ///AnimatedImageContainer();
-  //   tablecreate();
-  //   // TODO: implement initState
-  //   super.initState();
-  // }
-
-  var pos;
-  var players;
-  var player1;
-  var postion = 0;
-  var player2;
-  var player3;
-  var player4;
-  var player5;
-  var table;
-  int useid = 25;
-  int gid = 2;
-  tablecreate() async {
-    final prefs1 = await SharedPreferences.getInstance();
-    setState(() {
-      useid = prefs1.getInt('user_id') ?? 0;
-    });
-    print(
-        "https://apponrent.co.in/rlg/api/game3.php?game_id=$gid&user_id=$useid");
-    final response = await http.get(Uri.parse(
-        "https://apponrent.co.in/rlg/api/game3.php?game_id=$gid&user_id=$useid"));
-    setState(() {
-      pos = jsonDecode(response.body);
-      players = pos['data'];
-      postion = pos['position'];
-      table = pos['Tableno'];
-      print(pos);
-      print('radhe shyam');
-      if (postion.toString() == '1') {
-        print('radhe radhe');
-        player1 = 0;
-        player2 = 1;
-        player3 = 2;
-        player4 = 3;
-        player5 = 4;
-      } else if (postion.toString() == '2') {
-        print('radhe radhe');
-        player1 = 1;
-        player2 = 2;
-        player3 = 3;
-        player4 = 4;
-        player5 = 0;
-      } else if (postion.toString() == '3') {
-        print('radhe radhe');
-        player1 = 2;
-        player2 = 3;
-        player3 = 4;
-        player4 = 0;
-        player5 = 1;
-      } else if (postion.toString() == '4') {
-        print('radhe radhe');
-        player1 = 3;
-        player2 = 4;
-        player3 = 0;
-        player4 = 1;
-        player5 = 2;
-      } else {
-        print('radhe radhe');
-        player1 = 4;
-        player2 = 0;
-        player3 = 1;
-        player4 = 2;
-        player5 = 3;
-      }
-    });
-    cardcreate();
-    print('pankaj');
-    print(pos);
-    print(players);
-  }
-
-  ///todo:.........sacsaca......
-
-  var carddata;
-  cardcreate() async {
-    final response = await http.get(Uri.parse(
-        "https://apponrent.co.in/rlg/api/cardrandom.php?tableno=$table&gameid=$gid"));
-    final dta = jsonDecode(response.body);
-    setState(() {
-      carddata = dta['data'];
-    });
-    print("efefdd");
-    print(carddata);
-  }
-
-  ///todo:..................................
-  var refdata;
-  refreshcreate() async {
-    print(
-        'https://apponrent.co.in/rlg/api/tabledata.php?tableno=$table&gameid=$gid');
-    final response = await http.get(Uri.parse(
-        "https://apponrent.co.in/rlg/api/tabledata.php?tableno=$table&gameid=$gid"));
-    final dta = jsonDecode(response.body);
-    setState(() {
-      refdata = dta['data'];
-    });
-    print('data');
-    print(refdata);
-  }
-
-  chaalblind() async {
-    final resp = await http.get(Uri.parse(
-        'https://apponrent.co.in/rlg/api/chal.php?user_id=$useid&amount=$chaal&tableno=$table&gameid=$gid'));
-    final data = jsonDecode(resp.body);
-    print('anirudh');
-
-    print(data);
-  }
-
-  packapi() async {
-    setState(() {
-      pack = true;
-    });
-    final resp = await http.get(Uri.parse(
-        'https://apponrent.co.in/rlg/api/pack.php?user_id=$useid&tableno=$table&&gameid=$gid'));
-    final data = jsonDecode(resp.body);
-    print('anirudh');
-
-    print(data);
-  }
-
-  chaalamount() async {
-    final resp = await http.get(Uri.parse(
-        'https://apponrent.co.in/rlg/api/chal_amount.php?user_id=$useid&tableno=$table&gameid=$gid'));
-    final data = jsonDecode(resp.body);
-    setState(() {
-      chaal = data['chal_amount'];
-    });
-    print('anirudh');
-
-    print(data);
-  }
-
-  nextpos() async {
-    final resp = await http.get(Uri.parse(
-        'https://apponrent.co.in/rlg/api/next_position.php?user_id=$useid&tableno=$table&gameid=$gid'));
-    final data = jsonDecode(resp.body);
-    setState(() {
-      nextposition = data['nextposition'];
-    });
-  }
-
-  ///todo:..................
-  lastpos() async {
-    final resp = await http.get(Uri.parse(
-        'https://apponrent.co.in/rlg/api/next_position.php?user_id=$useid&tableno=$table&gameid=$gid'));
-    final data = jsonDecode(resp.body);
-    setState(() {
-      lastposition = data['lastposition'];
-    });
-  }
-
-  ///todo:................
-
-  String nextposition = '';
-  String lastposition = '';
-
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Table dimensions and position
+    final tableHeight = screenHeight * 0.88;
+    final tableWidth = screenWidth * 0.7;
+    final tableTop = screenHeight * 0.11;
+    final tableLeft = screenWidth * 0.05;
     // final musicController = Provider.of<MusicController>(context);
 
     return Scaffold(
-      backgroundColor: Colors.green,
-      body: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Positioned(
-            // top: 10,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                ///table.....
-                Positioned(
-                    top: 50,
-                    right: 67,
-                    left: 67,
-                    //bottom: 10,
+      backgroundColor: Colors.black54,
+      body: Stack(clipBehavior: Clip.none, children: [
+        Positioned(
+          // top: 10,
+          child: Stack(clipBehavior: Clip.none, children: [
+            ///table.....
+            Positioned(
+                top: MediaQuery.of(context).size.height * 0.11,
+                right: MediaQuery.of(context).size.width * 0.05,
+                left: MediaQuery.of(context).size.width * 0.05,
+                //bottom: 10,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.88,
+                  //double.infinity,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    image: DecorationImage(
+                        image: AssetImage(
+                          "assets/images/svg_images/doubledice66.png",
+                        ),
+                        fit: BoxFit.fill),
+                  ),
+                )),
+
+            ///arrow_back...
+            ///result...
+            Positioned(
+              top: tableTop + (tableHeight / 5.5) - (screenHeight * 0.3 / 1.71),
+              right:
+                  tableLeft + (tableWidth / 9.99) - (screenWidth * 0.21 / 1.8),
+              // top: 30,
+              // right: 45,
+              //left: 00,
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      //Get.back();
+                    },
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.86,
-                      //double.infinity,
-                      width: MediaQuery.of(context).size.height * 0.99,
+                      height: MediaQuery.of(context).size.height * 0.10,
+                      //width: MediaQuery.of(context).size.width * 0.12,
                       decoration: BoxDecoration(
-                        color: Colors.green,
-                        image: DecorationImage(
-                            image: AssetImage(
-                                "assets/images/svg_images/table22.png"
-                                //"assets/images/table2.jpg"
-                                ),
-                            fit: BoxFit.cover),
+                          // image: DecorationImage(
+                          //     image: AssetImage(
+                          //       "assets/images/svg_images/arrowbackwhite.png"
+                          //       // "assets/images/svg_images/aeeowback.png"
+                          //       ,
+                          //     ),
+                          //     fit: BoxFit.cover)
+                          ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "You:",
+                            style: GoogleFonts.abyssinicaSil(
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.040,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          Text(
+                            "Won!",
+                            style: GoogleFonts.abyssinicaSil(
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.040,
+                              color: Colors.green.shade400,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
                       ),
-                    )),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width * 0.85,
+                  //   height: MediaQuery.of(context).size.height * 0.27,
+                  // ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     ///todo:comented 3 may ....2024....prince...
+                  //   },
+                  //   child: Container(
+                  //     height: MediaQuery.of(context).size.height * 0.0960,
+                  //     width: MediaQuery.of(context).size.width * 0.0600,
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
 
-                ///music on and off ...
+            ///todo:play_again button...
+            Positioned(
+              top: tableTop + (tableHeight / 5.5) - (screenHeight * 0.3 / 1.8),
+              right: tableLeft + (tableWidth / 4.7) - (screenWidth * 0.21 / 2),
+              // left: 550,
+              // right: 42,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.10,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Colors.transparent,
+                ),
+                child: PlayAgainIconButton(
+                    // onPressed: () {},
+                    ),
+              ),
+            ),
 
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  left: 0,
+            ///todo: exit button...
+            ///ExitIconButton
+            // Positioned(
+            //   top: tableTop + (tableHeight / 5.5) - (screenHeight * 0.3 / 1.8),
+            //   left: tableLeft + (tableWidth / 3.5) - (screenWidth * 0.21 / 2),
+            //   // left: 550,
+            //   // right: 42,
+            //   child: Container(
+            //     height: MediaQuery.of(context).size.height * 0.10,
+            //     decoration: BoxDecoration(
+            //       shape: BoxShape.rectangle,
+            //       color: Colors.transparent,
+            //     ),
+            //     child: ExitIconButton(
+            //       // onPressed: () {
+            //       //   print("object");
+            //       //   Get.to(Home_Page());
+            //       // },
+            //     ),
+            //   ),
+            // ),
+
+            ///todo:flower1
+            Positioned(
+              top:
+                  tableTop + (tableHeight / 1.85) - (screenHeight * 0.3 / 1.71),
+              left: tableLeft + (tableWidth / 2.2) - (screenWidth * 0.21 / 2),
+              child: Container(
+                height: screenHeight * 0.27,
+                width: screenWidth * 0.33,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage(
+                        "assets/images/svg_images/rupiesbackground.png"
+                        //  "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        //"assets/images/svg_images/backgroundddice.jpeg"
+                        // "assets/images/backgroundhome2.jpg"
+                        ),
+                    fit: BoxFit.contain,
+                  ),
+                  //color: Colors.yellow,
+                  // border: Border.all(color: Colors.black),
+                ),
+                // Your dice animation widget
+              ),
+            ),
+
+            ///todo:flower2
+            Positioned(
+              top:
+                  tableTop + (tableHeight / 1.85) - (screenHeight * 0.3 / 1.71),
+              right: tableLeft + (tableWidth / 2.2) - (screenWidth * 0.21 / 2),
+              child: Container(
+                height: screenHeight * 0.27,
+                width: screenWidth * 0.33,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage(
+                        "assets/images/svg_images/rupiesbackground.png"
+                        //  "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        //"assets/images/svg_images/backgroundddice.jpeg"
+                        // "assets/images/backgroundhome2.jpg"
+                        ),
+                    fit: BoxFit.contain,
+                  ),
+                  //color: Colors.yellow,
+                  // border: Border.all(color: Colors.black),
+                ),
+                // Your dice animation widget
+              ),
+            ),
+
+            ///todo: animation...dice..
+            Positioned(
+              top: tableTop +
+                  (tableHeight / 2.06) -
+                  (screenHeight * 0.18 / 1.88),
+              left: tableLeft + (tableWidth / 2) - (screenWidth * 0.11 / 2.06),
+              child: Container(
+                height: screenHeight * 0.21,
+                width: screenWidth * 0.30,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  // color: Colors.black,
+                ),
+                child: Dice3DAnimation2(), // Your dice animation widget
+              ),
+            ),
+
+            ///todo: animation...dice..
+            // Positioned(
+            //   top: MediaQuery.of(context).size.height * 0.456,
+            //   // right: MediaQuery.of(context).size.width * 06,
+            //   //327.5,
+            //   // left: MediaQuery.of(context).size.width * 0.380,
+            //   //320.5,
+            //   child: Container(
+            //     height: MediaQuery.of(context).size.height * 0.18,
+            //     // width: MediaQuery.of(context).size.width * 0.18,
+            //     decoration: BoxDecoration(
+            //       shape: BoxShape.circle,
+            //       //borderRadius: BorderRadius.circular(20),
+            //       //color: Colors.red,
+            //     ),
+            //
+            //     ///todo: dice animation.
+            //     child: Dice3DAnimation2(),
+            //     //DiceAnimation2(),
+            //   ),
+            // ),
+
+            // Positioned(
+            //   top: 170,
+            //   right: 210,
+            //   left: 280,
+            //   child: DiceAnimation2(),
+            // ),
+
+            /// 1 no user....
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.0833,
+              //right: MediaQuery.of(context).size.width * 0.2765,
+              // top: MediaQuery.of(context).size.height * 0.073,
+              //right: MediaQuery.of(context).size.width * 0.27,
+              left: MediaQuery.of(context).size.width * 0.2765,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.24,
+                width: MediaQuery.of(context).size.width * 0.22,
+                child: Center(
                   child: Row(
                     children: [
-                      InkWell(
-                        onTap: () {
-                          ///todo:comented 3 may ....2024....prince
-                          ///
-                          Get.back();
-
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (BuildContext context) => Back(
-                          //           useid: useid,
-                          //           table: table,
-                          //           gid: gid,
-                          //         ));
-
-                          ///
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.10,
-                          width: MediaQuery.of(context).size.width * 0.0850,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    "assets/images/back.png",
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.21,
+                        width: MediaQuery.of(context).size.width * 0.07,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://cdn.pixabay.com/photo/2015/05/22/18/10/child-779434_1280.jpg"
+                                  // "assets/images/person1.png"
                                   ),
-                                  fit: BoxFit.fill)),
-                        ),
+                              fit: BoxFit.cover,
+                            )),
                       ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     ///todo:comented 3 may ....2024....prince
-                      //
-                      //     showDialog(
-                      //         context: context,
-                      //         builder: (BuildContext context) => i2());
-                      //   },
-                      //   child: Container(
-                      //     height: MediaQuery.of(context).size.height * 0.13,
-                      //     width: MediaQuery.of(context).size.width * 0.0760,
-                      //     decoration: BoxDecoration(
-                      //         image: DecorationImage(
-                      //             image: AssetImage("assets/images/i2.png"),
-                      //             fit: BoxFit.fill)),
-                      //   ),
-                      // ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.83,
-                        height: MediaQuery.of(context).size.height * 0.27,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          ///todo:comented 3 may ....2024....prince...
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (BuildContext context) => Setting());
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.0960,
-                          width: MediaQuery.of(context).size.width * 0.0600,
-                          decoration: BoxDecoration(
-                              // image: DecorationImage(
-                              //     image:
-                              //         AssetImage("assets/images/setting.png"),
-                              //     fit: BoxFit.fill)
-                              ),
+                        height: MediaQuery.of(context).size.height * 0.043,
+                        width: MediaQuery.of(context).size.width * 0.060,
+                        child: Center(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Kartik',
+                              style: GoogleFonts.akshar(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 11),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                Positioned(
-                  top: 23,
-                  right: 225,
-                  left: 225,
-                  child: Container(
-                    // height: MediaQuery.of(context).size.height * 0.30,
-                    width: MediaQuery.of(context).size.width * 0.013,
-                    decoration: BoxDecoration(
-                        //color: Colors.green,
-                        ),
-                    child: ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Colors.green.withOpacity(
-                            0.0), // Change this color to your desired color
-                        BlendMode
-                            .color, // You can change the blend mode to achieve different effects
-                      ),
-                      child: players == null
-                          ? Image.asset(
-                              "assets/images/svg_images/hostt.png",
+              ),
+            ),
 
-                              //"assets/images/gamere.png",
-                              fit: BoxFit.cover,
-                              // color: Colors.white,
-                            )
-                          : players[player3]['userimage'] == null
-                              ? Image.asset(
-                                  "assets/images/svg_images/hostt.png",
-                                  //"assets/images/gamere.png",
-                                  fit: BoxFit.fill,
-                                )
-                              : Image.network(
-                                  players[player3]['userimage'].toString(),
-                                  fit: BoxFit.fill,
-                                ),
-                    ),
-                  ),
-                ),
-
-                ///todo: animation...
-
-                Positioned(
-                  top: 170,
-                  right: 210,
-                  left: 280,
-                  child: DiceAnimation2(),
-                ),
-
-                ///todo:first user....
-
-                Positioned(
-                  top: 100,
-                  right: 70,
-                  left: 70,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 2, top: 30),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.11,
-                              width: MediaQuery.of(context).size.width * 0.06,
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(2),
-                                border: Border.all(color: Colors.white),
-                                image: players == null
-                                    ? DecorationImage(
-                                        image: NetworkImage(
-                                            "https://cdn.pixabay.com/photo/2015/05/22/18/10/child-779434_1280.jpg"
-                                            // "assets/images/person1.png"
-                                            ),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : players[player3]['userimage'] == null
-                                        ? DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/person1.png"),
-                                          )
-                                        : DecorationImage(
-                                            image: NetworkImage(
-                                              players[player3]['userimage']
-                                                  .toString(),
-                                            ),
-                                            fit: BoxFit.fill,
-                                          ),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'Kartik',
-                            style: GoogleFonts.akshar(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 2, top: 30),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.11,
-                              width: MediaQuery.of(context).size.width * 0.06,
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(2),
-                                border: Border.all(color: Colors.white),
-                                image: players == null
-                                    ? DecorationImage(
-                                        image: NetworkImage(
-                                            "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
-                                            // "assets/images/person1.png"
-                                            ),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : players[player3]['userimage'] == null
-                                        ? DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/person1.png"),
-                                          )
-                                        : DecorationImage(
-                                            image: NetworkImage(
-                                              players[player3]['userimage']
-                                                  .toString(),
-                                            ),
-                                            fit: BoxFit.fill,
-                                          ),
-                              ),
-                            ),
-                          ),
-                          Text(
+            /// 6 no user....
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.0833,
+              right: MediaQuery.of(context).size.width * 0.2765,
+              //  left: MediaQuery.of(context).size.width * 0.333,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.24,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.043,
+                      width: MediaQuery.of(context).size.width * 0.060,
+                      child: Center(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
                             'Shubham',
                             style: GoogleFonts.akshar(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14),
-                          )
-                        ],
+                                fontSize: 11),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.21,
+                      width: MediaQuery.of(context).size.width * 0.07,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
+                                // "assets/images/person1.png"
+                                ),
+                            fit: BoxFit.cover,
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            /// 2 no user....
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.408,
+              //right: MediaQuery.of(context).size.width * 0.2765,
+              // top: MediaQuery.of(context).size.height * 0.073,
+              //right: MediaQuery.of(context).size.width * 0.27,
+              left: MediaQuery.of(context).size.width * 0.141,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.24,
+                width: MediaQuery.of(context).size.width * 0.22,
+                child: Center(
+                  child: Row(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.21,
+                        width: MediaQuery.of(context).size.width * 0.07,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://cdn.pixabay.com/photo/2019/09/03/01/51/child-4448370_1280.jpg"
+                                  // "assets/images/person1.png"
+                                  ),
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.043,
+                        width: MediaQuery.of(context).size.width * 0.060,
+                        child: Center(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Rakesh',
+                              style: GoogleFonts.akshar(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 11),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
+              ),
+            ),
 
-                ///last sec profile.......
-                Positioned(
-                  top: 239,
-                  right: 110,
-                  left: 110,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 2, top: 35),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.11,
-                              width: MediaQuery.of(context).size.width * 0.06,
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(2),
-                                border: Border.all(color: Colors.white),
-                                image: players == null
-                                    ? DecorationImage(
-                                        image: NetworkImage(
-                                            "https://cdn.pixabay.com/photo/2019/09/03/01/51/child-4448370_1280.jpg"
-                                            // "assets/images/person1.png"
-                                            ),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : players[player3]['userimage'] == null
-                                        ? DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/person1.png"),
-                                          )
-                                        : DecorationImage(
-                                            image: NetworkImage(
-                                              players[player3]['userimage']
-                                                  .toString(),
-                                            ),
-                                            fit: BoxFit.fill,
-                                          ),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'Rakesh',
-                            style: GoogleFonts.akshar(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 2, top: 36),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.11,
-                              width: MediaQuery.of(context).size.width * 0.06,
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(2),
-                                border: Border.all(color: Colors.white),
-                                image: players == null
-                                    ? DecorationImage(
-                                        image: NetworkImage(
-                                            "https://cdn.pixabay.com/photo/2014/10/30/17/32/boy-509488_1280.jpg"
-                                            // "assets/images/person1.png"
-                                            ),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : players[player3]['userimage'] == null
-                                        ? DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/person1.png"),
-                                          )
-                                        : DecorationImage(
-                                            image: NetworkImage(
-                                              players[player3]['userimage']
-                                                  .toString(),
-                                            ),
-                                            fit: BoxFit.fill,
-                                          ),
-                              ),
-                            ),
-                          ),
-                          Text(
+            /// 5 no user....
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.408,
+              right: MediaQuery.of(context).size.width * 0.1446,
+              //  left: MediaQuery.of(context).size.width * 0.333,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.24,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.043,
+                      width: MediaQuery.of(context).size.width * 0.060,
+                      child: Center(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
                             'Vishal',
                             style: GoogleFonts.akshar(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14),
-                          )
-                        ],
+                                fontSize: 11),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.21,
+                      width: MediaQuery.of(context).size.width * 0.07,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
+
+                                // "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
+                                // "assets/images/person1.png"
+                                ),
+                            fit: BoxFit.cover,
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            /// 3 no user....
+            Positioned(
+              // top: MediaQuery.of(context).size.height * 0.0833,
+              top: MediaQuery.of(context).size.height * 0.777,
+              left: MediaQuery.of(context).size.width * 0.2765,
+              //right: MediaQuery.of(context).size.width * 0.2765,
+              // top: MediaQuery.of(context).size.height * 0.073,
+              //right: MediaQuery.of(context).size.width * 0.27,
+              // left: MediaQuery.of(context).size.width * 0.2765,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.24,
+                width: MediaQuery.of(context).size.width * 0.22,
+                child: Center(
+                  child: Row(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.21,
+                        width: MediaQuery.of(context).size.width * 0.07,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://cdn.pixabay.com/photo/2017/11/06/13/45/cap-2923682_1280.jpg"
+                                  // "assets/images/person1.png"
+                                  ),
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.043,
+                        width: MediaQuery.of(context).size.width * 0.060,
+                        child: Center(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Madhu',
+                              style: GoogleFonts.akshar(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 11),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-                //https://cdn.pixabay.com/photo/2024/05/20/16/21/ai-generated-8775720_1280.jpg
+              ),
+            ),
 
-                ///last third uaer
-                Positioned(
-                  top: 279,
-                  right: 260,
-                  left: 260,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 2, top: 23),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.11,
-                              width: MediaQuery.of(context).size.width * 0.06,
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(2),
-                                border: Border.all(color: Colors.white),
-                                image: players == null
-                                    ? DecorationImage(
-                                        image: NetworkImage(
-                                            "https://cdn.pixabay.com/photo/2017/11/06/13/45/cap-2923682_1280.jpg"
-                                            //"https://cdn.pixabay.com/photo/2024/05/20/16/21/ai-generated-8775720_1280.jpg"
-                                            // "https://cdn.pixabay.com/photo/2019/09/03/01/51/child-4448370_1280.jpg"
-                                            // "assets/images/person1.png"
-                                            ),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : players[player3]['userimage'] == null
-                                        ? DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/person1.png"),
-                                          )
-                                        : DecorationImage(
-                                            image: NetworkImage(
-                                              players[player3]['userimage']
-                                                  .toString(),
-                                            ),
-                                            fit: BoxFit.fill,
-                                          ),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'Madhu',
-                            style: GoogleFonts.akshar(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 2, top: 26),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.11,
-                              width: MediaQuery.of(context).size.width * 0.06,
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(2),
-                                border: Border.all(color: Colors.white),
-                                image: players == null
-                                    ? DecorationImage(
-                                        image: NetworkImage(
-                                            "https://cdn.pixabay.com/photo/2016/10/14/22/31/cute-1741376_1280.jpg"
-                                            // "assets/images/person1.png"
-                                            ),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : players[player3]['userimage'] == null
-                                        ? DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/person1.png"),
-                                          )
-                                        : DecorationImage(
-                                            image: NetworkImage(
-                                              players[player3]['userimage']
-                                                  .toString(),
-                                            ),
-                                            fit: BoxFit.fill,
-                                          ),
-                              ),
-                            ),
-                          ),
-                          Text(
+            /// 4 no user....
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.777,
+              right: MediaQuery.of(context).size.width * 0.2765,
+              //  left: MediaQuery.of(context).size.width * 0.333,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.24,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.043,
+                      width: MediaQuery.of(context).size.width * 0.060,
+                      child: Center(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
                             'Akanksha',
                             style: GoogleFonts.akshar(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14),
-                          )
-                        ],
+                                fontSize: 11),
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-
-                ///timer...
-                Positioned(
-                  top: 40,
-                  right: 400,
-                  left: 110,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.10,
-                    // Adjust size as needed
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: Colors.transparent,
                     ),
-                    child: TimerScreen(),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     showTimerDialog(context);
-                    //   },
-                    //   style: ElevatedButton.styleFrom(
-                    //     primary:
-                    //         Colors.red, // Set the background color to red
-                    //   ),
-                    //   child: Text('Start Game!'),
-                    // ),
-
-                    ///TimerScreen(), // Embed TimerScreen here
-                  ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.21,
+                      width: MediaQuery.of(context).size.width * 0.07,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "https://cdn.pixabay.com/photo/2016/10/14/22/31/cute-1741376_1280.jpg"
+                                // "assets/images/person1.png"
+                                ),
+                            fit: BoxFit.cover,
+                          )),
+                    ),
+                  ],
                 ),
-
-                ///1
-
-                players == null
-                    ? Container()
-                    : player3 == null
-                        ? Container()
-                        : players[player3]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                top: MediaQuery.of(context).size.width * 0.15,
-                                left: MediaQuery.of(context).size.width * 0.255,
-                                child: Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                Guest_Profile(
-                                                    id: players[player3]
-                                                        ['rusers_id'],
-                                                    img: players[player3]
-                                                        ['userimage'],
-                                                    name: players[player3]
-                                                        ['username'],
-                                                    win: players[player2]
-                                                        ['Totalwin']));
-                                      },
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.24,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.10,
-                                        decoration: BoxDecoration(
-                                          image: refdata == null
-                                              ? DecorationImage(
-                                                  colorFilter: ColorFilter.mode(
-                                                    Colors.grey,
-                                                    BlendMode.modulate,
-                                                  ),
-                                                  image: AssetImage(
-                                                      "assets/images/PlayPerson1.png"),
-                                                  fit: BoxFit.fill)
-                                              : refdata[player3]['status']
-                                                          .toString() !=
-                                                      '1'
-                                                  ? DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/images/PlayPerson1.png"),
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        Colors.grey,
-                                                        BlendMode.modulate,
-                                                      ),
-                                                      fit: BoxFit.fill)
-                                                  : DecorationImage(
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        Colors.grey,
-                                                        BlendMode.modulate,
-                                                      ),
-                                                      image: AssetImage(
-                                                          "assets/images/PlayPerson1.png"),
-                                                      fit: BoxFit.fill),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .right +
-                                                      2,
-                                                  top: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .top +
-                                                      25),
-                                              child: Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.1,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.06,
-                                                decoration: BoxDecoration(
-                                                    image: players == null
-                                                        ? DecorationImage(
-                                                            image: AssetImage(
-                                                                "assets/images/person1.png"),
-                                                            fit: BoxFit.fill)
-                                                        : players[player3][
-                                                                    'userimage'] ==
-                                                                null
-                                                            ? DecorationImage(
-                                                                image: AssetImage(
-                                                                    "assets/images/person1.png"))
-                                                            : DecorationImage(
-                                                                image:
-                                                                    NetworkImage(
-                                                                  players[player3]
-                                                                          [
-                                                                          'userimage']
-                                                                      .toString(),
-                                                                ),
-                                                                fit: BoxFit
-                                                                    .fill)),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .top +
-                                                      3),
-                                              child: Text(
-                                                players == null
-                                                    ? ''
-                                                    : players[player3]
-                                                                ['balance'] ==
-                                                            null
-                                                        ? ''
-                                                        : players[player3]
-                                                                ['balance']
-                                                            .toString(),
-                                                style: TextStyle(
-                                                    color: Colors.amber,
-                                                    fontSize: 12 *
-                                                        MediaQuery
-                                                            .textScaleFactorOf(
-                                                                context),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 30,
-                                      width: 65,
-                                      child: sideshow != true
-                                          ? ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                )
-                                              ],
-                                            )
-                                          : ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player3][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(
-                                                        carddata == null
-                                                            ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                            : carddata[player3][
-                                                                    'cardimage1']
-                                                                .toString(),
-                                                      )),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player3][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player3]
-                                                                  ['cardimage2']
-                                                              .toString())),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player3][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player3]
-                                                                  ['cardimage3']
-                                                              .toString())),
-                                                )
-                                              ],
-                                            ),
-                                    )
-                                  ],
-                                ),
-                              ),
-
-                ///2
-                players == null
-                    ? Container()
-                    : player3 == null
-                        ? Container()
-                        : players[player3]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                top: MediaQuery.of(context).size.width * 0.229,
-                                left: MediaQuery.of(context).size.width * 0.255,
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.0450,
-                                  width: MediaQuery.of(context).size.width *
-                                      0.0250,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/roulette.png"),
-                                          fit: BoxFit.fill)),
-                                ),
-                              ),
-
-                players == null
-                    ? Container()
-                    : player4 == null
-                        ? Container()
-                        : players[player4]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                top: MediaQuery.of(context).size.width * 0.15,
-                                right:
-                                    MediaQuery.of(context).size.width * 0.255,
-                                child: Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                Guest_Profile(
-                                                    id: players[player4]
-                                                        ['rusers_id'],
-                                                    img: players[player4]
-                                                        ['userimage'],
-                                                    name: players[player4]
-                                                        ['username'],
-                                                    win: players[player2]
-                                                        ['Totalwin']));
-                                      },
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.24,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.10,
-                                        decoration: BoxDecoration(
-                                          image: refdata == null
-                                              ? DecorationImage(
-                                                  colorFilter: ColorFilter.mode(
-                                                    Colors.grey,
-                                                    BlendMode.modulate,
-                                                  ),
-                                                  image: AssetImage(
-                                                      "assets/images/PlayPerson1.png"),
-                                                  fit: BoxFit.fill)
-                                              : refdata[player4]['status']
-                                                          .toString() !=
-                                                      '1'
-                                                  ? DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/images/PlayPerson1.png"),
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        Colors.grey,
-                                                        BlendMode.modulate,
-                                                      ),
-                                                      fit: BoxFit.fill)
-                                                  : DecorationImage(
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        Colors.grey,
-                                                        BlendMode.modulate,
-                                                      ),
-                                                      image: AssetImage(
-                                                          "assets/images/PlayPerson1.png"),
-                                                      fit: BoxFit.fill),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .right +
-                                                      2,
-                                                  top: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .top +
-                                                      25),
-                                              child: Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.1,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.06,
-                                                decoration: BoxDecoration(
-                                                    image: players == null
-                                                        ? DecorationImage(
-                                                            image: AssetImage(
-                                                                "assets/images/PlayPerson1.png"),
-                                                            fit: BoxFit.fill)
-                                                        : players[player4][
-                                                                    'userimage'] ==
-                                                                null
-                                                            ? DecorationImage(
-                                                                image: AssetImage(
-                                                                    "assets/images/PlayPerson1.png"))
-                                                            : DecorationImage(
-                                                                image:
-                                                                    NetworkImage(
-                                                                  players[player4]
-                                                                          [
-                                                                          'userimage']
-                                                                      .toString(),
-                                                                ),
-                                                                fit: BoxFit
-                                                                    .fill)),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .top +
-                                                      3),
-                                              child: Text(
-                                                players == null
-                                                    ? ''
-                                                    : players[player4]
-                                                                ['balance'] ==
-                                                            null
-                                                        ? ''
-                                                        : players[player4]
-                                                                ['balance']
-                                                            .toString(),
-                                                style: TextStyle(
-                                                    color: Colors.amber,
-                                                    fontSize: 12 *
-                                                        MediaQuery
-                                                            .textScaleFactorOf(
-                                                                context),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 30,
-                                      width: 65,
-                                      child: sideshow != true
-                                          ? ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                )
-                                              ],
-                                            )
-                                          : ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player4][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(
-                                                        carddata == null
-                                                            ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                            : carddata[player4][
-                                                                    'cardimage1']
-                                                                .toString(),
-                                                      )),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player4][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player4]
-                                                                  ['cardimage2']
-                                                              .toString())),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player4][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player4]
-                                                                  ['cardimage3']
-                                                              .toString())),
-                                                )
-                                              ],
-                                            ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                players == null
-                    ? Container()
-                    : player4 == null
-                        ? Container()
-                        : players[player4]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                top: MediaQuery.of(context).size.width * 0.229,
-                                right:
-                                    MediaQuery.of(context).size.width * 0.330,
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.0450,
-                                  width: MediaQuery.of(context).size.width *
-                                      0.0250,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/roulette.png"),
-                                          fit: BoxFit.fill)),
-                                ),
-                              ),
-
-                ///3
-                players == null
-                    ? Container()
-                    : player2 == null
-                        ? Container()
-                        : players[player2]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                top: MediaQuery.of(context).size.width * 0.31,
-                                left:
-                                    MediaQuery.of(context).size.width * 0.0750,
-                                child: Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                Guest_Profile(
-                                                  id: players[player2]
-                                                      ['rusers_id'],
-                                                  img: players[player2]
-                                                      ['userimage'],
-                                                  name: players[player2]
-                                                      ['username'],
-                                                  win: players[player2]
-                                                      ['Totalwin'],
-                                                ));
-                                      },
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.24,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.10,
-                                        decoration: BoxDecoration(
-                                          image: refdata == null
-                                              ? DecorationImage(
-                                                  colorFilter: ColorFilter.mode(
-                                                    Colors.grey,
-                                                    BlendMode.modulate,
-                                                  ),
-                                                  image: AssetImage(
-                                                      "assets/images/PlayPerson1.png"),
-                                                  fit: BoxFit.fill)
-                                              : refdata[player2]['status']
-                                                          .toString() !=
-                                                      '1'
-                                                  ? DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/images/PlayPerson1.png"),
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        Colors.grey,
-                                                        BlendMode.modulate,
-                                                      ),
-                                                      fit: BoxFit.fill)
-                                                  : DecorationImage(
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        Colors.grey,
-                                                        BlendMode.modulate,
-                                                      ),
-                                                      image: AssetImage(
-                                                          "assets/images/PlayPerson1.png"),
-                                                      fit: BoxFit.fill),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .right +
-                                                      2,
-                                                  top: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .top +
-                                                      25),
-                                              child: Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.1,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.06,
-                                                decoration: BoxDecoration(
-                                                    image: players == null
-                                                        ? DecorationImage(
-                                                            image: AssetImage(
-                                                                "assets/images/person1.png"),
-                                                            fit: BoxFit.fill)
-                                                        : players[player2][
-                                                                    'userimage'] ==
-                                                                null
-                                                            ? DecorationImage(
-                                                                image: AssetImage(
-                                                                    "assets/images/person1.png"))
-                                                            : DecorationImage(
-                                                                image:
-                                                                    NetworkImage(
-                                                                  players[player2]
-                                                                          [
-                                                                          'userimage']
-                                                                      .toString(),
-                                                                ),
-                                                                fit: BoxFit
-                                                                    .fill)),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .top +
-                                                      6),
-                                              child: Text(
-                                                players == null
-                                                    ? ''
-                                                    : players[player2]
-                                                                ['balance'] ==
-                                                            null
-                                                        ? ''
-                                                        : players[player2]
-                                                                ['balance']
-                                                            .toString(),
-                                                style: TextStyle(
-                                                    color: Colors.amber,
-                                                    fontSize: 12 *
-                                                        MediaQuery
-                                                            .textScaleFactorOf(
-                                                                context),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 30,
-                                      width: 65,
-                                      child: sideshow != true
-                                          ? ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                )
-                                              ],
-                                            )
-                                          : ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player2][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(
-                                                        carddata == null
-                                                            ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                            : carddata[player2][
-                                                                    'cardimage1']
-                                                                .toString(),
-                                                      )),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player2][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player2]
-                                                                  ['cardimage2']
-                                                              .toString())),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player2][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player2]
-                                                                  ['cardimage3']
-                                                              .toString())),
-                                                )
-                                              ],
-                                            ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                players == null
-                    ? Container()
-                    : player2 == null
-                        ? Container()
-
-                        ///4
-                        : players[player2]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                top: MediaQuery.of(context).size.width * 0.389,
-                                left:
-                                    MediaQuery.of(context).size.width * 0.0760,
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.0450,
-                                  width: MediaQuery.of(context).size.width *
-                                      0.0250,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/roulette.png"),
-                                          fit: BoxFit.fill)),
-                                ),
-                              ),
-
-                players == null
-                    ? Container()
-                    : player5 == null
-                        ? Container()
-                        : players[player5]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                top: MediaQuery.of(context).size.width * 0.31,
-                                right:
-                                    MediaQuery.of(context).size.width * 0.0650,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: 30,
-                                      width: 65,
-                                      child: sideshow != true
-                                          ? ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                )
-                                              ],
-                                            )
-                                          : ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player5][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(
-                                                        carddata == null
-                                                            ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                            : carddata[player5][
-                                                                    'cardimage1']
-                                                                .toString(),
-                                                      )),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player5][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player5]
-                                                                  ['cardimage2']
-                                                              .toString())),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player5][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player5]
-                                                                  ['cardimage3']
-                                                              .toString())),
-                                                )
-                                              ],
-                                            ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                Guest_Profile(
-                                                    id: players[player5]
-                                                        ['rusers_id'],
-                                                    img: players[player5]
-                                                        ['userimage'],
-                                                    name: players[player5]
-                                                        ['username'],
-                                                    win: players[player5]
-                                                        ['Totalwin']));
-                                      },
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.24,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.10,
-                                        decoration: BoxDecoration(
-                                          image: refdata == null
-                                              ? DecorationImage(
-                                                  colorFilter: ColorFilter.mode(
-                                                    Colors.grey,
-                                                    BlendMode.modulate,
-                                                  ),
-                                                  image: AssetImage(
-                                                      "assets/images/PlayPerson1.png"),
-                                                  fit: BoxFit.fill)
-                                              : refdata[player5]['status']
-                                                          .toString() !=
-                                                      '1'
-                                                  ? DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/images/PlayPerson1.png"),
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        Colors.grey,
-                                                        BlendMode.modulate,
-                                                      ),
-                                                      fit: BoxFit.fill)
-                                                  : DecorationImage(
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        Colors.grey,
-                                                        BlendMode.modulate,
-                                                      ),
-                                                      image: AssetImage(
-                                                          "assets/images/PlayPerson1.png"),
-                                                      fit: BoxFit.fill),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .right +
-                                                      1,
-                                                  top: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .top +
-                                                      25),
-                                              child: Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.1,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.06,
-                                                decoration: BoxDecoration(
-                                                    image: players == null
-                                                        ? DecorationImage(
-                                                            image: AssetImage(
-                                                                "assets/images/person1.png"),
-                                                            fit: BoxFit.fill)
-                                                        : players[player5][
-                                                                    'userimage'] ==
-                                                                null
-                                                            ? DecorationImage(
-                                                                image: AssetImage(
-                                                                    "assets/images/person1.png"))
-                                                            : DecorationImage(
-                                                                image:
-                                                                    NetworkImage(
-                                                                  players[player5]
-                                                                          [
-                                                                          'userimage']
-                                                                      .toString(),
-                                                                ),
-                                                                fit: BoxFit
-                                                                    .fill)),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: MediaQuery.of(context)
-                                                          .viewInsets
-                                                          .top +
-                                                      6),
-                                              child: Text(
-                                                players == null
-                                                    ? ''
-                                                    : players[player5]
-                                                                ['balance'] ==
-                                                            null
-                                                        ? ''
-                                                        : players[player5]
-                                                                ['balance']
-                                                            .toString(),
-                                                style: TextStyle(
-                                                    color: Colors.amber,
-                                                    fontSize: 12 *
-                                                        MediaQuery
-                                                            .textScaleFactorOf(
-                                                                context),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                players == null
-                    ? Container()
-                    : player5 == null
-                        ? Container()
-                        : players[player5]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                top: MediaQuery.of(context).size.width * 0.389,
-                                right: MediaQuery.of(context).size.width * 0.14,
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.0450,
-                                  width: MediaQuery.of(context).size.width *
-                                      0.0250,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/roulette.png"),
-                                          fit: BoxFit.fill)),
-                                ),
-                              ),
-
-                players == null
-                    ? Container()
-                    : player1 == null
-                        ? Container()
-                        : players[player1]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                bottom:
-                                    MediaQuery.of(context).size.width * 0.045,
-                                right: MediaQuery.of(context).size.width * 0.40,
-                                child: Row(
-                                  children: [
-                                    Stack(
-                                      clipBehavior: Clip.none,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        Guest_Profile(
-                                                          id: players[player1]
-                                                              ['rusers_id'],
-                                                          img: players[player1]
-                                                              ['userimage'],
-                                                          name: players[player1]
-                                                              ['username'],
-                                                          win: players[player1]
-                                                              ['Totalwin'],
-                                                        ));
-                                          },
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.24,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.10,
-                                            decoration: BoxDecoration(
-                                              image: pack == true
-                                                  ? DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/images/PlayPerson1.png"),
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                        Colors.grey,
-                                                        BlendMode.modulate,
-                                                      ),
-                                                      fit: BoxFit.fill)
-                                                  : refdata == null
-                                                      ? DecorationImage(
-                                                          colorFilter:
-                                                              ColorFilter.mode(
-                                                            Colors.grey,
-                                                            BlendMode.modulate,
-                                                          ),
-                                                          image: AssetImage(
-                                                              "assets/images/PlayPerson1.png"),
-                                                          fit: BoxFit.fill)
-                                                      : refdata[player1]
-                                                                      ['status']
-                                                                  .toString() !=
-                                                              '1'
-                                                          ? DecorationImage(
-                                                              image: AssetImage(
-                                                                  "assets/images/PlayPerson1.png"),
-                                                              colorFilter:
-                                                                  ColorFilter
-                                                                      .mode(
-                                                                Colors.grey,
-                                                                BlendMode
-                                                                    .modulate,
-                                                              ),
-                                                              fit: BoxFit.fill)
-                                                          : DecorationImage(
-                                                              colorFilter:
-                                                                  ColorFilter
-                                                                      .mode(
-                                                                Colors.grey,
-                                                                BlendMode
-                                                                    .modulate,
-                                                              ),
-                                                              image: AssetImage(
-                                                                  "assets/images/PlayPerson1.png"),
-                                                              fit: BoxFit.fill),
-                                            ),
-
-                                            ///5
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right:
-                                                          MediaQuery.of(context)
-                                                                  .viewInsets
-                                                                  .right +
-                                                              2,
-                                                      top:
-                                                          MediaQuery.of(context)
-                                                                  .viewInsets
-                                                                  .top +
-                                                              25),
-                                                  child: Container(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.1,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.06,
-                                                    decoration: BoxDecoration(
-                                                        image: players == null
-                                                            ? DecorationImage(
-                                                                image: AssetImage(
-                                                                    "assets/images/person1.png"),
-                                                                fit:
-                                                                    BoxFit.fill)
-                                                            : players[player1][
-                                                                        'userimage'] ==
-                                                                    null
-                                                                ? DecorationImage(
-                                                                    image: AssetImage(
-                                                                        "assets/images/person1.png"))
-                                                                : DecorationImage(
-                                                                    image:
-                                                                        NetworkImage(
-                                                                      players[player1]
-                                                                              [
-                                                                              'userimage']
-                                                                          .toString(),
-                                                                    ),
-                                                                    fit: BoxFit
-                                                                        .fill)),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top:
-                                                          MediaQuery.of(context)
-                                                                  .viewInsets
-                                                                  .top +
-                                                              3),
-                                                  child: Text(
-                                                    players == null
-                                                        ? ''
-                                                        : players[player1][
-                                                                    'balance'] ==
-                                                                null
-                                                            ? '0'
-                                                            : players[player1]
-                                                                    ['balance']
-                                                                .toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.amber,
-                                                        fontSize: 12 *
-                                                            MediaQuery
-                                                                .textScaleFactorOf(
-                                                                    context),
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                            top: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.030,
-                                            left: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.010,
-                                            child: Borderanimate(
-                                              milisecond: 20000,
-                                              child: Text(''),
-                                            )),
-                                      ],
-                                    ),
-                                    Container(
-                                      height: 30,
-                                      width: 65,
-                                      child: show == false
-                                          ? ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Image.asset(
-                                                      "assets/images/backcard1.jpg"),
-                                                )
-                                              ],
-                                            )
-                                          : ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player4][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : pack == true
-                                                                  ? 0.4
-                                                                  : 1.0,
-                                                      child: Image.network(
-                                                        carddata == null
-                                                            ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                            : carddata[player1][
-                                                                    'cardimage1']
-                                                                .toString(),
-                                                      )),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player4][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : pack == true
-                                                                  ? 0.4
-                                                                  : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player1]
-                                                                  ['cardimage2']
-                                                              .toString())),
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 20,
-                                                  child: Opacity(
-                                                      opacity: refdata == null
-                                                          ? 1.0
-                                                          : refdata[player4][
-                                                                          'status']
-                                                                      .toString() !=
-                                                                  '1'
-                                                              ? 0.4
-                                                              : pack == true
-                                                                  ? 0.4
-                                                                  : 1.0,
-                                                      child: Image.network(carddata ==
-                                                              null
-                                                          ? 'https://previews.123rf.com/images/rlmf/rlmf1512/rlmf151200181/49319355-playing-cards-back.jpg'
-                                                          : carddata[player1]
-                                                                  ['cardimage3']
-                                                              .toString())),
-                                                )
-                                              ],
-                                            ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                players == null
-                    ? Container()
-                    : player1 == null
-                        ? Container()
-                        : players[player1]['username'] == null
-                            ? Container()
-                            : Positioned(
-                                top: MediaQuery.of(context).size.width * 0.418,
-                                left: MediaQuery.of(context).size.width * 0.41,
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.0450,
-                                  width: MediaQuery.of(context).size.width *
-                                      0.0250,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/images/roulette.png"),
-                                          fit: BoxFit.fill)),
-                                ),
-                              ),
-              ],
+              ),
             ),
-          ),
-        ],
-      ),
+
+            ///todo:timer...
+            Positioned(
+              top: 40,
+              right: 550,
+              left: 00,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.10,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Colors.transparent,
+                ),
+                child: TimerScreen(),
+              ),
+            ),
+
+            ///todo:available coins...
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.2,
+              right: MediaQuery.of(context).size.width * 0,
+              //left: 550,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Text(
+                  //   "Available",
+                  //   style: GoogleFonts.abyssinicaSil(
+                  //       color: Colors.white,
+                  //       fontSize:
+                  //           MediaQuery.of(context).size.height * 0.039,
+                  //       fontWeight: FontWeight.w700,
+                  //       letterSpacing: 1),
+                  //   maxLines: 2,
+                  //   overflow: TextOverflow.ellipsis,
+                  // ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.21,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    decoration: BoxDecoration(
+                        // color: Colors.white,
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/svg_images/coinslogo7.png"),
+                            fit: BoxFit.fill)),
+                    child: Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.087,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        child: Center(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "120000",
+                              style: GoogleFonts.abyssinicaSil(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.height * 0.045,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "Coins",
+                    style: GoogleFonts.abyssinicaSil(
+                        color: Colors.yellow,
+                        fontSize: MediaQuery.of(context).size.height * 0.039,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            ///todo:selected  dice number...
+
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.5,
+              right: MediaQuery.of(context).size.width * 0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    width: MediaQuery.of(context).size.width * 0.13,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            "assets/images/svg_images/selecteddiceno2.png"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height *
+                              0.028, // Adjust top padding
+                          left: MediaQuery.of(context).size.width * 0.023,
+                          right: MediaQuery.of(context).size.width * 0.023,
+                          // bottom: MediaQuery.of(context).size.height * 0.01,
+                        ),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.066,
+                          height: MediaQuery.of(context).size.height * 0.278,
+                          child: GridView.builder(
+                            physics:
+                                NeverScrollableScrollPhysics(), // Prevent scrolling
+                            itemCount: 6,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 1,
+                              crossAxisSpacing: 6.0,
+                            ),
+                            itemBuilder: (context, index) {
+                              return Center(
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.085,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.07,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '${index + 1}-${index + 3}',
+                                      style: GoogleFonts.abyssinicaSil(
+                                        color: Colors.black,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height *
+                                                0.033,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "Dice No.",
+                    style: GoogleFonts.abyssinicaSil(
+                      color: Colors.yellow,
+                      fontSize: MediaQuery.of(context).size.height * 0.039,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            ///todo: beeting amt...
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.22,
+              left: MediaQuery.of(context).size.width * 0.01,
+              //left: 550,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Text(
+                  //   "Available",
+                  //   style: GoogleFonts.abyssinicaSil(
+                  //       color: Colors.white,
+                  //       fontSize:
+                  //           MediaQuery.of(context).size.height * 0.039,
+                  //       fontWeight: FontWeight.w700,
+                  //       letterSpacing: 1),
+                  //   maxLines: 2,
+                  //   overflow: TextOverflow.ellipsis,
+                  // ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.22,
+                    width: MediaQuery.of(context).size.width * 0.11,
+                    decoration: BoxDecoration(
+                        // color: Colors.white,
+                        // shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/svg_images/widcoin.png"
+                                // "assets/images/svg_images/bettinamt.png"
+                                ),
+                            fit: BoxFit.fill)),
+                    child: Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.14,
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "5000",
+                            style: GoogleFonts.abyssinicaSil(
+                              color: Colors.black,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.042,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "BID",
+                    style: GoogleFonts.abyssinicaSil(
+                        color: Colors.yellow,
+                        fontSize: MediaQuery.of(context).size.height * 0.039,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            ///todo:crown win...
+            Positioned(
+              bottom: MediaQuery.of(context).size.height * 0.02,
+              left: MediaQuery.of(context).size.width * 0.02,
+              //left: 550,
+              child:
+                  // Text(
+                  //   "Available",
+                  //   style: GoogleFonts.abyssinicaSil(
+                  //       color: Colors.white,
+                  //       fontSize:
+                  //           MediaQuery.of(context).size.height * 0.039,
+                  //       fontWeight: FontWeight.w700,
+                  //       letterSpacing: 1),
+                  //   maxLines: 2,
+                  //   overflow: TextOverflow.ellipsis,
+                  // ),
+                  Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                width: MediaQuery.of(context).size.width * 0.1,
+                decoration: BoxDecoration(
+                    // color: Colors.white,
+                    // shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image:
+                            AssetImage("assets/images/svg_images/crownwin.png"),
+                        fit: BoxFit.fill)),
+              ),
+            ),
+
+            ///todo: winning amt...
+            Positioned(
+              bottom: MediaQuery.of(context).size.height * 0.07,
+              //left: MediaQuery.of(context).size.width * -0.005,
+              //left: 550,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Text(
+                  //   "Available",
+                  //   style: GoogleFonts.abyssinicaSil(
+                  //       color: Colors.white,
+                  //       fontSize:
+                  //           MediaQuery.of(context).size.height * 0.039,
+                  //       fontWeight: FontWeight.w700,
+                  //       letterSpacing: 1),
+                  //   maxLines: 2,
+                  //   overflow: TextOverflow.ellipsis,
+                  // ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.28,
+                    width: MediaQuery.of(context).size.width * 0.14,
+                    decoration: BoxDecoration(
+                        // color: Colors.white,
+                        // shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/svg_images/wincoin.png"),
+                            fit: BoxFit.fill)),
+                    child: Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.1,
+                        height: MediaQuery.of(context).size.height * 0.14,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              bottom:
+                                  MediaQuery.of(context).size.height * 0.013,
+                            ),
+                            child: Text(
+                              "10000",
+                              style: GoogleFonts.abyssinicaSil(
+                                color: Colors.black,
+                                fontSize:
+                                    MediaQuery.of(context).size.height * 0.045,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ),
+                  Text(
+                    "WIN",
+                    style: GoogleFonts.abyssinicaSil(
+                        color: Colors.yellow,
+                        fontSize: MediaQuery.of(context).size.height * 0.039,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            ///ExitIconButton
+            Positioned(
+              top: tableTop + (tableHeight / 5.5) - (screenHeight * 0.3 / 1.8),
+              left: tableLeft + (tableWidth / 3.5) - (screenWidth * 0.21 / 2),
+              // left: 550,
+              // right: 42,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.10,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Colors.transparent,
+                ),
+                child: ExitIconButton(
+                    // onPressed: () {
+                    //   print("object");
+                    // },
+                    ),
+              ),
+            ),
+          ]),
+        ),
+      ]),
     );
   }
 
@@ -2081,10 +952,9 @@ class _Play_Now_2diceState extends State<Play_Now_2dice> {
   @override
   void initState() {
     ///AnimatedImageContainer();
-    tablecreate();
+    /// tablecreate();
 
-    ///tablecreate();
-
+    ///tablecreate();...
     //profile();
     // TODO: implement initState
     super.initState();
@@ -2097,24 +967,24 @@ class _Play_Now_2diceState extends State<Play_Now_2dice> {
   }
 
   ///todo: roll dice qfter 10 second
-  void _startRollingMusic() {
-    _startTimer = Timer(Duration(seconds: 6), () {
-      _audioPlayer.play(UrlSource(
-          'https://admin.hirejobindia.com/BannerImages/gamemusic.mp3'));
-
-      // Speed up the audio for 1 second at 1.5x speed
-      _audioPlayer.setPlaybackRate(1.3);
-      _speedTimer = Timer(Duration(seconds: 1), () {
-        // Return to normal speed after 1 second
-        _audioPlayer.setPlaybackRate(1.3);
-      });
-
-      // Stop the audio after 15 seconds
-      _stopTimer = Timer(Duration(seconds: 12), () {
-        _audioPlayer.stop();
-      });
-    });
-  }
+  // void _startRollingMusic() {
+  //   _startTimer = Timer(Duration(seconds: 6), () {
+  //     _audioPlayer.play(UrlSource(
+  //         'https://admin.hirejobindia.com/BannerImages/gamemusic.mp3'));
+  //
+  //     // Speed up the audio for 1 second at 1.5x speed
+  //     _audioPlayer.setPlaybackRate(1.3);
+  //     _speedTimer = Timer(Duration(seconds: 1), () {
+  //       // Return to normal speed after 1 second
+  //       _audioPlayer.setPlaybackRate(1.3);
+  //     });
+  //
+  //     // Stop the audio after 15 seconds
+  //     _stopTimer = Timer(Duration(seconds: 12), () {
+  //       _audioPlayer.stop();
+  //     });
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -2126,9 +996,11 @@ class _Play_Now_2diceState extends State<Play_Now_2dice> {
     ]);
     _startTimer?.cancel();
     _stopTimer?.cancel();
-    _audioPlayer.dispose();
+
+    /// _audioPlayer.dispose();
     super.dispose();
   }
 }
 
-///todo:screen timer....
+///.....
+///todo:screen timer....................................................................
