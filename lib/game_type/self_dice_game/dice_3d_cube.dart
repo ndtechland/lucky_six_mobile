@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class Cube extends StatelessWidget {
-  const Cube({
+class CubeSelf extends StatelessWidget {
+  const CubeSelf({
     Key? key,
     required this.x,
     required this.y,

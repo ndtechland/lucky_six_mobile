@@ -15,7 +15,6 @@ import '../animation/time_animation_common.dart';
 
 class Play_Now_2dice extends StatefulWidget {
   const Play_Now_2dice({Key? key}) : super(key: key);
-
   @override
   State<Play_Now_2dice> createState() => _Play_Now_2diceState();
 }

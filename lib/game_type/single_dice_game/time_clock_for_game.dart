@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_app/game_type/single_dice_game/playnow.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 
 class TimerClockPlayer extends StatefulWidget {
   @override
@@ -11,21 +12,20 @@ class TimerClockPlayer extends StatefulWidget {
 }
 
 class _TimerClockPlayerState extends State<TimerClockPlayer> {
-  int _timerSeconds = 10;
+  int _timerSeconds = 11;
   late Timer _timer;
   bool _gameStarted = false;
+  late AudioPlayer _audioPlayer;
 
   @override
   void initState() {
     super.initState();
 
-    // Lock the device orientation
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    // ]);
+    // Initialize the audio player
+    _audioPlayer = AudioPlayer();
+
+    // Load and play the background music
+    _playBackgroundMusic();
 
     // Start the countdown timer
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -40,10 +40,26 @@ class _TimerClockPlayerState extends State<TimerClockPlayer> {
     });
   }
 
+  void _playBackgroundMusic() async {
+    try {
+      // Load and play the music for 10 seconds
+      await _audioPlayer.setAsset('assets/audios/backroundmusic.mp3');
+      _audioPlayer.play();
+
+      // Stop the music after 10 seconds
+      Future.delayed(Duration(seconds: 11), () {
+        if (_audioPlayer.playing) {
+          _audioPlayer.stop();
+        }
+      });
+    } catch (e) {
+      print("Error loading or playing music: $e");
+    }
+  }
+
   void _startGameTimer() {
     setState(() {
       _gameStarted = true;
-      // _timerSeconds = 1;
     });
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -52,8 +68,7 @@ class _TimerClockPlayerState extends State<TimerClockPlayer> {
           _timerSeconds--;
         } else {
           timer.cancel();
-
-          /// Automatically redirect to another screen after timer reaches 0
+          // Automatically redirect to another screen after timer reaches 0
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => Play_Now()),
@@ -65,14 +80,7 @@ class _TimerClockPlayerState extends State<TimerClockPlayer> {
 
   @override
   void dispose() {
-    // Restore the device orientation to default
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.landscapeRight,
-    // ]);
-
+    _audioPlayer.dispose(); // Dispose the audio player
     _timer.cancel();
     super.dispose();
   }

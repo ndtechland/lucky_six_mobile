@@ -1,23 +1,21 @@
 import 'dart:async';
 
-//import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:game_app/game_type/3d_dice/3dbutton2_playagain.dart';
+import 'package:game_app/game_type/self_dice_game/play_game_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../3d_dice/3d_button_exit.dart';
-import '../3d_dice/3d_dicd_game.dart';
-import '../animation/time_animation_common.dart';
+import '3D_animated_dice_self.dart';
+import 'exit_buttom_selfdice.dart';
 
-class Play_Now extends StatefulWidget {
-  const Play_Now({Key? key}) : super(key: key);
+class Play_Now_self_game extends StatefulWidget {
+  const Play_Now_self_game({Key? key}) : super(key: key);
 
   @override
-  State<Play_Now> createState() => _Play_NowState();
+  State<Play_Now_self_game> createState() => _Play_Now_self_gameState();
 }
 
-class _Play_NowState extends State<Play_Now> {
+class _Play_Now_self_gameState extends State<Play_Now_self_game> {
   //late AudioPlayer _audioPlayer;
   Timer? _startTimer;
   Timer? _stopTimer;
@@ -200,13 +198,21 @@ class _Play_NowState extends State<Play_Now> {
                   ),
                 ),
 
-                ///todo:play_again button...
+                ///PlayButton...
                 Positioned(
                   top: tableTop +
                       (tableHeight / 5.5) -
                       (screenHeight * 0.3 / 1.8),
-                  right:
-                      tableLeft + (tableWidth / 4.7) - (screenWidth * 0.21 / 2),
+                  left: MediaQuery.of(context).size.width * 0.007,
+                  right: MediaQuery.of(context).size.width * 0.87,
+
+                  // tableLeft +
+                  //     (tableWidth / 19.7) -
+                  //     (screenWidth * 0.21 / 5),
+                  ///
+                  // right: tableLeft +
+                  //     (tableWidth / 1.0) -
+                  //     (screenWidth * 0.07 / 200),
                   // left: 550,
                   // right: 42,
                   child: Container(
@@ -215,11 +221,34 @@ class _Play_NowState extends State<Play_Now> {
                       shape: BoxShape.rectangle,
                       color: Colors.transparent,
                     ),
-                    child: PlayAgainIconButton2(
-                        // onPressed: () {},
+                    child: PlayGameButtonSelf(
+                        // onPressed: () {
+                        //   print("object");
+                        // },
                         ),
                   ),
                 ),
+
+                ///todo:play_again button...
+                // Positioned(
+                //   top: tableTop +
+                //       (tableHeight / 5.5) -
+                //       (screenHeight * 0.3 / 1.8),
+                //   right:
+                //       tableLeft + (tableWidth / 4.7) - (screenWidth * 0.21 / 2),
+                //   // left: 550,
+                //   // right: 42,
+                //   child: Container(
+                //     height: MediaQuery.of(context).size.height * 0.10,
+                //     decoration: BoxDecoration(
+                //       shape: BoxShape.rectangle,
+                //       color: Colors.transparent,
+                //     ),
+                //     child: PlayAgainIconButton2(
+                //         // onPressed: () {},
+                //         ),
+                //   ),
+                // ),
 
                 ///background rupies image...white...
                 Positioned(
@@ -267,29 +296,6 @@ class _Play_NowState extends State<Play_Now> {
                 //     // Your dice animation widget
                 //   ),
                 // ),
-
-                ///todo: animation...dice..
-                Positioned(
-                  top: tableTop +
-                      (tableHeight / 2.06) -
-                      (screenHeight * 0.18 / 1.88),
-                  left: tableLeft +
-                      (tableWidth / 2) -
-                      (screenWidth * 0.11 / 2.06),
-                  child: Container(
-                    height: screenHeight * 0.21,
-                    width: screenWidth * 0.30,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        //color: Colors.black,
-                        color: Color(0xffdcdcdc)
-                        //grey.shade200,
-                        // color:
-                        //     Color(0xffc03129), // Background color to fill corners
-                        ),
-                    child: Dice3DAnimation(), // Your dice animation widget
-                  ),
-                ),
 
                 ///todo: host..
                 // Positioned(
@@ -600,19 +606,19 @@ class _Play_NowState extends State<Play_Now> {
                 ),
 
                 ///todo:timer...
-                Positioned(
-                  top: 40,
-                  right: 550,
-                  left: 00,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.10,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: Colors.transparent,
-                    ),
-                    child: TimerScreen(),
-                  ),
-                ),
+                // Positioned(
+                //   top: 40,
+                //   right: 550,
+                //   left: 00,
+                //   child: Container(
+                //     height: MediaQuery.of(context).size.height * 0.10,
+                //     decoration: BoxDecoration(
+                //       shape: BoxShape.rectangle,
+                //       color: Colors.transparent,
+                //     ),
+                //     child: TimerScreen(),
+                //   ),
+                // ),
 
                 ///todo:available coins...
                 Positioned(
@@ -623,17 +629,6 @@ class _Play_NowState extends State<Play_Now> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Text(
-                      //   "Available",
-                      //   style: GoogleFonts.abyssinicaSil(
-                      //       color: Colors.white,
-                      //       fontSize:
-                      //           MediaQuery.of(context).size.height * 0.039,
-                      //       fontWeight: FontWeight.w700,
-                      //       letterSpacing: 1),
-                      //   maxLines: 2,
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.21,
                         width: MediaQuery.of(context).size.width * 0.1,
@@ -782,17 +777,6 @@ class _Play_NowState extends State<Play_Now> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Text(
-                      //   "Available",
-                      //   style: GoogleFonts.abyssinicaSil(
-                      //       color: Colors.white,
-                      //       fontSize:
-                      //           MediaQuery.of(context).size.height * 0.039,
-                      //       fontWeight: FontWeight.w700,
-                      //       letterSpacing: 1),
-                      //   maxLines: 2,
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.22,
                         width: MediaQuery.of(context).size.width * 0.11,
@@ -846,19 +830,7 @@ class _Play_NowState extends State<Play_Now> {
                   bottom: MediaQuery.of(context).size.height * 0.02,
                   left: MediaQuery.of(context).size.width * 0.02,
                   //left: 550,
-                  child:
-                      // Text(
-                      //   "Available",
-                      //   style: GoogleFonts.abyssinicaSil(
-                      //       color: Colors.white,
-                      //       fontSize:
-                      //           MediaQuery.of(context).size.height * 0.039,
-                      //       fontWeight: FontWeight.w700,
-                      //       letterSpacing: 1),
-                      //   maxLines: 2,
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
-                      Container(
+                  child: Container(
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width * 0.1,
                     decoration: BoxDecoration(
@@ -880,17 +852,6 @@ class _Play_NowState extends State<Play_Now> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Text(
-                      //   "Available",
-                      //   style: GoogleFonts.abyssinicaSil(
-                      //       color: Colors.white,
-                      //       fontSize:
-                      //           MediaQuery.of(context).size.height * 0.039,
-                      //       fontWeight: FontWeight.w700,
-                      //       letterSpacing: 1),
-                      //   maxLines: 2,
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.28,
                         width: MediaQuery.of(context).size.width * 0.14,
@@ -952,21 +913,39 @@ class _Play_NowState extends State<Play_Now> {
                   top: tableTop +
                       (tableHeight / 5.5) -
                       (screenHeight * 0.3 / 1.8),
-                  left:
-                      tableLeft + (tableWidth / 3.5) - (screenWidth * 0.21 / 2),
+                  right: tableLeft +
+                      (tableWidth / 10.5) -
+                      (screenWidth * 0.21 / 86),
                   // left: 550,
                   // right: 42,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.10,
+                    height: MediaQuery.of(context).size.height * 0.085,
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       color: Colors.transparent,
                     ),
-                    child: ExitIconButton(
+                    child: ExitIconButtonSelf(
                         // onPressed: () {
                         //   print("object");
                         // },
                         ),
+                  ),
+                ),
+
+                ///todo: animation...dice..
+                Positioned(
+                  top: tableTop +
+                      (tableHeight / 2.06) -
+                      (screenHeight * 0.18 / 1.88),
+                  left: tableLeft +
+                      (tableWidth / 2) -
+                      (screenWidth * 0.11 / 2.06),
+                  child: Container(
+                    height: screenHeight * 0.21,
+                    width: screenWidth * 0.30,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Color(0xffdcdcdc)),
+                    child: Dice3DAnimationSelf(), // Your dice animation widget
                   ),
                 ),
 

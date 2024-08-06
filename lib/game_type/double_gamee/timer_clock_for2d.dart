@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 
 import 'double_dice_game.dart';
 
@@ -15,18 +16,17 @@ class _TimerClockPlayer2diceState extends State<TimerClockPlayer2dice> {
   int _timerSeconds = 10;
   late Timer _timer;
   bool _gameStarted = false;
+  late AudioPlayer _audioPlayer;
 
   @override
   void initState() {
     super.initState();
 
-    // Lock the device orientation
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    // ]);
+    // Initialize the audio player
+    _audioPlayer = AudioPlayer();
+
+    // Load and play the background music
+    _playBackgroundMusic();
 
     // Start the countdown timer
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -41,10 +41,26 @@ class _TimerClockPlayer2diceState extends State<TimerClockPlayer2dice> {
     });
   }
 
+  void _playBackgroundMusic() async {
+    try {
+      // Load and play the music for 10 seconds
+      await _audioPlayer.setAsset('assets/audios/backroundmusic.mp3');
+      _audioPlayer.play();
+
+      // Stop the music after 10 seconds
+      Future.delayed(Duration(seconds: 11), () {
+        if (_audioPlayer.playing) {
+          _audioPlayer.stop();
+        }
+      });
+    } catch (e) {
+      print("Error loading or playing music: $e");
+    }
+  }
+
   void _startGameTimer() {
     setState(() {
       _gameStarted = true;
-      // _timerSeconds = 1;
     });
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -53,8 +69,7 @@ class _TimerClockPlayer2diceState extends State<TimerClockPlayer2dice> {
           _timerSeconds--;
         } else {
           timer.cancel();
-
-          /// Automatically redirect to another screen after timer reaches 0
+          // Automatically redirect to another screen after timer reaches 0
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => Play_Now_2dice()),
@@ -66,14 +81,7 @@ class _TimerClockPlayer2diceState extends State<TimerClockPlayer2dice> {
 
   @override
   void dispose() {
-    // Restore the device orientation to default
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.landscapeRight,
-    // ]);
-
+    _audioPlayer.dispose(); // Dispose the audio player
     _timer.cancel();
     super.dispose();
   }

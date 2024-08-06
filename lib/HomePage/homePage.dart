@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../contact_us_suppport_page/support_page.dart';
 import '../earn_money/earn_money_page.dart';
+import '../game_type/self_dice_game/price_list_selfdice.dart';
 import '../price_listts/price_listfor_twodice.dart';
 import '../price_listts/price_listtss.dart';
 import '../profiles/profile_user.dart';
@@ -29,13 +30,6 @@ class _Home_PageState extends State<Home_Page> {
     "assets/images/svg_images/4444.gif",
     "assets/images/svg_images/5.gif",
     "assets/images/svg_images/6.gif",
-
-    //"assets/images/svg_images/5.png",
-    // "assets/images/svg_images/1.png",
-    // "assets/images/svg_images/2.png",
-    // "assets/images/svg_images/3.png",
-    // "assets/images/svg_images/4.png",
-    // "assets/images/svg_images/6.png",
   ];
 
   @override
@@ -177,103 +171,130 @@ class _Home_PageState extends State<Home_Page> {
   void navigateToScreen(int index) {
     switch (index) {
       case 0:
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => CupertinoAlertDialog(
-            title: GestureDetector(
-              onTap: () {
-                // Get.to(Loadingone());
-              },
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade900,
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                padding: EdgeInsets.all(12.0),
-                child: Text(
-                  "SELECT GAME TYPE!",
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ),
-            content: Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                      Get.to(PriceListss());
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade900,
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "Single Dice Game   >",
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                      Get.to(PriceListssfortwodice());
-                      //Get.to(Play_Now_2dice());
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "Double Dice Game   >",
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: CupertinoDialogAction(
-                  child: Text(
-                    "Cancel",
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        );
+        showCustomGameDialog(context);
+
+        ///
+        // showDialog(
+        //   context: context,
+        //   builder: (BuildContext context) => CupertinoAlertDialog(
+        //     title: GestureDetector(
+        //       onTap: () {
+        //         // Get.to(Loadingone());
+        //       },
+        //       child: Container(
+        //         width: double.infinity,
+        //         decoration: BoxDecoration(
+        //           color: Colors.blue.shade900,
+        //           borderRadius: BorderRadius.circular(5.0),
+        //         ),
+        //         padding: EdgeInsets.all(12.0),
+        //         child: Text(
+        //           "SELECT GAME TYPE!",
+        //           style: GoogleFonts.poppins(
+        //             fontWeight: FontWeight.w600,
+        //             color: Colors.white,
+        //             fontSize: 14,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //     content: Padding(
+        //       padding: EdgeInsets.only(top: 20),
+        //       child: Column(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           GestureDetector(
+        //             onTap: () {
+        //               Get.back();
+        //               Get.to(PriceListss());
+        //             },
+        //             child: Container(
+        //               width: double.infinity,
+        //               decoration: BoxDecoration(
+        //                 color: Colors.red.shade900,
+        //                 borderRadius: BorderRadius.circular(15.0),
+        //               ),
+        //               padding: EdgeInsets.all(16.0),
+        //               child: Text(
+        //                 "Single Dice Game   >",
+        //                 style: GoogleFonts.poppins(
+        //                   fontWeight: FontWeight.w600,
+        //                   color: Colors.white,
+        //                   fontSize: 14,
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //           SizedBox(height: 20),
+        //           GestureDetector(
+        //             onTap: () {
+        //               Get.back();
+        //               Get.to(PriceListssfortwodice());
+        //               //Get.to(Play_Now_2dice());
+        //             },
+        //             child: Container(
+        //               width: double.infinity,
+        //               decoration: BoxDecoration(
+        //                 color: Colors.black54,
+        //                 borderRadius: BorderRadius.circular(15.0),
+        //               ),
+        //               padding: EdgeInsets.all(16.0),
+        //               child: Text(
+        //                 "Double Dice Game   >",
+        //                 style: GoogleFonts.poppins(
+        //                   fontWeight: FontWeight.w600,
+        //                   color: Colors.white,
+        //                   fontSize: 14,
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //           SizedBox(height: 20),
+        //           GestureDetector(
+        //             onTap: () {
+        //               Get.back();
+        //               Get.to(PriceListssSelfdice());
+        //               //Get.to(Play_Now_2dice());
+        //             },
+        //             child: Container(
+        //               width: double.infinity,
+        //               decoration: BoxDecoration(
+        //                 color: Colors.green,
+        //                 borderRadius: BorderRadius.circular(15.0),
+        //               ),
+        //               padding: EdgeInsets.all(16.0),
+        //               child: Text(
+        //                 "Self Dice Game   >",
+        //                 style: GoogleFonts.poppins(
+        //                   fontWeight: FontWeight.w600,
+        //                   color: Colors.white,
+        //                   fontSize: 14,
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //     actions: <Widget>[
+        //       GestureDetector(
+        //         onTap: () {
+        //           Get.back();
+        //         },
+        //         child: CupertinoDialogAction(
+        //           child: Text(
+        //             "Cancel",
+        //             style: GoogleFonts.poppins(
+        //               fontSize: 14,
+        //               fontWeight: FontWeight.w500,
+        //               color: Colors.black,
+        //             ),
+        //           ),
+        //         ),
+        //       )
+        //     ],
+        //   ),
+        // );
         break;
       case 1:
         Navigator.push(
@@ -361,4 +382,470 @@ class _Home_PageState extends State<Home_Page> {
       ),
     );
   }
+
+  ///void show dilog box for game type...
+  //
+  // void showCustomGameDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Dialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(20.0),
+  //         ),
+  //         backgroundColor: Colors.transparent,
+  //         child: Container(
+  //           padding: EdgeInsets.all(16.0),
+  //           decoration: BoxDecoration(
+  //             gradient: LinearGradient(
+  //               colors: [Colors.blueGrey.shade900, Colors.blueGrey.shade600],
+  //               begin: Alignment.topLeft,
+  //               end: Alignment.bottomRight,
+  //             ),
+  //             borderRadius: BorderRadius.circular(20.0),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.black54,
+  //                 blurRadius: 10.0,
+  //                 offset: Offset(0, 10),
+  //               ),
+  //             ],
+  //           ),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               GestureDetector(
+  //                 onTap: () {
+  //                   // Get.to(Loadingone());
+  //                 },
+  //                 child: Container(
+  //                   width: double.infinity,
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.blue.shade900,
+  //                     borderRadius: BorderRadius.circular(10.0),
+  //                   ),
+  //                   padding: EdgeInsets.all(12.0),
+  //                   child: Text(
+  //                     "SELECT GAME TYPE!",
+  //                     style: GoogleFonts.roboto(
+  //                       fontWeight: FontWeight.bold,
+  //                       color: Colors.white,
+  //                       fontSize: 18,
+  //                     ),
+  //                     textAlign: TextAlign.center,
+  //                   ),
+  //                 ),
+  //               ),
+  //               SizedBox(height: 20),
+  //               _buildGameOption(
+  //                 context,
+  //                 "Single Dice Game",
+  //                 [Colors.red.shade900, Colors.red.shade400],
+  //                 PriceListss(),
+  //               ),
+  //               SizedBox(height: 20),
+  //               _buildGameOption(
+  //                 context,
+  //                 "Double Dice Game",
+  //                 [Colors.black54, Colors.black87],
+  //                 PriceListssfortwodice(),
+  //               ),
+  //               SizedBox(height: 20),
+  //               _buildGameOption(
+  //                 context,
+  //                 "Self Dice Game",
+  //                 [Colors.green.shade900, Colors.green.shade400],
+  //                 PriceListssSelfdice(),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+  //
+  // Widget _buildGameOption(
+  //   BuildContext context,
+  //   String title,
+  //   List<Color> gradientColors,
+  //   Widget navigationTarget,
+  // ) {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       Get.back();
+  //       Get.to(navigationTarget);
+  //     },
+  //
+  //     ///todo:....
+  //     child: Container(
+  //       width: double.infinity,
+  //       decoration: BoxDecoration(
+  //         gradient: LinearGradient(
+  //           colors: gradientColors,
+  //           begin: Alignment.topLeft,
+  //           end: Alignment.bottomRight,
+  //         ),
+  //         borderRadius: BorderRadius.circular(15.0),
+  //         boxShadow: [
+  //           BoxShadow(
+  //             color: Colors.black26,
+  //             offset: Offset(0, 4),
+  //             blurRadius: 5.0,
+  //           ),
+  //         ],
+  //       ),
+  //       padding: EdgeInsets.all(16.0),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Text(
+  //             title,
+  //             style: GoogleFonts.roboto(
+  //               fontWeight: FontWeight.bold,
+  //               color: Colors.white,
+  //               fontSize: 16,
+  //             ),
+  //           ),
+  //           Icon(Icons.arrow_forward, color: Colors.white),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+  ///
+  void showCustomGameDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
+        final dialogSize =
+            screenWidth < screenHeight ? screenWidth * 0.8 : screenHeight * 0.8;
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          backgroundColor: Colors.transparent,
+          child: Container(
+            width: dialogSize,
+            height: dialogSize,
+            padding: EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blueGrey.shade900, Colors.blueGrey.shade600],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(20.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black54,
+                  blurRadius: 10.0,
+                  offset: Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // Get.to(Loadingone());
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade900,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      "SELECT GAME TYPE!",
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20), // Reduced spacing
+                _buildGameOption(
+                  context,
+                  "Single Dice Game",
+                  [Colors.red.shade900, Colors.red.shade400],
+                  PriceListss(),
+                ),
+                SizedBox(height: 15), // Reduced spacing
+                _buildGameOption(
+                  context,
+                  "Double Dice Game",
+                  [Colors.black54, Colors.black87],
+                  PriceListssfortwodice(),
+                ),
+                SizedBox(height: 15), // Reduced spacing
+                _buildGameOption(
+                  context,
+                  "Self Dice Game",
+                  [Colors.green.shade900, Colors.green.shade400],
+                  PriceListssSelfdice(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildGameOption(
+    BuildContext context,
+    String title,
+    List<Color> gradientColors,
+    Widget navigationTarget,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        Get.back();
+        Get.to(navigationTarget);
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: gradientColors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(18.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 4),
+              blurRadius: 5.0,
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(14.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.roboto(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+            Icon(Icons.arrow_forward, color: Colors.white),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ///
+  // void showCustomGameDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) => CupertinoAlertDialog(
+  //       title: GestureDetector(
+  //         onTap: () {
+  //           // Get.to(Loadingone());
+  //         },
+  //         child: Container(
+  //           width: double.infinity,
+  //           decoration: BoxDecoration(
+  //             color: Colors.blue.shade900,
+  //             borderRadius: BorderRadius.circular(5.0),
+  //           ),
+  //           padding: EdgeInsets.all(12.0),
+  //           child: Text(
+  //             "SELECT GAME TYPE!",
+  //             style: GoogleFonts.poppins(
+  //               fontWeight: FontWeight.w600,
+  //               color: Colors.white,
+  //               fontSize: 14,
+  //             ),
+  //             textAlign: TextAlign.center,
+  //           ),
+  //         ),
+  //       ),
+  //       content: Padding(
+  //         padding: EdgeInsets.only(top: 20),
+  //         child: Column(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             GestureDetector(
+  //               onTap: () {
+  //                 Get.back();
+  //                 Get.to(PriceListss());
+  //               },
+  //               child: Container(
+  //                 width: double.infinity,
+  //                 decoration: BoxDecoration(
+  //                   gradient: LinearGradient(
+  //                     colors: [Colors.red.shade900, Colors.red.shade400],
+  //                     begin: Alignment.topLeft,
+  //                     end: Alignment.bottomRight,
+  //                   ),
+  //                   borderRadius: BorderRadius.circular(15.0),
+  //                   boxShadow: [
+  //                     BoxShadow(
+  //                       color: Colors.black26,
+  //                       offset: Offset(0, 4),
+  //                       blurRadius: 5.0,
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 padding: EdgeInsets.all(16.0),
+  //                 child: Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     Text(
+  //                       "Single Dice Game",
+  //                       style: GoogleFonts.poppins(
+  //                         fontWeight: FontWeight.w600,
+  //                         color: Colors.white,
+  //                         fontSize: 14,
+  //                       ),
+  //                     ),
+  //                     Icon(Icons.arrow_forward, color: Colors.white),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //             SizedBox(height: 20),
+  //             GestureDetector(
+  //               onTap: () {
+  //                 Get.back();
+  //                 Get.to(PriceListssfortwodice());
+  //               },
+  //               child: Container(
+  //                 width: double.infinity,
+  //                 decoration: BoxDecoration(
+  //                   gradient: LinearGradient(
+  //                     colors: [Colors.black54, Colors.black87],
+  //                     begin: Alignment.topLeft,
+  //                     end: Alignment.bottomRight,
+  //                   ),
+  //                   borderRadius: BorderRadius.circular(15.0),
+  //                   boxShadow: [
+  //                     BoxShadow(
+  //                       color: Colors.black26,
+  //                       offset: Offset(0, 4),
+  //                       blurRadius: 5.0,
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 padding: EdgeInsets.all(16.0),
+  //                 child: Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     Text(
+  //                       "Double Dice Game",
+  //                       style: GoogleFonts.poppins(
+  //                         fontWeight: FontWeight.w600,
+  //                         color: Colors.white,
+  //                         fontSize: 14,
+  //                       ),
+  //                     ),
+  //                     Icon(Icons.arrow_forward, color: Colors.white),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //             SizedBox(height: 20),
+  //             GestureDetector(
+  //               onTap: () {
+  //                 Get.back();
+  //                 Get.to(PriceListssSelfdice());
+  //               },
+  //               child: Container(
+  //                 width: double.infinity,
+  //                 decoration: BoxDecoration(
+  //                   gradient: LinearGradient(
+  //                     colors: [Colors.green.shade900, Colors.green.shade400],
+  //                     begin: Alignment.topLeft,
+  //                     end: Alignment.bottomRight,
+  //                   ),
+  //                   borderRadius: BorderRadius.circular(15.0),
+  //                   boxShadow: [
+  //                     BoxShadow(
+  //                       color: Colors.black26,
+  //                       offset: Offset(0, 4),
+  //                       blurRadius: 5.0,
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 padding: EdgeInsets.all(16.0),
+  //                 child: Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     Text(
+  //                       "Self Dice Game",
+  //                       style: GoogleFonts.poppins(
+  //                         fontWeight: FontWeight.w600,
+  //                         color: Colors.white,
+  //                         fontSize: 14,
+  //                       ),
+  //                     ),
+  //                     Icon(Icons.arrow_forward, color: Colors.white),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       // actions: <Widget>[
+  //       //   GestureDetector(
+  //       //       onTap: () {
+  //       //         Get.back();
+  //       //       },
+  //       //       child: Align(
+  //       //         alignment: Alignment.center,
+  //       //         child: Text(
+  //       //           "Cancel",
+  //       //           style: GoogleFonts.abyssinicaSil(
+  //       //             fontSize: 20,
+  //       //           ),
+  //       //         ),
+  //       //       )
+  //       //       // Container(
+  //       //       //   margin: EdgeInsets.only(bottom: 8.0),
+  //       //       //   decoration: BoxDecoration(
+  //       //       //     gradient: LinearGradient(
+  //       //       //       colors: [Colors.grey.shade800, Colors.grey.shade600],
+  //       //       //       begin: Alignment.topLeft,
+  //       //       //       end: Alignment.bottomRight,
+  //       //       //     ),
+  //       //       //     borderRadius: BorderRadius.circular(10.0),
+  //       //       //     boxShadow: [
+  //       //       //       BoxShadow(
+  //       //       //         color: Colors.black26,
+  //       //       //         offset: Offset(0, 4),
+  //       //       //         blurRadius: 5.0,
+  //       //       //       ),
+  //       //       //     ],
+  //       //       //   ),
+  //       //       //   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+  //       //       //   child: Text(
+  //       //       //     "Cancel",
+  //       //       //     style: GoogleFonts.poppins(
+  //       //       //       fontSize: 14,
+  //       //       //       fontWeight: FontWeight.w500,
+  //       //       //       color: Colors.white,
+  //       //       //     ),
+  //       //       //   ),
+  //       //       // ),
+  //       //       )
+  //       // ],
+  //     ),
+  //   );
+  // }
 }

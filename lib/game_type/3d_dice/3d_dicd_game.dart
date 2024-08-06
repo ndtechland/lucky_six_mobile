@@ -240,7 +240,7 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
           MediaQuery.of(context).size.width,
           MediaQuery.of(context).size.height,
         ) *
-        0.138;
+        0.128;
 
     return Scaffold(
       backgroundColor: Colors.transparent,

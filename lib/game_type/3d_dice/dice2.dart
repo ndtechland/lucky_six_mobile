@@ -26,7 +26,7 @@ class Cube2 extends StatelessWidget {
     // Get screen size
     final screenSize = MediaQuery.of(context).size;
     final double smallSize =
-        min(screenSize.width, screenSize.height) * 0.25; // Smaller dice size
+        min(screenSize.width, screenSize.height) * 0.258; // Smaller dice size
 
     return Center(
       child: SizedBox(
@@ -55,27 +55,29 @@ class Cube2 extends StatelessWidget {
         ..rotateX(xRot)
         ..rotateY(yRot)
         ..rotateZ(zRot)
-        ..translate(0.0, 0.0, moveZ ? -size / 1.83 : size / 1.83),
+        ..translate(0.0, 0.0, moveZ ? -size / 1.92 : size / 1.92),
       child: Container(
         alignment: Alignment.center,
         child: Container(
-          width: size + 10, // Slightly larger to cover the gap
-          height: size + 10,
+          width: size + 3, // Slightly larger to cover the gap
+          height: size + 3,
           decoration: BoxDecoration(
-            color: Colors.black, // Black background color
-            borderRadius: BorderRadius.circular(20), // Circular radius
+            color: Color(0xffc03129), // Background color to fill corners
+
+            // color: Colors.black, // Black background color
+            borderRadius: BorderRadius.circular(2.5), // Circular radius
           ),
           child: Container(
-            margin: EdgeInsets.all(5), // Margin to create a gap between layers
+            margin: EdgeInsets.all(0), // Margin to create a gap between layers
             decoration: BoxDecoration(
               image: DecorationImage(
-                image:
-                    AssetImage('assets/images/svg_images/bkdcc$diceFace.png'),
-                fit: BoxFit.cover,
+                image: AssetImage('assets/images/svg_images/dcc$diceFace.png'),
+                fit: BoxFit.contain,
               ),
               borderRadius:
-                  BorderRadius.circular(20), // Slightly smaller radius
-              border: Border.all(color: Colors.red, width: 6), // Border color
+                  BorderRadius.circular(2.5), // Slightly smaller radius
+              border: Border.all(
+                  color: Color(0xffc03129), width: 0), // Border color
             ),
           ),
         ),

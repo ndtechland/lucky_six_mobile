@@ -29,10 +29,12 @@ class MyApp extends StatelessWidget {
         // You can customize more theme settings here if needed
       ),
       home:
+          // Play_Now()
           //Dice3DAnimation(),
+          ///Play_Now_self_game(),
 
           ///PaymentHistory(),
-          //Play_Now_2dice(),
+          ///Play_Now_2dice(),
           // HomePageDicetest(),
           /// Play_Now_test(),
 

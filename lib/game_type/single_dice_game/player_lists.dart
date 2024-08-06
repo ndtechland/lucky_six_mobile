@@ -4,15 +4,19 @@ import 'package:game_app/game_type/single_dice_game/time_clock_for_game.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../../HomePage/homePage.dart';
 import '../../constantt/responsive_container_text.dart';
 
-class PlayerLists extends StatelessWidget {
+class PlayerLists extends StatefulWidget {
   PlayerLists({Key? key}) : super(key: key);
-  //GetProfileModel? getprofileModel;
 
-  // Define a list of items
+  @override
+  _PlayerListsState createState() => _PlayerListsState();
+}
+
+class _PlayerListsState extends State<PlayerLists> {
   final List<String> items = [
     'Rakesh',
     'Vishal',
@@ -23,6 +27,42 @@ class PlayerLists extends StatelessWidget {
   ];
 
   final List<String> items2 = ['1', '2', '3', '4', '5', '6'];
+
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  final List<String> _displayedItems = [];
+
+  final AudioPlayer _audioPlayer = AudioPlayer(); // Initialize the audio player
+
+  @override
+  void initState() {
+    super.initState();
+    _addItemsOneByOne();
+    _playBackgroundMusic(); // Play the background music
+  }
+
+  Future<void> _playBackgroundMusic() async {
+    await _audioPlayer.setAsset('assets/audios/backroundmusic.mp3');
+    _audioPlayer.play();
+
+    // Stop the music after 12 seconds
+    Future.delayed(Duration(seconds: 10), () {
+      _audioPlayer.stop();
+    });
+  }
+
+  Future<void> _addItemsOneByOne() async {
+    for (int i = 0; i < items.length; i++) {
+      await Future.delayed(Duration(milliseconds: 500));
+      _listKey.currentState?.insertItem(i);
+      _displayedItems.add(items[i]);
+    }
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose(); // Dispose of the audio player
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +75,6 @@ class PlayerLists extends StatelessWidget {
             Positioned.fill(
               child: Image.asset(
                 "assets/images/svg_images/ludobackwhite.png",
-                // 'assets/images/svg_images/backgroundddice.jpeg',
                 fit: BoxFit.cover,
               ),
             ),
@@ -80,9 +119,6 @@ class PlayerLists extends StatelessWidget {
                           height: 0,
                         ),
                         _buildHeader(context),
-                        // SizedBox(
-                        //   height: textfieldHeight2 * 0.0,
-                        // ),
                         Container(
                           height: imageHeight * 0.3,
                           width: double.infinity,
@@ -144,17 +180,6 @@ class PlayerLists extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                // Expanded(
-                                //   child: TimerClockPlayer(),
-                                //   // Text(
-                                //   //   "Players List",
-                                //   //   style: GoogleFonts.abyssinicaSil(
-                                //   //     fontSize: textsize2 * 0.8,
-                                //   //     color: Colors.black,
-                                //   //     fontWeight: FontWeight.w900,
-                                //   //   ),
-                                //   // ),
-                                // ),
                               ],
                             ),
                           ),
@@ -163,75 +188,12 @@ class PlayerLists extends StatelessWidget {
                           height: textfieldHeight2 * 0.1,
                         ),
                         Expanded(
-                          child: ListView.builder(
-                            itemCount: items.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 04, horizontal: 0),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 12),
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 3),
-                                  decoration: BoxDecoration(
-                                    // color: Colors.grey.shade900,
-                                    // border: Border.all(
-                                    //     color: Colors.red.shade300, width: 2),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 20.0,
-                                      ),
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  child: responsiveContainer4(
-                                    heightPortrait:
-                                        MediaQuery.of(context).size.height *
-                                            0.11,
-                                    widthPortrait:
-                                        MediaQuery.of(context).size.width,
-                                    heightLandscape:
-                                        MediaQuery.of(context).size.height *
-                                            0.16,
-                                    widthLandscape:
-                                        MediaQuery.of(context).size.width,
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.095),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            items2[index],
-                                            style: GoogleFonts.abyssinicaSil(
-                                              fontSize: textsize2,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w900,
-                                            ),
-                                          ),
-                                          Text(
-                                            items[index],
-                                            style: GoogleFonts.abyssinicaSil(
-                                              fontSize: textsize,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w900,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    context: context,
-                                  ),
-                                ),
-                              );
+                          child: AnimatedList(
+                            key: _listKey,
+                            initialItemCount: _displayedItems.length,
+                            itemBuilder: (context, index, animation) {
+                              return _buildItem(_displayedItems[index],
+                                  items2[index], animation);
                             },
                           ),
                         ),
@@ -247,6 +209,107 @@ class PlayerLists extends StatelessWidget {
     );
   }
 
+  Widget _buildItem(String item, String item2, Animation<double> animation) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+      child: SizeTransition(
+        sizeFactor: animation,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 3),
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 20.0,
+              ),
+            ],
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          child: responsiveContainer4(
+            heightPortrait: MediaQuery.of(context).size.height * 0.11,
+            widthPortrait: MediaQuery.of(context).size.width,
+            heightLandscape: MediaQuery.of(context).size.height * 0.16,
+            widthLandscape: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.095),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    item2,
+                    style: GoogleFonts.abyssinicaSil(
+                      fontSize: MediaQuery.of(context).orientation ==
+                              Orientation.portrait
+                          ? MediaQuery.of(context).size.height * 0.033
+                          : MediaQuery.of(context).size.height * 0.05,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  Text(
+                    item,
+                    style: GoogleFonts.abyssinicaSil(
+                      fontSize: MediaQuery.of(context).orientation ==
+                              Orientation.portrait
+                          ? MediaQuery.of(context).size.height * 0.022
+                          : MediaQuery.of(context).size.height * 0.05,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            context: context,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Widget _buildHeader(BuildContext context) {
+  //   var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+  //   var width = isPortrait
+  //       ? MediaQuery.of(context).size.width * 0.999
+  //       : MediaQuery.of(context).size.width * 0.6;
+  //
+  //   var height = isPortrait
+  //       ? MediaQuery.of(context).size.height * 0.05
+  //       : MediaQuery.of(context).size.height * 0.08;
+  //
+  //   return Container(
+  //     color: Colors.red,
+  //     width: width,
+  //     height: height * 1.2,
+  //     child: Row(
+  //       children: [
+  //         IconButton(
+  //           onPressed: () {
+  //             _audioPlayer.stop(); // Stop the audio when navigating
+  //             Get.back();
+  //           },
+  //           icon: Icon(
+  //             CupertinoIcons.left_chevron,
+  //             color: Colors.black,
+  //           ),
+  //         ),
+  //         Text(
+  //           'Back',
+  //           style: GoogleFonts.abyssinicaSil(
+  //             fontSize: isPortrait
+  //                 ? MediaQuery.of(context).size.height * 0.022
+  //                 : MediaQuery.of(context).size.height * 0.05,
+  //             color: Colors.black,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  ///
   Widget _buildHeader(BuildContext context) {
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     var width = isPortrait
@@ -260,85 +323,11 @@ class PlayerLists extends StatelessWidget {
         ? MediaQuery.of(context).size.height * 0.21
         : MediaQuery.of(context).size.height * 0.5;
     return Container(
-      //padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.black54,
-        // image: DecorationImage(
-        //     image: AssetImage(
-        //       "assets/images/svg_images/ludobackblack.png",
-        //     ),
-        //     fit: BoxFit.cover)
-
-        // gradient: LinearGradient(
-        //   begin: Alignment.topCenter,
-        //   end: Alignment.bottomCenter,
-        //   colors: <Color>[appColor, appColor2],
-        // ),
       ),
-      child:
-          //const SizedBox(height: 1),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     IconButton(
-          //       onPressed: () {
-          //         Navigator.pop(context);
-          //       },
-          //       icon: const Icon(Icons.arrow_back, color: Colors.white),
-          //     ),
-          //     Center(
-          //       child: Padding(
-          //         padding: const EdgeInsets.all(0.0),
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             color: Colors.red.shade700,
-          //             borderRadius: BorderRadius.circular(5),
-          //           ),
-          //           child: Padding(
-          //             padding: const EdgeInsets.all(5.0),
-          //             child: Text(
-          //               'All Players',
-          //               style: GoogleFonts.abyssinicaSil(
-          //                 color: Colors.white,
-          //                 //backgroundColor: Colors.white,
-          //                 fontWeight: FontWeight.w600,
-          //                 // fontFamily: 'medium',
-          //                 fontSize: 16,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     Center(
-          //       child: Padding(
-          //         padding: const EdgeInsets.all(0.0),
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             color: Colors.red.shade700,
-          //             borderRadius: BorderRadius.circular(5),
-          //           ),
-          //           child: Padding(
-          //             padding: const EdgeInsets.all(5.0),
-          //             child: Text(
-          //               'All Players',
-          //               style: GoogleFonts.abyssinicaSil(
-          //                 color: Colors.white,
-          //                 //backgroundColor: Colors.white,
-          //                 fontWeight: FontWeight.w600,
-          //                 // fontFamily: 'medium',
-          //                 fontSize: 16,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     //const SizedBox(width: 50),
-          //   ],
-          // ),
-          Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
@@ -401,7 +390,10 @@ class PlayerLists extends StatelessWidget {
                     ),
                     CupertinoDialogAction(
                       onPressed: () {
+                        _audioPlayer.stop(); // Stop the audio when navigating
+
                         Get.back();
+
                         Get.offAll(Home_Page());
 
                         // Navigate to a new screen when the OK button is pressed
