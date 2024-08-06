@@ -78,6 +78,7 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
   int _diceFace = 1;
   Timer? _diceRollTimer;
   Timer? _startTimer;
+  bool _rolling = false;
 
   @override
   void initState() {
@@ -93,6 +94,7 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
   }
 
   void _rollDice() {
+    _rolling = true;
     _diceRollTimer = Timer.periodic(Duration(milliseconds: 100), (timer) {
       setState(() {
         _diceFace = Random().nextInt(6) + 1;
@@ -105,6 +107,11 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
   void _startStopTimer() {
     Timer(Duration(seconds: 8), () {
       _diceRollTimer?.cancel();
+      setState(() {
+        _rolling = false;
+        _x = 0; // Ensure the dice stops at the top view
+        _y = 0; // Adjust as needed for top view
+      });
       Timer(Duration(milliseconds: 400), () {
         _showResultDialog();
       });
@@ -246,10 +253,12 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
       backgroundColor: Colors.transparent,
       body: Center(
         child: GestureDetector(
-          onPanUpdate: (DragUpdateDetails u) => setState(() {
-            _x = (_x + -u.delta.dy / 150) % (pi * 2);
-            _y = (_y + -u.delta.dx / 150) % (pi * 2);
-          }),
+          onPanUpdate: _rolling
+              ? null
+              : (DragUpdateDetails u) => setState(() {
+                    _x = (_x + -u.delta.dy / 150) % (pi * 2);
+                    _y = (_y + -u.delta.dx / 150) % (pi * 2);
+                  }),
           child: Cube(
             x: _x,
             y: _y,

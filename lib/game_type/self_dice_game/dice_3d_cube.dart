@@ -61,7 +61,6 @@ class CubeSelf extends StatelessWidget {
           width: size + 10, // Slightly larger to cover the gap
           height: size + 10,
           decoration: BoxDecoration(
-            ///#c03129
             color: Color(0xffc03129), // Background color to fill corners
             borderRadius: BorderRadius.circular(2.5), // Circular radius
           ),
@@ -69,19 +68,13 @@ class CubeSelf extends StatelessWidget {
             margin: EdgeInsets.all(0), // Margin to create a gap between layers
             decoration: BoxDecoration(
               image: DecorationImage(
-                //dcbk
-                //dcc
-                // assets/images/svg_images/dcrd5.png
-                //assets/images/svg_images/dice_6.png
-                //bkdcc
                 image: AssetImage('assets/images/svg_images/dcc$diceFace.png'),
                 fit: BoxFit.contain,
               ),
               borderRadius:
                   BorderRadius.circular(2.5), // Slightly smaller radius
               border: Border.all(
-                  color: Color(0xffc03129), // Background color to fill corners
-                  width: 0), // Border color
+                  color: Color(0xffc03129), width: 0), // Border color
             ),
           ),
         ),

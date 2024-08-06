@@ -4,28 +4,27 @@ import 'dart:math';
 import 'package:get/get.dart';
 
 class DiceController extends GetxController {
-  var x = (pi * 0.25).obs; // Observable double for x
-  var y = (pi * 0.25).obs; // Observable double for y
-  var diceFace = 1.obs; // Observable int for diceFace
-  Timer? _diceRollTimer;
+  RxDouble x = 0.0.obs;
+  RxDouble y = 0.0.obs;
+  RxInt diceFace = 1.obs;
+  Timer? _timer;
 
   void rollDice({required Duration duration}) {
-    _diceRollTimer?.cancel(); // Ensure only one timer is running
-    _diceRollTimer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-      x.value = (Random().nextDouble() * pi * 2);
-      y.value = (Random().nextDouble() * pi * 2);
+    _timer?.cancel();
+    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      x.value = Random().nextDouble() * pi * 2;
+      y.value = Random().nextDouble() * pi * 2;
       diceFace.value = Random().nextInt(6) + 1;
     });
 
     // Stop rolling after the specified duration
-    Timer(duration, () {
-      _diceRollTimer?.cancel();
-      update(); // Notify the UI
+    Future.delayed(duration, () {
+      stopRolling();
     });
   }
 
-  void updatePosition({required double x, required double y}) {
-    this.x.value = x;
-    this.y.value = y;
-  }
+  void stopRolling() {
+    _timer?.cancel();
+    x.value = pi / 1;
+  } // Ensure it shows the top
 }

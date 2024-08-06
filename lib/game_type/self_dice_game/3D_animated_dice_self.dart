@@ -8,70 +8,6 @@ import '../../HomePage/homePage.dart';
 import 'dice_3d_cube.dart';
 import 'dice_animation_controllerrr.dart';
 
-class NeumorphicButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-  final Gradient gradient;
-
-  const NeumorphicButton({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-    required this.gradient,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        gradient: gradient,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            offset: Offset(3, 3),
-            blurRadius: 6,
-          ),
-          BoxShadow(
-            color: Colors.white.withOpacity(0.3),
-            offset: Offset(-3, -3),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: EdgeInsets.zero,
-        ),
-        onPressed: onPressed,
-        child: Center(
-          child: Text(
-            text,
-            style: GoogleFonts.raleway(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// Update the import to the correct path
-
-// Update the import to the correct path
-// Update the import to the correct path
-
-// Update the import to the correct path
-
 class Dice3DAnimationSelf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -82,102 +18,26 @@ class Dice3DAnimationSelf extends StatelessWidget {
         ) *
         0.138;
 
+    // Start rolling the dice automatically
+    // diceController.rollDice(duration: Duration(seconds: 10));
+    // Future.delayed(Duration(seconds: 10), () {
+    //   diceController.stopRolling();
+    //   _showResultDialog(context, diceController.diceFace.value);
+    // });
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
         clipBehavior: Clip.none,
         children: [
           Center(
-            child: Obx(() => GestureDetector(
-                  onPanUpdate: (DragUpdateDetails u) {
-                    final double newX =
-                        (diceController.x.value + -u.delta.dy / 120) % (pi * 2);
-                    final double newY =
-                        (diceController.y.value + -u.delta.dx / 120) % (pi * 2);
-                    diceController.updatePosition(x: newX, y: newY);
-                  },
-                  child: CubeSelf(
-                    x: diceController.x.value,
-                    y: diceController.y.value,
-                    size: size,
-                    diceFace: diceController.diceFace.value,
-                  ),
+            child: Obx(() => CubeSelf(
+                  x: diceController.x.value,
+                  y: diceController.y.value,
+                  size: size,
+                  diceFace: diceController.diceFace.value,
                 )),
           ),
-          // Positioned(
-          //   top: MediaQuery.of(context).size.height * 0.05,
-          //   left: MediaQuery.of(context).size.width * 0.05,
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width * 0.18,
-          //     height: MediaQuery.of(context).size.height * 0.08,
-          //     color: Colors
-          //         .transparent, // Ensure container is transparent to visualize position
-          //     child: InkWell(
-          //       onTap: () {
-          //         diceController.rollDice(duration: Duration(seconds: 5));
-          //         // Delay dialog display until after dice roll completes
-          //         Future.delayed(Duration(seconds: 5), () {
-          //           _showResultDialog(context, diceController.diceFace.value);
-          //         });
-          //       },
-          //       child: Container(
-          //         decoration: BoxDecoration(
-          //           gradient: LinearGradient(
-          //             colors: [Colors.blueAccent, Colors.blue],
-          //             begin: Alignment.topLeft,
-          //             end: Alignment.bottomRight,
-          //           ),
-          //           borderRadius: BorderRadius.circular(10),
-          //           boxShadow: [
-          //             BoxShadow(
-          //               color: Colors.black.withOpacity(0.3),
-          //               offset: Offset(-4, 4),
-          //               blurRadius: 10,
-          //             ),
-          //             BoxShadow(
-          //               color: Colors.white.withOpacity(0.3),
-          //               offset: Offset(4, -4),
-          //               blurRadius: 10,
-          //             ),
-          //           ],
-          //         ),
-          //         child: Row(
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           children: [
-          //             Icon(
-          //               Icons.play_circle,
-          //               color: Colors.white,
-          //               size: 25,
-          //               shadows: [
-          //                 Shadow(
-          //                   color: Colors.black.withOpacity(0.5),
-          //                   offset: Offset(2, 2),
-          //                   blurRadius: 2,
-          //                 ),
-          //               ],
-          //             ),
-          //             SizedBox(width: 10),
-          //             Text(
-          //               'Play Now',
-          //               style: GoogleFonts.abyssinicaSil(
-          //                 color: Colors.white,
-          //                 fontSize: 16,
-          //                 fontWeight: FontWeight.w600,
-          //                 shadows: [
-          //                   Shadow(
-          //                     color: Colors.black.withOpacity(0.5),
-          //                     offset: Offset(2, 2),
-          //                     blurRadius: 2,
-          //                   ),
-          //                 ],
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
@@ -264,7 +124,7 @@ class Dice3DAnimationSelf extends StatelessWidget {
                                 Get.back();
                                 // Trigger a new dice roll
                                 diceController.rollDice(
-                                    duration: Duration(seconds: 5));
+                                    duration: Duration(seconds: 10));
                               },
                               child: Text('Play Again'),
                             ),
