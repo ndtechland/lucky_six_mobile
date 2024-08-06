@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:game_app/splash_pages/splash_screens.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-
-import 'game_type/double_gamee/double_dice_game.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,18 +31,18 @@ class MyApp extends StatelessWidget {
       home:
           //Play_Now()
           //Dice3DAnimation(),
-          ///Play_Now_self_game(),
+          /// Play_Now_self_game(),
 
           ///PaymentHistory(),
-          Play_Now_2dice(),
-      // HomePageDicetest(),
-      /// Play_Now_test(),
+          ///Play_Now_2dice(),
+          // HomePageDicetest(),
+          /// Play_Now_test(),
 
-      ///Play_Now_2dice(),
+          ///Play_Now_2dice(),
 
-      ///Play_Now_2dice(),
-      ///Play_Now()
-      /// SplashScreen(),
+          ///Play_Now_2dice(),
+          ///Play_Now()
+          SplashScreen(),
 
       ///PlayerLists(),
       //DiceRollingMusic(),

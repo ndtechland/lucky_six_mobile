@@ -26,5 +26,6 @@ class DiceController extends GetxController {
   void stopRolling() {
     _timer?.cancel();
     x.value = pi / 1;
-  } // Ensure it shows the top
-}
+  }
+} // Ensure it shows the top
+//bs bs...

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_app/game_type/self_dice_game/play_game_button.dart';
+import 'package:game_app/game_type/self_dice_game/timer_audio_selfgame.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '3D_animated_dice_self.dart';
@@ -195,6 +196,21 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                       //   ),
                       // ),
                     ],
+                  ),
+                ),
+
+                ///todo:timer..audio...
+                Positioned(
+                  top: 40,
+                  right: 550,
+                  left: 00,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.10,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.transparent,
+                    ),
+                    child: TimerScreenAudioSelf(),
                   ),
                 ),
 

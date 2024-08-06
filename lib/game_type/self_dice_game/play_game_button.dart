@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:game_app/game_type/self_dice_game/self_audio_timer_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
@@ -21,8 +22,9 @@ class _PlayGameButtonSelfState extends State<PlayGameButtonSelf> {
   bool _isVisible = false;
   bool _isPlayAgain = false;
   final DiceController diceController = Get.put(DiceController());
+  AudioController controller = Get.put(AudioController());
 
-  int _timerSeconds = 5;
+  int _timerSeconds = 8;
   late Timer _timer;
   Timer? _speedTimer;
   Timer? _startTimer;
@@ -42,7 +44,7 @@ class _PlayGameButtonSelfState extends State<PlayGameButtonSelf> {
       });
     });
 
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 8), () {
       setState(() {
         _isPlayAgain = true;
       });
@@ -64,14 +66,14 @@ class _PlayGameButtonSelfState extends State<PlayGameButtonSelf> {
     _audioPlayer.play();
 
     // Stop the audio after 5 seconds
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 8), () {
       _audioPlayer.stop();
     });
   }
 
   void _startGameTimer() {
     setState(() {
-      _timerSeconds = 7;
+      _timerSeconds = 8;
     });
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -103,14 +105,17 @@ class _PlayGameButtonSelfState extends State<PlayGameButtonSelf> {
       child: _isVisible
           ? GestureDetector(
               onTap: () async {
-                Future.delayed(Duration(seconds: 4), () {
-                  _playAudio(); // Play audio when button is clicked
+                await Future.delayed(Duration(seconds: 1), () {
+                  controller.startRollingMusic();
+
+                  ///_playAudio();
+                  // Play audio when button is clicked
                 });
                 // _playAudio(); // Play audio when button is clicked
-                diceController.rollDice(duration: Duration(seconds: 5));
+                diceController.rollDice(duration: Duration(seconds: 8));
 
                 // Delay dialog display until after dice roll completes
-                Future.delayed(Duration(seconds: 5), () {
+                Future.delayed(Duration(seconds: 8), () {
                   _showResultDialog(context, diceController.diceFace.value);
                 });
               },
