@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-import 'game_type/single_dice_game/playnow.dart';
+import 'game_type/double_gamee/double_dice_game.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,32 +23,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'LuckySix',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          // You can customize more theme settings here if needed
-        ),
-        home: Play_Now()
-        //Dice3DAnimation(),
-        ///Play_Now_self_game(),
+      debugShowCheckedModeBanner: false,
+      title: 'LuckySix',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        // You can customize more theme settings here if needed
+      ),
+      home:
+          //Play_Now()
+          //Dice3DAnimation(),
+          ///Play_Now_self_game(),
 
-        ///PaymentHistory(),
-        ///Play_Now_2dice(),
-        // HomePageDicetest(),
-        /// Play_Now_test(),
+          ///PaymentHistory(),
+          Play_Now_2dice(),
+      // HomePageDicetest(),
+      /// Play_Now_test(),
 
-        ///Play_Now_2dice(),
+      ///Play_Now_2dice(),
 
-        ///Play_Now_2dice(),
-        ///Play_Now()
-        /// SplashScreen(),
+      ///Play_Now_2dice(),
+      ///Play_Now()
+      /// SplashScreen(),
 
-        ///PlayerLists(),
-        //DiceRollingMusic(),
+      ///PlayerLists(),
+      //DiceRollingMusic(),
 
-        ///Splash_screen(), // Initial screen when the app starts
-        );
+      ///Splash_screen(), // Initial screen when the app starts
+    );
   }
 }
 

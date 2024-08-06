@@ -74,11 +74,11 @@ class Dice3DAnimation extends StatefulWidget {
 }
 
 class Dice3DAnimationState extends State<Dice3DAnimation> {
-  double _x = pi * 0.25, _y = pi * 0.25;
-  int _diceFace = 1;
+  RxDouble _x = 0.0.obs;
+  RxDouble _y = 0.0.obs;
+  RxInt _diceFace = 1.obs;
   Timer? _diceRollTimer;
   Timer? _startTimer;
-  bool _rolling = false;
 
   @override
   void initState() {
@@ -88,33 +88,34 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
 
   void _startDiceRollAfterDelay() {
     _startTimer = Timer(Duration(seconds: 10), () {
-      _rollDice();
-      _startStopTimer();
+      _rollDice(duration: Duration(seconds: 8));
     });
   }
 
-  void _rollDice() {
-    _rolling = true;
+  void _rollDice({required Duration duration}) {
+    _diceRollTimer?.cancel();
+
     _diceRollTimer = Timer.periodic(Duration(milliseconds: 100), (timer) {
       setState(() {
-        _diceFace = Random().nextInt(6) + 1;
-        _x = (Random().nextDouble() * pi * 2);
-        _y = (Random().nextDouble() * pi * 2);
+        _diceFace.value = Random().nextInt(6) + 1;
+        _x.value = Random().nextDouble() * pi * 2;
+        _y.value = Random().nextDouble() * pi * 2;
       });
     });
-  }
 
-  void _startStopTimer() {
-    Timer(Duration(seconds: 8), () {
-      _diceRollTimer?.cancel();
-      setState(() {
-        _rolling = false;
-        _x = 0; // Ensure the dice stops at the top view
-        _y = 0; // Adjust as needed for top view
-      });
+    Future.delayed(duration, () {
+      stopRolling();
       Timer(Duration(milliseconds: 400), () {
         _showResultDialog();
       });
+    });
+  }
+
+  void stopRolling() {
+    _diceRollTimer?.cancel();
+    setState(() {
+      _x.value = pi / 1; // Ensure it shows the top view
+      _y.value = 0; // Adjust as needed for top view
     });
   }
 
@@ -171,7 +172,7 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
                       ),
                       SizedBox(height: 12),
                       Text(
-                        'Dice face $_diceFace won!',
+                        'Dice face ${_diceFace.value} won!',
                         style: GoogleFonts.raleway(
                           color: Colors.yellow,
                           fontSize: 16,
@@ -180,7 +181,7 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
                       ),
                       SizedBox(height: 25),
                       Image.asset(
-                        'assets/images/svg_images/dcc$_diceFace.png',
+                        'assets/images/svg_images/dcc${_diceFace.value}.png',
                         height: dialogSize * 0.31,
                       ),
                       SizedBox(height: 25),
@@ -252,19 +253,11 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(
-        child: GestureDetector(
-          onPanUpdate: _rolling
-              ? null
-              : (DragUpdateDetails u) => setState(() {
-                    _x = (_x + -u.delta.dy / 150) % (pi * 2);
-                    _y = (_y + -u.delta.dx / 150) % (pi * 2);
-                  }),
-          child: Cube(
-            x: _x,
-            y: _y,
-            size: size,
-            diceFace: _diceFace,
-          ),
+        child: Cube(
+          x: _x.value,
+          y: _y.value,
+          size: size,
+          diceFace: _diceFace.value,
         ),
       ),
     );
