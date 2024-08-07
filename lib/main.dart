@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       home:
           //Play_Now()
           //Dice3DAnimation(),
-          /// Play_Now_self_game(),
+          //Play_Now_self_game(),
 
           ///PaymentHistory(),
           ///Play_Now_2dice(),
