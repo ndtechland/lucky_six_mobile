@@ -80,6 +80,110 @@ class ApiProvider {
     }
   }
 
+  ///UserSignUpApi
+  static Future<http.Response> UserSignUpApi(
+    String name,
+    String phonenumber,
+    String email,
+    String password,
+    String confirmPassword,
+  ) async {
+    var url = "${baseUrl}Account/Registration";
+
+    // Encode the body as JSON
+    var body = jsonEncode({
+      "name": name,
+      "phonenumber": phonenumber,
+      "email": email,
+      "password": password,
+      "confirmPassword": confirmPassword,
+    });
+
+    print("Request Body: $body");
+    print("Request URL: $url");
+
+    // Send the HTTP POST request with JSON body and appropriate headers
+    http.Response r = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json", // Set content-type to JSON
+      },
+      body: body,
+    );
+
+    if (r.statusCode == 200) {
+      print("Success Response: ${r.body}");
+      print("Successfullll: $body");
+
+      Get.snackbar(
+        "Message",
+        r.body,
+        duration: Duration(seconds: 2),
+      );
+    } else if (r.statusCode == 401) {
+      Get.snackbar(
+        "Message",
+        r.body,
+        duration: Duration(seconds: 2),
+      );
+    } else {
+      print("Error Response: ${r.body}");
+      Get.snackbar(
+        "Error",
+        r.body,
+        duration: Duration(seconds: 2),
+      );
+    }
+
+    // Ensure a response is always returned
+    return r;
+  }
+
+  // static UserSignUpApi(
+  //   var name,
+  //   var phonenumber,
+  //   var email,
+  //   var password,
+  //   var confirmPassword,
+  // ) async {
+  //   var url = "${baseUrl}Account/Registration";
+  //   var body = {
+  //     "name": "$name",
+  //     "phonenumber": "$phonenumber",
+  //     "email": "$email",
+  //     "password": "$password",
+  //     "confirmPassword": "$confirmPassword",
+  //   };
+  //   print("boddyy${body}");
+  //   print("boddyy${url}");
+  //   http.Response r = await http.post(Uri.parse(url), body: body);
+  //   if (r.statusCode == 200) {
+  //     print("boddyy200${body}");
+  //     print("boddyy200${url}");
+  //     Get.snackbar(
+  //       "Message",
+  //       r.body,
+  //       duration: Duration(seconds: 2),
+  //     );
+  //     print(r.body);
+  //     return r;
+  //   } else if (r.statusCode == 401) {
+  //     Get.snackbar(
+  //       "Message",
+  //       r.body,
+  //       duration: Duration(seconds: 2),
+  //     );
+  //   } else {
+  //     print("errorregistration${r.body}");
+  //     Get.snackbar(
+  //       "Error",
+  //       r.body,
+  //       duration: Duration(seconds: 2),
+  //     );
+  //     return r;
+  //   }
+  // }
+
   //user signup..............
   static String apiUrl = "${baseUrl}Login/createProfile";
 
@@ -155,7 +259,6 @@ class ApiProvider {
 
     print("loginnnn");
     print(body);
-
     http.Response r = await http.post(
       Uri.parse(url),
       body: body,

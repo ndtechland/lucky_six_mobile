@@ -1,14 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:game_app/registrationscreen.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'constantt/buttonns/regular_button2.dart';
 import 'constantt/buttonns/regular_buttons.dart';
 import 'constantt/color_text.dart';
+import 'controllers_all/registration_controller.dart';
 import 'login_email.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -21,6 +18,9 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   bool _obscured = false;
   bool _passwordVisible = true;
+
+  RegistrationController _registrationController =
+      Get.put(RegistrationController());
 
   TextEditingController _name = TextEditingController();
   TextEditingController _email = TextEditingController();
@@ -82,7 +82,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       child: Form(
-                        key: _formkey,
+                        key: _registrationController.registrationFormKey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -112,7 +113,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   MediaQuery.of(context).size.height * 0.0200,
                             ),
                             buildTextField(
-                              controller: _name,
+                              controller:
+                                  _registrationController.nameController,
+                              validator: (value) {
+                                return _registrationController
+                                    .validateName(value!);
+                              },
+                              // validator: _registrationController.validateName(value!),
                               hintText: "Name",
                               height: textfieldHeight,
                               width: textfieldWidth,
@@ -122,7 +129,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   MediaQuery.of(context).size.height * 0.010,
                             ),
                             buildTextField(
-                              controller: _email,
+                              controller:
+                                  _registrationController.emailController,
+                              validator: (value) {
+                                return _registrationController
+                                    .validateEmail(value!);
+                              },
                               hintText: "Email",
                               height: textfieldHeight,
                               width: textfieldWidth,
@@ -132,7 +144,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   MediaQuery.of(context).size.height * 0.010,
                             ),
                             buildTextField(
-                              controller: _phone,
+                              controller:
+                                  _registrationController.phoneController,
+                              validator: (value) {
+                                return _registrationController
+                                    .validatePhone(value!);
+                              },
                               hintText: "Phone number",
                               height: textfieldHeight,
                               width: textfieldWidth,
@@ -144,7 +161,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   MediaQuery.of(context).size.height * 0.010,
                             ),
                             buildPasswordField(
-                              controller: _pin,
+                              controller:
+                                  _registrationController.passwordController,
+                              validator: (value) {
+                                return _registrationController
+                                    .validatePassword(value!);
+                              },
                               hintText: "Password",
                               height: textfieldHeight,
                               width: textfieldWidth,
@@ -160,7 +182,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   MediaQuery.of(context).size.height * 0.010,
                             ),
                             buildPasswordField(
-                              controller: _confirmpin,
+                              controller: _registrationController
+                                  .confirmPasswordController,
+                              validator: (value) {
+                                return _registrationController
+                                    .validateConfirmPassword(value!);
+                              },
                               hintText: "Confirm Password",
                               height: textfieldHeight,
                               width: textfieldWidth,
@@ -171,54 +198,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 });
                               },
                             ),
-                            // SizedBox(
-                            //   height:
-                            //       MediaQuery.of(context).size.height * 0.0450,
-                            // ),
 
                             RectangularButton(
                               text: 'SignUP',
                               press: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LoginEmail(),
-                                  ),
-                                );
+                                _registrationController.checkRegistration();
                               },
                             ),
 
                             ///
-
-                            // InkWell(
-                            //   onTap: () {
-                            //     register(_name.text, _phone.text, _pin.text,
-                            //         _confirmpin.text);
-                            //   },
-                            //   child: Container(
-                            //     height: textfieldHeight * 0.35,
-                            //     width: textfieldWidth * 0.55,
-                            //     decoration: BoxDecoration(
-                            //       image: DecorationImage(
-                            //         image: AssetImage(
-                            //           "assets/images/giftgreenbutton.png",
-                            //         ),
-                            //         fit: BoxFit.fill,
-                            //       ),
-                            //     ),
-                            //     child: Center(
-                            //       child: Text(
-                            //         "SUBMIT",
-                            //         style: TextStyle(
-                            //           color: Colors.white,
-                            //           fontSize: 17 *
-                            //               MediaQuery.textScaleFactorOf(context),
-                            //           fontWeight: FontWeight.bold,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
 
                             ///
                             SizedBox(
@@ -238,53 +226,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 );
                               },
                             ),
-                            // Container(
-                            //   height: textfieldHeight2 * 0.15,
-                            //   width: textfieldWidth2 * 0.8,
-                            //   decoration: BoxDecoration(
-                            //     image: DecorationImage(
-                            //       image: AssetImage(
-                            //         "assets/images/registerhere.png",
-                            //       ),
-                            //       fit: BoxFit.fill,
-                            //     ),
-                            //   ),
-                            //   child: Row(
-                            //     children: [
-                            //       Padding(
-                            //         padding: EdgeInsets.only(left: 23.0),
-                            //         child: Text(
-                            //           "Already have an account? ",
-                            //           style: TextStyle(
-                            //             color: Colors.white,
-                            //             fontSize: 13 *
-                            //                 MediaQuery.textScaleFactorOf(
-                            //                     context),
-                            //             fontWeight: FontWeight.bold,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //       InkWell(
-                            //         onTap: () {
-                            //           Navigator.push(
-                            //             context,
-                            //             MaterialPageRoute(
-                            //                 builder: (context) => LoginEmail()),
-                            //           );
-                            //         },
-                            //         child: Text(
-                            //           "Login here",
-                            //           style: TextStyle(
-                            //             color: Colors.black,
-                            //             fontWeight: FontWeight.bold,
-                            //             decoration: TextDecoration.underline,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            //Spacer(),
                           ],
                         ),
                       ),
@@ -306,6 +247,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     required double width,
     TextInputType keyboardType = TextInputType.text,
     int? maxLength,
+    String? Function(String?)? validator, // Optional validator
   }) {
     return Container(
       height: height * 0.35,
@@ -324,6 +266,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           style: TextStyle(color: Colors.white),
           keyboardType: keyboardType,
           maxLength: maxLength,
+          validator: validator ?? (value) => null, // Optional validation
           decoration: InputDecoration(
             counterText: "",
             border: InputBorder.none,
@@ -342,6 +285,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     required double width,
     required bool obscureText,
     required VoidCallback onToggleVisibility,
+    String? Function(String?)? validator, // Optional validator
   }) {
     return Container(
       height: height * 0.35,
@@ -359,6 +303,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           obscureText: obscureText,
           cursorColor: Colors.white,
           style: TextStyle(color: Colors.white),
+          validator: validator ?? (value) => null, // Optional validation
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: "  $hintText",
@@ -376,52 +321,52 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  Future<void> register(
-      String name, String phone, String pin, String confirmpin) async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-    Map<String, dynamic> data = {
-      'name': name,
-      'phone': phone,
-      'pin': pin,
-      'confirmpin': confirmpin,
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse('https://example.com/register'),
-        body: jsonEncode(data),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
-        sharedPreferences.setString('token', jsonResponse['token']);
-        Fluttertoast.showToast(
-          msg: 'Registration successful',
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          gravity: ToastGravity.BOTTOM,
-        );
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => HomePage()),
-        // );
-      } else {
-        Fluttertoast.showToast(
-          msg: 'Registration failed',
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          gravity: ToastGravity.BOTTOM,
-        );
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Error occurred: $e',
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        gravity: ToastGravity.BOTTOM,
-      );
-    }
-  }
+  // Future<void> register(
+  //     String name, String phone, String pin, String confirmpin) async {
+  //   final SharedPreferences sharedPreferences =
+  //       await SharedPreferences.getInstance();
+  //   Map<String, dynamic> data = {
+  //     'name': name,
+  //     'phone': phone,
+  //     'pin': pin,
+  //     'confirmpin': confirmpin,
+  //   };
+  //
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse('https://example.com/register'),
+  //       body: jsonEncode(data),
+  //       headers: {'Content-Type': 'application/json'},
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       var jsonResponse = jsonDecode(response.body);
+  //       sharedPreferences.setString('token', jsonResponse['token']);
+  //       Fluttertoast.showToast(
+  //         msg: 'Registration successful',
+  //         backgroundColor: Colors.green,
+  //         textColor: Colors.white,
+  //         gravity: ToastGravity.BOTTOM,
+  //       );
+  //       // Navigator.push(
+  //       //   context,
+  //       //   MaterialPageRoute(builder: (context) => HomePage()),
+  //       // );
+  //     } else {
+  //       Fluttertoast.showToast(
+  //         msg: 'Registration failed',
+  //         backgroundColor: Colors.red,
+  //         textColor: Colors.white,
+  //         gravity: ToastGravity.BOTTOM,
+  //       );
+  //     }
+  //   } catch (e) {
+  //     Fluttertoast.showToast(
+  //       msg: 'Error occurred: $e',
+  //       backgroundColor: Colors.red,
+  //       textColor: Colors.white,
+  //       gravity: ToastGravity.BOTTOM,
+  //     );
+  //   }
+  // }
 }

@@ -8,7 +8,6 @@ class DiceController extends GetxController {
   RxDouble y = 0.0.obs;
   RxInt diceFace = 1.obs;
   Timer? _timer;
-
   void rollDice({required Duration duration}) {
     _timer?.cancel();
     _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {

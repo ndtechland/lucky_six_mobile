@@ -1,7 +1,7 @@
 //https://admin.hirejobindia.com/OrganizationImages
 class FixedText {
   static const String symbol = '₹';
-  static const String apiurl = "https://api.hirejobindia.com/api/";
+  static const String apiurl = "http://luckysix.in/api/";
   static const String apiurl2 = "https://api.hirejobindia.com";
   static const String imgurl = "https://admin.hirejobindia.com";
   static const String imgurltestimonial =
