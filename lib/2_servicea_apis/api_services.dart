@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../1_models/profile_model.dart';
 import '../1_models/profiles.dart';
 import '../constantt/fixed_texes.dart';
 
@@ -29,6 +30,8 @@ class ApiProvider {
   //static var baseUrl1 = 'https://api.gyros.farm/';
   //'http://pswellness.in/';
   static String token = '';
+  static String Id = '';
+  static String userid = ''.toString();
 
   //static String Token = '';
 
@@ -50,37 +53,37 @@ class ApiProvider {
   ///
   ///todo: payment api...
 
-  String _handleResponse(http.Response response) {
-    if (response.statusCode == 200) {
-      if (response.body.isEmpty) {
-        throw EmptyResponseException('Response body is empty');
-      }
-      try {
-        final responseBody = json.decode(response.body);
-        if (responseBody.containsKey('payurl')) {
-          return responseBody['payurl'];
-        } else {
-          throw KeyNotFoundException('Key "payurl" not found in response');
-        }
-      } catch (e) {
-        throw JsonParsingException('Failed to parse response: $e');
-      }
-    } else {
-      if (response.body.isEmpty) {
-        throw EmptyResponseException('Error response body is empty');
-      }
-      try {
-        final responseBody = json.decode(response.body);
-        final errorMessage =
-            responseBody['error_message'] ?? 'Failed to create payment request';
-        throw PaymentRequestException(errorMessage);
-      } catch (e) {
-        throw JsonParsingException('Failed to create payment request: $e');
-      }
-    }
-  }
+  // String _handleResponse(http.Response response) {
+  //   if (response.statusCode == 200) {
+  //     if (response.body.isEmpty) {
+  //       throw EmptyResponseException('Response body is empty');
+  //     }
+  //     try {
+  //       final responseBody = json.decode(response.body);
+  //       if (responseBody.containsKey('payurl')) {
+  //         return responseBody['payurl'];
+  //       } else {
+  //         throw KeyNotFoundException('Key "payurl" not found in response');
+  //       }
+  //     } catch (e) {
+  //       throw JsonParsingException('Failed to parse response: $e');
+  //     }
+  //   } else {
+  //     if (response.body.isEmpty) {
+  //       throw EmptyResponseException('Error response body is empty');
+  //     }
+  //     try {
+  //       final responseBody = json.decode(response.body);
+  //       final errorMessage =
+  //           responseBody['error_message'] ?? 'Failed to create payment request';
+  //       throw PaymentRequestException(errorMessage);
+  //     } catch (e) {
+  //       throw JsonParsingException('Failed to create payment request: $e');
+  //     }
+  //   }
+  // }
 
-  ///UserSignUpApi
+  ///todo: UserSignUpApi....game...1
   static Future<http.Response> UserSignUpApi(
     String name,
     String phonenumber,
@@ -139,156 +142,119 @@ class ApiProvider {
     return r;
   }
 
-  // static UserSignUpApi(
-  //   var name,
-  //   var phonenumber,
-  //   var email,
-  //   var password,
-  //   var confirmPassword,
-  // ) async {
-  //   var url = "${baseUrl}Account/Registration";
-  //   var body = {
-  //     "name": "$name",
-  //     "phonenumber": "$phonenumber",
-  //     "email": "$email",
-  //     "password": "$password",
-  //     "confirmPassword": "$confirmPassword",
-  //   };
-  //   print("boddyy${body}");
-  //   print("boddyy${url}");
-  //   http.Response r = await http.post(Uri.parse(url), body: body);
-  //   if (r.statusCode == 200) {
-  //     print("boddyy200${body}");
-  //     print("boddyy200${url}");
-  //     Get.snackbar(
-  //       "Message",
-  //       r.body,
-  //       duration: Duration(seconds: 2),
-  //     );
-  //     print(r.body);
-  //     return r;
-  //   } else if (r.statusCode == 401) {
-  //     Get.snackbar(
-  //       "Message",
-  //       r.body,
-  //       duration: Duration(seconds: 2),
-  //     );
-  //   } else {
-  //     print("errorregistration${r.body}");
-  //     Get.snackbar(
-  //       "Error",
-  //       r.body,
-  //       duration: Duration(seconds: 2),
-  //     );
-  //     return r;
-  //   }
-  // }
+  ///todo: login api.....game...2
+  static Future<http.Response> UserLoginApi(
+      String username, String password) async {
+    var url = "${baseUrl}Account/Login";
 
-  //user signup..............
-  static String apiUrl = "${baseUrl}Login/createProfile";
-
-  static Future<http.Response> createProfile(Map<String, String> formData,
-      Uint8List cvFileContent, String cvFileName) async {
-    var uri = Uri.parse(apiUrl);
-    var request = http.MultipartRequest('POST', uri);
-
-    // Add form fields
-    formData.forEach((key, value) {
-      request.fields[key] = value;
-    });
-
-    // Add file field
-    request.files.add(http.MultipartFile.fromBytes(
-      'CVFileName', // The name of the file field
-      cvFileContent,
-      filename: cvFileName, // Use the file name from the parameter
-      contentType:
-          MediaType('application', 'pdf'), // Use MediaType from http_parser
-    ));
-
-    // Send the request
-    var response = await request.send();
-
-    // Parse the response
-    var httpResponse = await http.Response.fromStream(response);
-    if (httpResponse.statusCode == 200) {
-      // Assuming the response body contains the user ID in JSON format
-      var jsonResponse = jsonDecode(httpResponse.body);
-      var userId = jsonResponse['loginProfile']
-          ['id']; // Extract the user ID from getData
-
-      // Save the user ID using GetStorage
-      final storage = GetStorage();
-      storage.write('userId', userId);
-
-      // Print the user ID
-      print('Saved user ID: $userId');
-      // Show success toast
-      Fluttertoast.showToast(
-        msg: "Profile created successfully!",
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
-    } else {
-      print(
-          'Failed to create profile. Status code: ${httpResponse.statusCode}');
-
-      Fluttertoast.showToast(
-        msg:
-            "Failed to create profile. Status code: ${httpResponse.statusCode}",
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-      );
-    }
-
-    return httpResponse;
-  }
-
-  ///4.login_email..........post...apis...
-  static Future<http.Response> LoginApi(String emailId, String password) async {
-    var url = "${baseUrl}Login/ProfileLogin";
-    //App/UserChangePassword?userId=38
+    // Encode the body as JSON
     var body = jsonEncode({
-      "emailId": emailId,
+      "username": username,
       "password": password,
     });
 
-    print("loginnnn");
-    print(body);
+    print("Request Body: $body");
+    print("Request URL: $url");
+
+    // Send the HTTP POST request with JSON body and appropriate headers
     http.Response r = await http.post(
       Uri.parse(url),
-      body: body,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json", // Set content-type to JSON
       },
+      body: body,
     );
 
-    print(r.body);
-
     if (r.statusCode == 200) {
-      var responseData = json.decode(r.body);
-      var userId = responseData['loginProfile']['id'];
+      print("Success Response: ${r.body}");
 
-      // Save user ID (assuming 'Id' is part of the response JSON)
-      prefs.write("Id", userId);
-      print('Saved userId: $userId');
+      var responseBody = jsonDecode(r.body);
 
-      // Navigate to HomePage
-      /// Get.to(() => Home());
+      // Save the id and token for future use
+      var prefs = GetStorage();
+      prefs.write("Id", responseBody['model']['id']);
+      prefs.write("Token", responseBody['token']);
 
-      return r;
+      var userId = prefs.read("Id").toString();
+      var token = prefs.read("Token").toString();
+      print('User ID: $userId');
+      print('Token: $token');
+      //
+      // print("Saved User ID: ${prefs.read('Id')}");
+      // print("Saved Token: ${prefs.read('Token')}");
+      ///todo: use in other screen ....
+      //var userId = GetStorage().read("Id");
+      // var token = GetStorage().read("Token");
+
+      Get.snackbar(
+        "Success",
+        "Login Successful",
+        duration: Duration(seconds: 2),
+      );
     } else if (r.statusCode == 401) {
-      Get.snackbar('Message', r.body);
+      Get.snackbar(
+        "Unauthorized",
+        "Incorrect username or password",
+        duration: Duration(seconds: 2),
+      );
     } else {
-      Get.snackbar('Error', r.body);
+      print("Error Response: ${r.body}");
+      Get.snackbar(
+        "Error",
+        "Something went wrong. Please try again.",
+        duration: Duration(seconds: 2),
+      );
     }
 
+    // Ensure a response is always returned
     return r;
   }
+
+  ///todo: get profile api....game ..3
+  static PriofileApi() async {
+    var prefs = GetStorage();
+
+    // Retrieve the saved user ID and token
+    String userId = prefs.read("Id") ?? "";
+    String token = prefs.read("Token") ?? "";
+
+    print('User ID: $userId');
+    print('Token: $token');
+
+    var url = '${baseUrl}Account/GetProfileDetail/$userId';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (r.statusCode == 200) {
+        print("Request URL: $url");
+        print("Response Body: ${r.body}");
+
+        // Parse the response body
+        ProfileModel? geetprofilemodel = profileModelFromJson(r.body);
+        print("Profile Email ID: ${geetprofilemodel.profile?.id}");
+
+        return geetprofilemodel;
+      } else {
+        print("Failed to fetch profile. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching profile details: $error');
+    }
+
+    return null;
+  }
+
+  ///todo: end ....game ...api...
+  ///
 
   ///user_ profile__update.........15 jun
 
@@ -745,27 +711,46 @@ class ApiProvider {
   ///api 3.....all testimonial.........
 
   ///5.profile_api...
-  static PriofileApi() async {
+  static Future<GetProfileModel?> PriofileApi44() async {
     var prefs = GetStorage();
 
-    //saved userid..........
-    //prefs.write("Id".toString(), json.decode(r.body)['Id']);
-    userId = prefs.read("Id").toString();
-    print('wwwuseridEE:${userId}');
-    //https://api.hirejobindia.com/api/App/GetProfile?userId=2
+    // Retrieve the saved user ID and token
+    String userId = prefs.read("Id") ?? "";
+    String token = prefs.read("Token") ?? "";
+
+    print('User ID: $userId');
+    print('Token: $token');
+
     var url = '${baseUrl}App/GetProfile?userId=$userId';
+
     try {
-      http.Response r = await http.get(Uri.parse(url));
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Authorization":
+              "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
       if (r.statusCode == 200) {
-        print("url");
-        print(url);
+        print("Request URL: $url");
+        print("Response Body: ${r.body}");
+
+        // Parse the response body
         GetProfileModel? geetprofilemodel = getProfileModelFromJson(r.body);
-        print("profile: ${geetprofilemodel.response!.emailId}");
+        print("Profile Email ID: ${geetprofilemodel.response!.emailId}");
+
         return geetprofilemodel;
+      } else {
+        print("Failed to fetch profile. Status code: ${r.statusCode}");
       }
     } catch (error) {
-      print('profileedetaileror: $error');
+      print('Error fetching profile details: $error');
     }
+
+    return null;
   }
 
   ///6.job apply successfully..........post...apis...

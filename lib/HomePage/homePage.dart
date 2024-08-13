@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../contact_us_suppport_page/support_page.dart';
+import '../controllers_all/get_profile_controller.dart';
 import '../earn_money/earn_money_page.dart';
 import '../game_type/self_dice_game/play_now_self_game.dart';
 import '../price_listts/price_listfor_twodice.dart';
@@ -208,133 +209,15 @@ class _Home_PageState extends State<Home_Page> {
     );
   }
 
-  void navigateToScreen(int index) {
+  Future<void> navigateToScreen(int index) async {
+    UserProfilesController _userProfilesController =
+        Get.put(UserProfilesController());
     switch (index) {
       case 0:
         showCustomGameDialog(context);
 
         ///
-        // showDialog(
-        //   context: context,
-        //   builder: (BuildContext context) => CupertinoAlertDialog(
-        //     title: GestureDetector(
-        //       onTap: () {
-        //         // Get.to(Loadingone());
-        //       },
-        //       child: Container(
-        //         width: double.infinity,
-        //         decoration: BoxDecoration(
-        //           color: Colors.blue.shade900,
-        //           borderRadius: BorderRadius.circular(5.0),
-        //         ),
-        //         padding: EdgeInsets.all(12.0),
-        //         child: Text(
-        //           "SELECT GAME TYPE!",
-        //           style: GoogleFonts.poppins(
-        //             fontWeight: FontWeight.w600,
-        //             color: Colors.white,
-        //             fontSize: 14,
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //     content: Padding(
-        //       padding: EdgeInsets.only(top: 20),
-        //       child: Column(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           GestureDetector(
-        //             onTap: () {
-        //               Get.back();
-        //               Get.to(PriceListss());
-        //             },
-        //             child: Container(
-        //               width: double.infinity,
-        //               decoration: BoxDecoration(
-        //                 color: Colors.red.shade900,
-        //                 borderRadius: BorderRadius.circular(15.0),
-        //               ),
-        //               padding: EdgeInsets.all(16.0),
-        //               child: Text(
-        //                 "Single Dice Game   >",
-        //                 style: GoogleFonts.poppins(
-        //                   fontWeight: FontWeight.w600,
-        //                   color: Colors.white,
-        //                   fontSize: 14,
-        //                 ),
-        //               ),
-        //             ),
-        //           ),
-        //           SizedBox(height: 20),
-        //           GestureDetector(
-        //             onTap: () {
-        //               Get.back();
-        //               Get.to(PriceListssfortwodice());
-        //               //Get.to(Play_Now_2dice());
-        //             },
-        //             child: Container(
-        //               width: double.infinity,
-        //               decoration: BoxDecoration(
-        //                 color: Colors.black54,
-        //                 borderRadius: BorderRadius.circular(15.0),
-        //               ),
-        //               padding: EdgeInsets.all(16.0),
-        //               child: Text(
-        //                 "Double Dice Game   >",
-        //                 style: GoogleFonts.poppins(
-        //                   fontWeight: FontWeight.w600,
-        //                   color: Colors.white,
-        //                   fontSize: 14,
-        //                 ),
-        //               ),
-        //             ),
-        //           ),
-        //           SizedBox(height: 20),
-        //           GestureDetector(
-        //             onTap: () {
-        //               Get.back();
-        //               Get.to(PriceListssSelfdice());
-        //               //Get.to(Play_Now_2dice());
-        //             },
-        //             child: Container(
-        //               width: double.infinity,
-        //               decoration: BoxDecoration(
-        //                 color: Colors.green,
-        //                 borderRadius: BorderRadius.circular(15.0),
-        //               ),
-        //               padding: EdgeInsets.all(16.0),
-        //               child: Text(
-        //                 "Self Dice Game   >",
-        //                 style: GoogleFonts.poppins(
-        //                   fontWeight: FontWeight.w600,
-        //                   color: Colors.white,
-        //                   fontSize: 14,
-        //                 ),
-        //               ),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //     actions: <Widget>[
-        //       GestureDetector(
-        //         onTap: () {
-        //           Get.back();
-        //         },
-        //         child: CupertinoDialogAction(
-        //           child: Text(
-        //             "Cancel",
-        //             style: GoogleFonts.poppins(
-        //               fontSize: 14,
-        //               fontWeight: FontWeight.w500,
-        //               color: Colors.black,
-        //             ),
-        //           ),
-        //         ),
-        //       )
-        //     ],
-        //   ),
-        // );
+
         break;
       case 1:
         Navigator.push(
@@ -345,7 +228,8 @@ class _Home_PageState extends State<Home_Page> {
         );
         break;
       case 2:
-        Navigator.push(
+        _userProfilesController.userprofileApi();
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => Profileuserr(),

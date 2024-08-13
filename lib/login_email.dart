@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'HomePage/homePage.dart';
 import 'constantt/buttonns/regular_button2.dart';
 import 'constantt/buttonns/regular_buttons.dart';
+import 'controllers_all/login_controllers.dart';
 import 'forget_password.dart';
 
 class LoginEmail extends StatefulWidget {
@@ -27,6 +27,11 @@ class _LoginEmailState extends State<LoginEmail> {
   TextEditingController _pin = TextEditingController();
   // PaymentDetailController _paymentcontroller =
   //     Get.put(PaymentDetailController());
+
+  LoginController _loginController = Get.put(LoginController());
+
+  // UserProfilesController _userProfilesController =
+  //     Get.put(UserProfilesController());
 
   @override
   void initState() {
@@ -89,216 +94,219 @@ class _LoginEmailState extends State<LoginEmail> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: screenHeight * 0.1),
-                      PhysicalModel(
-                        color: appColor2,
-                        clipBehavior: Clip.none,
-                        borderRadius: BorderRadius.circular(12),
-                        elevation: 10,
-                        shadowColor: Colors.white,
-                        child: Container(
-                          height: imageHeight * 0.7,
-                          width: imageWidth * 0.7,
+                  child: Form(
+                    key: _loginController.loginpasswordformkey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: screenHeight * 0.1),
+                        PhysicalModel(
+                          color: appColor2,
+                          clipBehavior: Clip.none,
+                          borderRadius: BorderRadius.circular(12),
+                          elevation: 10,
+                          shadowColor: Colors.white,
+                          child: Container(
+                            height: imageHeight * 0.7,
+                            width: imageWidth * 0.7,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/svg_images/play_store_512.png"),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: screenHeight * 0.05),
+                        Container(
+                          height: textfieldHeight * 0.38,
+                          width: textfieldWidth * 0.85,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
                               image: AssetImage(
-                                  "assets/images/svg_images/play_store_512.png"),
-                              fit: BoxFit.cover,
+                                  "assets/images/svg_images/designtext.png"),
+                              fit: BoxFit.fill,
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.05),
-                      Container(
-                        height: textfieldHeight * 0.38,
-                        width: textfieldWidth * 0.85,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                                "assets/images/svg_images/designtext.png"),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).viewInsets.left + 1,
-                              top: MediaQuery.of(context).viewInsets.top + 8),
-                          child: TextFormField(
-                            controller: _email,
-                            cursorColor: Colors.white,
-                            style: TextStyle(color: Colors.white),
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.email,
-                                color: Colors.white,
-                              ),
-                              hintText: "  Username",
-                              hintStyle: TextStyle(color: Colors.white70),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.025),
-                      Container(
-                        height: textfieldHeight * 0.38,
-                        width: textfieldWidth * 0.85,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                                "assets/images/svg_images/designtext.png"),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).viewInsets.left + 1,
-                              top: MediaQuery.of(context).viewInsets.top + 8),
-                          child: TextFormField(
-                            controller: _pin,
-                            validator: (val) {
-                              if (val!.isEmpty) return 'Password';
-                              return null;
-                            },
-                            obscureText: !_obscured,
-                            cursorColor: Colors.white,
-                            style: TextStyle(color: Colors.white),
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.password,
-                                color: Colors.white,
-                              ),
-                              hintText: "  Password ",
-                              hintStyle: TextStyle(color: Colors.white70),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscured
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.grey,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left:
+                                    MediaQuery.of(context).viewInsets.left + 1,
+                                top: MediaQuery.of(context).viewInsets.top + 8),
+                            child: TextFormField(
+                              controller: _loginController.emailController,
+                              cursorColor: Colors.white,
+                              style: TextStyle(color: Colors.white),
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.email,
+                                  color: Colors.white,
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscured = !_obscured;
-                                  });
-                                },
+                                hintText: "  Username",
+                                hintStyle: TextStyle(color: Colors.white70),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: imageWidth2 * 0.18),
-                          child: GestureDetector(
-                            onTap: () async {
-                              // await _paymentcontroller.paymentdetailApi();
-                              //await Get.to(PaymentHistory());
-
-                              Get.to(ForgotPassword());
-                            },
-                            child: Container(
-                              height: screenHeight * 0.036,
-                              width: imageWidth3 * 0.40,
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
+                        SizedBox(height: screenHeight * 0.025),
+                        Container(
+                          height: textfieldHeight * 0.38,
+                          width: textfieldWidth * 0.85,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  "assets/images/svg_images/designtext.png"),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left:
+                                    MediaQuery.of(context).viewInsets.left + 1,
+                                top: MediaQuery.of(context).viewInsets.top + 8),
+                            child: TextFormField(
+                              controller: _loginController.passwordController,
+                              validator: (val) {
+                                if (val!.isEmpty) return 'Password';
+                                return null;
+                              },
+                              obscureText: !_obscured,
+                              cursorColor: Colors.white,
+                              style: TextStyle(color: Colors.white),
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.password,
+                                  color: Colors.white,
+                                ),
+                                hintText: "  Password ",
+                                hintStyle: TextStyle(color: Colors.white70),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscured
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscured = !_obscured;
+                                    });
+                                  },
+                                ),
                               ),
-                              child: Center(
-                                child: Text(
-                                  'Forgot Password',
-                                  style: GoogleFonts.abyssinicaSil(
-                                    color: Colors.white,
-                                    //backgroundColor: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    // fontFamily: 'medium',
-                                    fontSize: 12,
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: imageWidth2 * 0.18),
+                            child: GestureDetector(
+                              onTap: () async {
+                                // await _paymentcontroller.paymentdetailApi();
+                                //await Get.to(PaymentHistory());
+
+                                Get.to(ForgotPassword());
+                              },
+                              child: Container(
+                                height: screenHeight * 0.036,
+                                width: imageWidth3 * 0.40,
+                                decoration: BoxDecoration(
+                                  color: Colors.black54,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Forgot Password',
+                                    style: GoogleFonts.abyssinicaSil(
+                                      color: Colors.white,
+                                      //backgroundColor: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      // fontFamily: 'medium',
+                                      fontSize: 12,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: screenHeight * 0.03),
-                      RectangularButton(
-                        text: 'Sign In',
-                        press: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Home_Page(),
-                            ),
-                          );
-                        },
-                      ),
-                      SizedBox(height: screenHeight * 0.03),
+                        SizedBox(height: screenHeight * 0.03),
+                        RectangularButton(
+                          text: 'Sign In',
+                          press: () async {
+                            //_userProfilesController.userprofileApi();
 
-                      RectangularButton2(
-                        text: 'Don\'t Have an account?',
-                        text2: "SignUP",
-                        press: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegistrationPage(),
-                            ),
-                          );
-                        },
-                      ),
+                            _loginController.checkLoginpassword();
+                          },
+                        ),
+                        SizedBox(height: screenHeight * 0.03),
 
-                      /// SizedBox(height: imageWidth2 * 0.1),
-                      // Container(
-                      //   height: imageHeight3 * 0.15,
-                      //   width: imageWidth3 * 0.95,
-                      //   decoration: BoxDecoration(
-                      //     image: DecorationImage(
-                      //       image: AssetImage("assets/images/registerhere.png"),
-                      //       fit: BoxFit.fill,
-                      //     ),
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       Text(
-                      //         "Don't have an account? ",
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontSize: 13,
-                      //           fontWeight: FontWeight.bold,
-                      //         ),
-                      //       ),
-                      //       InkWell(
-                      //         onTap: () {
-                      //           Navigator.push(
-                      //             context,
-                      //             MaterialPageRoute(
-                      //               builder: (context) => registration_page(),
-                      //             ),
-                      //           );
-                      //         },
-                      //         child: Text(
-                      //           "SignUp here",
-                      //           style: TextStyle(
-                      //             color: Colors.blue.shade900,
-                      //             fontWeight: FontWeight.bold,
-                      //             decoration: TextDecoration.underline,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                    ],
+                        RectangularButton2(
+                          text: 'Don\'t Have an account?',
+                          text2: "SignUP",
+                          press: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegistrationPage(),
+                              ),
+                            );
+                          },
+                        ),
+
+                        /// SizedBox(height: imageWidth2 * 0.1),
+                        // Container(
+                        //   height: imageHeight3 * 0.15,
+                        //   width: imageWidth3 * 0.95,
+                        //   decoration: BoxDecoration(
+                        //     image: DecorationImage(
+                        //       image: AssetImage("assets/images/registerhere.png"),
+                        //       fit: BoxFit.fill,
+                        //     ),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       Text(
+                        //         "Don't have an account? ",
+                        //         style: TextStyle(
+                        //           color: Colors.white,
+                        //           fontSize: 13,
+                        //           fontWeight: FontWeight.bold,
+                        //         ),
+                        //       ),
+                        //       InkWell(
+                        //         onTap: () {
+                        //           Navigator.push(
+                        //             context,
+                        //             MaterialPageRoute(
+                        //               builder: (context) => registration_page(),
+                        //             ),
+                        //           );
+                        //         },
+                        //         child: Text(
+                        //           "SignUp here",
+                        //           style: TextStyle(
+                        //             color: Colors.blue.shade900,
+                        //             fontWeight: FontWeight.bold,
+                        //             decoration: TextDecoration.underline,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
               ),

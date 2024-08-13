@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:game_app/constantt/color_text.dart';
 import 'package:get/get.dart';
 
-import '../Controllersss/profiles/profile_controller.dart';
 import '../constantt/responsive_container_text.dart';
+import '../controllers_all/get_profile_controller.dart';
 import 'update_profile.dart';
 
 class Profileuserr extends StatelessWidget {
-  final ProfileController _getprofilee = Get.put(ProfileController());
+  //final ProfileController _getprofilee = Get.put(ProfileController());
+  final UserProfilesController _userProfilesController =
+      Get.put(UserProfilesController());
 
   Profileuserr({Key? key}) : super(key: key);
 
@@ -26,7 +28,7 @@ class Profileuserr extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Obx(
-            () => (_getprofilee.isLoading.isFalse)
+            () => (_userProfilesController.isLoading.value)
                 ? Center(child: CircularProgressIndicator())
                 : SingleChildScrollView(
                     child: Column(children: [
@@ -82,12 +84,20 @@ class Profileuserr extends StatelessWidget {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text(
-                                        "Kumar Prince",
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            fontFamily: 'medium',
-                                            color: Colors.black),
+                                      Obx(
+                                        () => (_userProfilesController
+                                                .isLoading.value)
+                                            ? Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : Text(
+                                                "${_userProfilesController.profileModel?.profile?.userName.toString()}",
+                                                //"Kumar Prince",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'medium',
+                                                    color: Colors.black),
+                                              ),
                                       ),
                                     ],
                                   ),
@@ -120,13 +130,28 @@ class Profileuserr extends StatelessWidget {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text(
-                                        "kumar@gmail.com",
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            fontFamily: 'medium',
-                                            color: Colors.black),
+                                      Obx(
+                                        () => (_userProfilesController
+                                                .isLoading.value)
+                                            ? Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : Text(
+                                                "${_userProfilesController.profileModel?.profile?.email.toString()}",
+                                                //"Kumar Prince",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'medium',
+                                                    color: Colors.black),
+                                              ),
                                       ),
+                                      // Text(
+                                      //   "kumar@gmail.com",
+                                      //   style: TextStyle(
+                                      //       fontSize: 13,
+                                      //       fontFamily: 'medium',
+                                      //       color: Colors.black),
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -158,12 +183,20 @@ class Profileuserr extends StatelessWidget {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text(
-                                        "9897665532",
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            fontFamily: 'medium',
-                                            color: Colors.black),
+                                      Obx(
+                                        () => (_userProfilesController
+                                                .isLoading.value)
+                                            ? Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : Text(
+                                                "${_userProfilesController.profileModel?.profile?.userName.toString()}",
+                                                //"Kumar Prince",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'medium',
+                                                    color: Colors.black),
+                                              ),
                                       ),
                                     ],
                                   ),
@@ -318,8 +351,8 @@ class Profileuserr extends StatelessWidget {
               const SizedBox(width: 0),
               IconButton(
                 onPressed: () async {
-                  _getprofilee.profileApi();
-                  _getprofilee.update();
+                  _userProfilesController.userprofileApi();
+                  _userProfilesController.update();
                   await Get.to(EditProfile());
                 },
                 icon: const Icon(Icons.edit, color: Colors.white),
