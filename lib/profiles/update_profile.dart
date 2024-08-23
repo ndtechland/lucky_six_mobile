@@ -1,452 +1,366 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-import '../Controllersss/profiles/edit_profile.dart';
-import '../Controllersss/profiles/profile_controller.dart';
-import '../constantt/responsive_button.dart';
-import '../constantt/responsive_text_color.dart';
+import '../2_servicea_apis/api_services.dart';
+import '../constantt/color_text.dart';
+import '../controllers_all/get_profile_controller.dart';
+import '../controllers_all/update_profile_controller.dart';
 
-class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
+class UpdateProfilePage extends StatefulWidget {
+  const UpdateProfilePage({super.key});
+
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  _UpdateProfilePageState createState() => _UpdateProfilePageState();
 }
 
-class _EditProfileState extends State<EditProfile> {
-  final ProfileController _getprofilee = Get.put(ProfileController());
-  UserProfileUodateController _userProfileUodateController =
-      Get.put(UserProfileUodateController());
-  final ProfileController _profileController = Get.find();
+class _UpdateProfilePageState extends State<UpdateProfilePage> {
+  final ProfileUpdateController profileController = Get.put(
+    ProfileUpdateController(apiService: ApiProvider()),
+  );
+  final UserProfilesController _getprofilee = Get.put(UserProfilesController());
+  final _formKey = GlobalKey<FormState>();
+  var imageUrl = "https://api.luckysix.in/images/";
+  // Text editing controllers for each field
+  final TextEditingController idController =
+      TextEditingController(text: 'c0c135c2-2839-4d33-ac92-2b29e1b1e2d1');
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController pinCodeController = TextEditingController();
+  final TextEditingController dobController = TextEditingController();
+  final TextEditingController profileImagePathController =
+      TextEditingController(text: 'abc.png');
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _mobileNumbercontroller = TextEditingController();
-  final TextEditingController _dateOfBirthController = TextEditingController();
-  final TextEditingController _experienceController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _pincodeController = TextEditingController();
+  File? profileImage;
 
-  Uint8List? _cvFileContent2;
+  // Function to pick image from gallery
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-  @override
-  void initState() {
-    super.initState();
-    if (_getprofilee.getprofileModel != null) {
-      _nameController.text = _getprofilee.getprofileModel!.response!.fullName!;
-      _emailController.text = _getprofilee.getprofileModel!.response!.emailId!;
-      _mobileNumbercontroller.text =
-          _getprofilee.getprofileModel!.response!.mobileNumber.toString();
-      _dateOfBirthController.text = formatDateOfBirth(
-          _getprofilee.getprofileModel!.response!.dateofbirth.toString());
-      _experienceController.text =
-          _getprofilee.getprofileModel!.response!.experience!;
-      _addressController.text =
-          _getprofilee.getprofileModel!.response!.address!;
-      _pincodeController.text =
-          _getprofilee.getprofileModel!.response!.pincode.toString();
+    if (pickedFile != null) {
+      setState(() {
+        profileImage = File(pickedFile.path);
+      });
     }
   }
 
-  String formatDateOfBirth(String dateOfBirthString) {
-    try {
-      DateFormat inputFormat = DateFormat("dd/MM/yyyy");
-      DateTime dateOfBirth = inputFormat.parse(dateOfBirthString);
-      DateFormat outputFormat = DateFormat("dd-MM-yyyy");
-      return outputFormat.format(dateOfBirth);
-    } catch (e) {
+  // Function to update profile
+  void _updateProfile() {
+    if (_formKey.currentState?.validate() ?? false) {
       try {
-        DateFormat inputFormat = DateFormat("yyyy-MM-dd");
-        DateTime dateOfBirth = inputFormat.parse(dateOfBirthString);
-        DateFormat outputFormat = DateFormat("dd-MM-yyyy");
-        return outputFormat.format(dateOfBirth);
+        // Provide a default file if profileImage is null
+        final imageToUpload =
+            profileImage ?? File('assets/images/svg_images/play_store_512.png');
+
+        profileController.updateProfile(
+          id: idController.text,
+          fullName: fullNameController.text,
+          phoneNumber: phoneNumberController.text,
+          email: emailController.text,
+          address: addressController.text,
+          pinCode: pinCodeController.text,
+          dob: dobController.text,
+          profileImagePath: profileImagePathController.text,
+          profileImage: imageToUpload, // Use the non-nullable image file here
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Profile updated successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
       } catch (e) {
-        print('Error parsing date: $e');
-        return dateOfBirthString;
+        // Show snackbar on error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update profile: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
 
+  var selectedDate = DateTime.now().obs;
+
+  Future<void> _chooseDate() async {
+    DateTime? newPickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate.value,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      helpText: 'Select DOB',
+      cancelText: 'Close',
+      confirmText: 'Confirm',
+      errorFormatText: 'Enter valid date',
+      errorInvalidText: 'Enter valid date range',
+      fieldLabelText: 'Selected DOB',
+    );
+    if (newPickedDate != null) {
+      selectedDate.value = newPickedDate;
+      dobController.text = DateFormat('yyyy-MM-dd').format(selectedDate.value);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print("userNa:${_getprofilee.profileModel?.profile?.fullName.toString()}");
+
+    _getprofilee.userprofileApi().then((_) {
+      print(
+          "userName:${_getprofilee.profileModel?.profile?.fullName.toString()}");
+
+      if (_getprofilee.profileModel != null) {
+        print(
+            "userNameee:${_getprofilee.profileModel?.profile?.fullName.toString()}");
+        print(
+            "imagee: $imageUrl${_getprofilee.profileModel!.profile!.profilePicture}");
+        print("imagee1: $profileImage");
+        setState(() {
+          fullNameController.text =
+              _getprofilee.profileModel!.profile!.fullName!;
+          emailController.text = _getprofilee.profileModel!.profile!.email!;
+          phoneNumberController.text =
+              _getprofilee.profileModel!.profile!.phoneNumber.toString();
+          dobController.text = _getprofilee.profileModel!.profile!.dob
+              .toString()
+              .substring(0, 10);
+          addressController.text = _getprofilee.profileModel!.profile!.address!;
+          pinCodeController.text =
+              _getprofilee.profileModel!.profile!.pinCode.toString();
+        });
+      } else {
+        print("getprofilee.profileModel :${_getprofilee.profileModel}");
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.white,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset(
-            "assets/images/svg_images/ludobackblack.png",
-            //'assets/images/svg_images/backgroundddice.jpeg',
-            fit: BoxFit.cover,
-          ),
-          Obx(
-            () => (_getprofilee.isLoading.isFalse)
-                ? Center(child: CircularProgressIndicator())
-                : Form(
-                    key: _userProfileUodateController.userprifileFormKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: SingleChildScrollView(
-                      child: Column(
+      appBar: AppBar(
+          backgroundColor: Colors.red.shade300,
+          title: Text('Edit Profile'),
+          centerTitle: true),
+      body: Obx(
+        () => (_getprofilee.isLoading.value)
+            ? Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    width: double.infinity,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 20.0,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
                         children: [
-                          _buildHeader(),
-                          SizedBox(
-                              height: MediaQuery.of(context).orientation ==
-                                      Orientation.portrait
-                                  ? 100
-                                  : 8),
-                          // Container(
-                          //   padding: const EdgeInsets.symmetric(
-                          //       horizontal: 16, vertical: 16),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       blackHeadingSmall(
-                          //           'Basic Informations'.toUpperCase(),
-                          //       ),
-                          //       GestureDetector(
-                          //           onTap: () async {
-                          //             await _profileController.profileApi();
-                          //             _profileController.update();
-                          //             await Navigator.push(
-                          //                 context,
-                          //                 MaterialPageRoute(
-                          //                     builder: (context) => Profile()));
-                          //           },
-                          //           child: appcolorText('View'))
-                          //     ],
-                          //   ),
-                          // ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 16),
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 16),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 20.0,
-                                ),
-                              ],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6.0)),
-                            ),
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  readOnly: true,
-                                  keyboardType: TextInputType.name,
-                                  controller: _nameController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Name',
-                                    suffixIcon: Icon(
-                                      Icons.person,
-                                      size: 23,
-                                      color: Colors.black12,
-                                    ),
-                                    labelStyle: const TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 15,
-                                    ),
-                                    focusedBorder: const UnderlineInputBorder(
-                                      borderSide: BorderSide(color: appColor),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 0),
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.phone,
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(10)
-                                    ],
-                                    controller: _mobileNumbercontroller,
-                                    decoration: InputDecoration(
-                                      suffixIcon: Icon(
-                                        Icons.phone,
-                                        size: 23,
-                                        color: Colors.black12,
-                                      ),
-                                      labelText: "Phone Number",
-                                      hintStyle: (TextStyle(
-                                        fontSize: 13,
-                                      )),
-                                      labelStyle: const TextStyle(
-                                          color: Colors.black54, fontSize: 13),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(color: appColor),
-                                      ),
-                                      enabledBorder: const UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 0),
-                                  child: TextFormField(
-                                    controller: _emailController,
-                                    decoration: InputDecoration(
-                                      suffixIcon: Icon(
-                                        Icons.email,
-                                        size: 23,
-                                        color: Colors.black12,
-                                      ),
-                                      labelText: "Email",
-                                      hintStyle: (TextStyle(
-                                        fontSize: 13,
-                                      )),
-                                      labelStyle: const TextStyle(
-                                          color: Colors.black54, fontSize: 13),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(color: appColor),
-                                      ),
-                                      enabledBorder: const UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 0),
-                                  child: TextFormField(
-                                    readOnly: true,
-                                    controller: _dateOfBirthController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter DOB';
-                                      }
-                                      return null;
-                                    },
-                                    onTap: () {
-                                      //chooseDate();
-                                    },
-                                    decoration: InputDecoration(
-                                      suffixIcon: Icon(
-                                        Icons.calendar_today,
-                                        size: 23,
-                                        color: Colors.black12,
-                                      ),
-                                      labelText: "Date Of Birth",
-                                      hintStyle: (TextStyle(
-                                        fontSize: 13,
-                                      )),
-                                      labelStyle: const TextStyle(
-                                          color: Colors.black54, fontSize: 13),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(color: appColor),
-                                      ),
-                                      enabledBorder: const UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 0),
-                                  child: TextFormField(
-                                    controller: _addressController,
-                                    decoration: InputDecoration(
-                                      suffixIcon: Icon(
-                                        Icons.pin_drop_outlined,
-                                        size: 23,
-                                        color: Colors.black12,
-                                      ),
-                                      labelText: "Address",
-                                      hintStyle: (TextStyle(
-                                        fontSize: 13,
-                                      )),
-                                      labelStyle: const TextStyle(
-                                          color: Colors.black54, fontSize: 13),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(color: appColor),
-                                      ),
-                                      enabledBorder: const UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 0),
-                                  child: TextFormField(
-                                    controller: _pincodeController,
-                                    decoration: InputDecoration(
-                                      suffixIcon: Icon(
-                                        Icons.pin,
-                                        size: 23,
-                                        color: Colors.black12,
-                                      ),
-                                      labelText: "Pin",
-                                      hintStyle: (TextStyle(
-                                        fontSize: 13,
-                                      )),
-                                      labelStyle: const TextStyle(
-                                          color: Colors.black54, fontSize: 13),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(color: appColor),
-                                      ),
-                                      enabledBorder: const UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                              height: MediaQuery.of(context).orientation ==
-                                      Orientation.portrait
-                                  ? 4
-                                  : 4),
-
-                          ///profile....
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 06),
-                              child: Row(
-                                children: [
-                                  // Expanded widget to ensure the TextField takes the remaining width
-                                  Expanded(
-                                    child: TextFormField(
-                                      readOnly: true,
-
-                                      //  controller: _profileFilePathController,
-                                      decoration: InputDecoration(
-                                          labelText: 'Profile Image'),
-                                      enabled: false,
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-
-                                  // Add some spacing between the TextField and the Button
-                                  Container(
-                                    width: 80,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: ElevatedButton(
-                                      onPressed: () => Container(),
-                                      //_selectCVFile2(context),
-                                      // _checkAndRequestPermissions2(
-                                      // context), // Use a lambda function
-                                      style: ElevatedButton.styleFrom(
-                                        primary: appColor, // Button color
-                                        onPrimary: Colors.white, // Text color
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              10), // Rounded corners
-                                        ),
-                                      ),
-                                      child: Text(
-                                        'Profile\n Image',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-
                           SizedBox(height: 10),
-
-                          MyElevatedButton(
-                            onPressed: () {
-                              // Ensure date is formatted correctly
-                              String formattedDateOfBirth = formatDateOfBirth(
-                                  _dateOfBirthController.text);
-
-                              _userProfileUodateController.updateUseerrProfile(
-                                fullName: _nameController.text,
-                                emailID: _emailController.text,
-                                mobileNumber: _mobileNumbercontroller.text,
-                                experience: _experienceController.text,
-                                dateofbirth: formattedDateOfBirth,
-                                address: _addressController.text,
-                                pincode: _pincodeController.text,
-                                cvFileContent2:
-                                    _cvFileContent2!, // Pass file content
-                                // Pass PAN file name
-                              );
-                            },
-                            text: Text('Update'),
-                            height: 40,
-                            width: 200,
+                          Center(
+                            child: Stack(
+                              children: [
+                                CircleAvatar(
+                                  radius: 60,
+                                  backgroundColor: Colors.grey[200],
+                                  backgroundImage: profileImage != null
+                                      ? FileImage(profileImage!)
+                                      : NetworkImage(
+                                              "$imageUrl${_getprofilee.profileModel!.profile!.profilePicture}")
+                                          as ImageProvider,
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.blue,
+                                    ),
+                                    onPressed: _pickImage,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-
-                          const SizedBox(height: 20),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            keyboardType: TextInputType.name,
+                            controller: fullNameController,
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                              suffixIcon: Icon(
+                                Icons.person,
+                                size: 23,
+                                color: Colors.black12,
+                              ),
+                              labelStyle: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: appColor),
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10)
+                            ],
+                            controller: phoneNumberController,
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.phone,
+                                size: 23,
+                                color: Colors.black12,
+                              ),
+                              labelText: "Phone Number",
+                              hintStyle: const TextStyle(fontSize: 13),
+                              labelStyle: const TextStyle(
+                                  color: Colors.black54, fontSize: 13),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: appColor),
+                              ),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black12),
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.name,
+                            controller: emailController,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              suffixIcon: Icon(
+                                Icons.email,
+                                size: 23,
+                                color: Colors.black12,
+                              ),
+                              labelStyle: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15,
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: appColor),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            readOnly: true,
+                            controller: dobController,
+                            onTap: () {
+                              _chooseDate();
+                            },
+                            decoration: InputDecoration(
+                              labelText: "DOB",
+                              suffixIcon: Icon(
+                                Icons.calendar_today,
+                                size: 23,
+                                color: Colors.black12,
+                              ),
+                              hintStyle: const TextStyle(fontSize: 13),
+                              labelStyle: const TextStyle(
+                                  color: Colors.black54, fontSize: 13),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: appColor),
+                              ),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black12),
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.streetAddress,
+                            controller: addressController,
+                            decoration: InputDecoration(
+                              labelText: 'Address',
+                              suffixIcon: Icon(
+                                Icons.location_on,
+                                size: 23,
+                                color: Colors.black12,
+                              ),
+                              labelStyle: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15,
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: appColor),
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            keyboardType: TextInputType.number,
+                            controller: pinCodeController,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(6)
+                            ],
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.local_post_office,
+                                size: 23,
+                                color: Colors.black12,
+                              ),
+                              labelText: "Pin Code",
+                              hintStyle: const TextStyle(fontSize: 13),
+                              labelStyle: const TextStyle(
+                                  color: Colors.black54, fontSize: 13),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: appColor),
+                              ),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black12),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 0),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 35.0),
+                            child: ElevatedButton(
+                              onPressed: _updateProfile,
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red.shade300,
+                                padding: EdgeInsets.symmetric(vertical: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              child: Text('Update Profile'),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
-          ),
-        ],
+                ),
+              ),
       ),
     );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: <Color>[appColor2, appColor]),
-        ),
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Get.back();
-                      // Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back, color: Colors.white)),
-                const Expanded(
-                  child: Center(
-                    child: Text(
-                      'Edit Profile',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'medium',
-                          fontSize: 20),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 40)
-              ],
-            ),
-          ],
-        ));
   }
 }

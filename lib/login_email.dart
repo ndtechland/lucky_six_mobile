@@ -122,85 +122,154 @@ class _LoginEmailState extends State<LoginEmail> {
                           ),
                         ),
                         SizedBox(height: screenHeight * 0.05),
-                        Container(
-                          height: textfieldHeight * 0.38,
-                          width: textfieldWidth * 0.85,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  "assets/images/svg_images/designtext.png"),
-                              fit: BoxFit.fill,
+                        IntrinsicHeight(
+                          child: Container(
+                            width: textfieldWidth * 0.85,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/svg_images/designtext.png"),
+                                fit: BoxFit.fill,
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
+                            child: Padding(
+                              padding: EdgeInsets.only(
                                 left:
                                     MediaQuery.of(context).viewInsets.left + 1,
-                                top: MediaQuery.of(context).viewInsets.top + 8),
-                            child: TextFormField(
-                              controller: _loginController.emailController,
-                              cursorColor: Colors.white,
-                              style: TextStyle(color: Colors.white),
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.email,
-                                  color: Colors.white,
-                                ),
-                                hintText: "  Username",
-                                hintStyle: TextStyle(color: Colors.white70),
+                                top: MediaQuery.of(context).viewInsets.top + 9,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextFormField(
+                                    controller:
+                                        _loginController.emailController,
+                                    cursorColor: Colors.white,
+                                    style: TextStyle(color: Colors.white),
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      prefixIcon: Icon(
+                                        Icons.email,
+                                        color: Colors.white,
+                                      ),
+                                      hintText: "  Username",
+                                      hintStyle:
+                                          TextStyle(color: Colors.white70),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return '                  Please enter a username';
+                                      } else if (!RegExp(
+                                              r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                          .hasMatch(value)) {
+                                        return '                  Please enter a valid UserName';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  SizedBox(height: 5),
+                                  Obx(() =>
+                                      _loginController.emailError.value != ""
+                                          ? Text(
+                                              _loginController.emailError.value,
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 12),
+                                            )
+                                          : SizedBox.shrink()),
+                                ],
                               ),
                             ),
                           ),
                         ),
                         SizedBox(height: screenHeight * 0.025),
-                        Container(
-                          height: textfieldHeight * 0.38,
-                          width: textfieldWidth * 0.85,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  "assets/images/svg_images/designtext.png"),
-                              fit: BoxFit.fill,
+                        IntrinsicHeight(
+                          child: Container(
+                            width: textfieldWidth * 0.85,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/svg_images/designtext.png"),
+                                fit: BoxFit.fill,
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left:
-                                    MediaQuery.of(context).viewInsets.left + 1,
-                                top: MediaQuery.of(context).viewInsets.top + 8),
-                            child: TextFormField(
-                              controller: _loginController.passwordController,
-                              validator: (val) {
-                                if (val!.isEmpty) return 'Password';
-                                return null;
-                              },
-                              obscureText: !_obscured,
-                              cursorColor: Colors.white,
-                              style: TextStyle(color: Colors.white),
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.password,
-                                  color: Colors.white,
-                                ),
-                                hintText: "  Password ",
-                                hintStyle: TextStyle(color: Colors.white70),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _obscured
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: Colors.grey,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).viewInsets.left,
+                                top: MediaQuery.of(context).viewInsets.top + 4,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: MediaQuery.of(context)
+                                          .viewInsets
+                                          .left,
+                                      top: MediaQuery.of(context)
+                                              .viewInsets
+                                              .top +
+                                          4,
+                                    ),
+                                    child: TextFormField(
+                                      controller:
+                                          _loginController.passwordController,
+                                      validator: (val) {
+                                        if (val == null || val.isEmpty) {
+                                          return '                  Please enter a password';
+                                        } else if (val.length < 5) {
+                                          return '                  Password must be at least 5 characters long';
+                                        } else if (!RegExp(
+                                                r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)')
+                                            .hasMatch(val)) {
+                                          return '  At least an uppercase,lowercase, and special character';
+                                        }
+                                        return null;
+                                      },
+                                      obscureText: !_obscured,
+                                      cursorColor: Colors.white,
+                                      style: TextStyle(color: Colors.white),
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        prefixIcon: Icon(
+                                          Icons.password,
+                                          color: Colors.white,
+                                        ),
+                                        hintText: "  Password",
+                                        hintStyle:
+                                            TextStyle(color: Colors.white70),
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            _obscured
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                            color: Colors.grey,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _obscured = !_obscured;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _obscured = !_obscured;
-                                    });
-                                  },
-                                ),
+                                  SizedBox(
+                                      height:
+                                          5), // Space between the text field and error message
+                                  Obx(() =>
+                                      _loginController.passwordError.value != ""
+                                          ? Text(
+                                              _loginController
+                                                  .passwordError.value,
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 12),
+                                            )
+                                          : SizedBox.shrink()),
+                                ],
                               ),
                             ),
                           ),

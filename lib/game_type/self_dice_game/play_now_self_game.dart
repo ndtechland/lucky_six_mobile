@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../controllers_all/game_price_list_self_controller.dart';
 import '3D_animated_dice_self.dart';
 import 'controller_selecteddice_number.dart';
 import 'exit_buttom_selfdice.dart';
@@ -22,32 +23,33 @@ class Play_Now_self_game extends StatefulWidget {
 class _Play_Now_self_gameState extends State<Play_Now_self_game> {
   int _selectedIndex = -1;
   final SelectedDiceController controller = Get.put(SelectedDiceController());
-
+  GetGamePriceListSelfController _getGamePriceListSelfController =
+      Get.put(GetGamePriceListSelfController());
   // Add a variable to store the selected index
-
   //late AudioPlayer _audioPlayer;
   Timer? _startTimer;
   Timer? _stopTimer;
 
-  final List<String> _priceList = [
-    '50',
-    '100',
-    '200',
-    '300',
-    '400',
-    '500',
-    '1000',
-  ];
+  // final List<String> _priceList = [
+  //   '50',
+  //   '100',
+  //   '200',
+  //   '300',
+  //   '400',
+  //   '500',
+  //   '1000',
+  // ];
+  ///
 
-  final List<String> _priceList2 = [
-    '100',
-    '200',
-    '400',
-    '600',
-    '800',
-    '1000',
-    '2000',
-  ];
+  // final List<String> _priceList2 = [
+  //   '100',
+  //   '200',
+  //   '400',
+  //   '600',
+  //   '800',
+  //   '1000',
+  //   '2000',
+  // ];
 
   final List<String> _imageList = [
     'assets/images/svg_images/dcc1.png',
@@ -1007,116 +1009,162 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                         width: MediaQuery.of(context).size.width * 0.058,
                         height: MediaQuery.of(context).size.height * 0.9,
                         child: ListView.builder(
-                          itemCount: _priceList.length,
+                          itemCount: _getGamePriceListSelfController
+                              .getpricelistModel?.getGameAmount!.length,
                           itemBuilder: (context, index) {
                             bool isSelected = _selectedIndex == index;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _selectedIndex = index;
-                                });
-                              },
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.09,
-                                width: MediaQuery.of(context).size.width * 0.6,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: isSelected
-                                      ? Colors.red.shade300
-                                      : Colors.black,
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/images/svg_images/pricelistwin.png",
-                                    ),
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.04,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.038,
-                                      child: Center(
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            "${_priceList[index]}",
-                                            style: GoogleFonts.abyssinicaSil(
-                                              color: Colors.red.shade900,
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.030,
-                                              fontWeight: FontWeight.bold,
+                            return Obx(
+                              () => (_getGamePriceListSelfController
+                                      .isLoading.value)
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : _getGamePriceListSelfController
+                                              .getpricelistModel
+                                              ?.getGameAmount![index]
+                                              .gameName ==
+                                          null
+                                      ? const Center(
+                                          child: Text('No Data'),
+                                        )
+                                      : GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndex = index;
+                                            });
+                                          },
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.09,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.6,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: isSelected
+                                                  ? Colors.red.shade300
+                                                  : Colors.black,
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                  "assets/images/svg_images/pricelistwin.png",
+                                                ),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.04,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.038,
+                                                  child: Center(
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Text(
+                                                        "${_getGamePriceListSelfController.getpricelistModel?.getGameAmount![index].gameAmt}",
+                                                        style: GoogleFonts
+                                                            .abyssinicaSil(
+                                                          color: Colors
+                                                              .red.shade900,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.030,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.033,
+                                                  child: Center(
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "Win:",
+                                                        style: GoogleFonts
+                                                            .abyssinicaSil(
+                                                          color: Colors
+                                                              .green.shade900,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.03,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.04,
+                                                  child: Center(
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${_getGamePriceListSelfController.getpricelistModel?.getGameAmount![index].winingAmt}",
+                                                        style: GoogleFonts
+                                                            .abyssinicaSil(
+                                                          color: Colors.black,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.033,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Center(
+                                                  child: Text(
+                                                    '',
+                                                    style: GoogleFonts
+                                                        .abyssinicaSil(
+                                                      color: Colors.black,
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.035,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.033,
-                                      child: Center(
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            "Win:",
-                                            style: GoogleFonts.abyssinicaSil(
-                                              color: Colors.green.shade900,
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.03,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.04,
-                                      child: Center(
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            "${_priceList2[index]}",
-                                            style: GoogleFonts.abyssinicaSil(
-                                              color: Colors.black,
-                                              fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.033,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        '',
-                                        style: GoogleFonts.abyssinicaSil(
-                                          color: Colors.black,
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.035,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                             );
                           },
                         ),

@@ -11,6 +11,10 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../1_models/game_type_model.dart';
+import '../1_models/get_bank_model.dart';
+import '../1_models/get_wallet_model.dart';
+import '../1_models/price_list_model.dart';
 import '../1_models/profile_model.dart';
 import '../1_models/profiles.dart';
 import '../constantt/fixed_texes.dart';
@@ -124,12 +128,24 @@ class ApiProvider {
         duration: Duration(seconds: 2),
       );
     } else if (r.statusCode == 401) {
+      Fluttertoast.showToast(
+        msg: 'Registration Failed',
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        gravity: ToastGravity.BOTTOM,
+      );
       Get.snackbar(
         "Message",
         r.body,
         duration: Duration(seconds: 2),
       );
     } else {
+      Fluttertoast.showToast(
+        msg: 'Registration Failed',
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        gravity: ToastGravity.BOTTOM,
+      );
       print("Error Response: ${r.body}");
       Get.snackbar(
         "Error",
@@ -151,6 +167,438 @@ class ApiProvider {
     var body = jsonEncode({
       "username": username,
       "password": password,
+    });
+
+    print("Request Body: $body");
+    print("Request URL: $url");
+
+    // Send the HTTP POST request with JSON body and appropriate headers
+    http.Response r = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json", // Set content-type to JSON
+      },
+      body: body,
+    );
+
+    if (r.statusCode == 200) {
+      print("Success Response: ${r.body}");
+
+      var responseBody = jsonDecode(r.body);
+
+      // Save the id and token for future use
+      var prefs = GetStorage();
+      prefs.write("Id", responseBody['model']['id']);
+      prefs.write("Token", responseBody['token']);
+
+      // Save the id and token using SharedPreferences
+      SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+      await sharedPrefs.setString("Id", responseBody['model']['id']);
+      await sharedPrefs.setString("Token", responseBody['token']);
+
+      ///check
+      void checkStorage() {
+        var prefs = GetStorage();
+        print('Saved User ID: ${prefs.read("Id")}');
+        print('Saved Token: ${prefs.read("Token")}');
+      }
+
+      var userId = prefs.read("Id").toString();
+      var token = prefs.read("Token").toString();
+      print('User ID: $userId');
+      print('Token: $token');
+
+      Fluttertoast.showToast(
+          msg: "Login Successful ",
+          // "${r.body}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.green,
+          textColor: Colors.white);
+      //
+      // print("Saved User ID: ${prefs.read('Id')}");
+      // print("Saved Token: ${prefs.read('Token')}");
+      ///todo: use in other screen ....
+      //var userId = GetStorage().read("Id");
+      // var token = GetStorage().read("Token");
+
+      // Get.snackbar(
+      //   "Success",
+      //   "Login Successful",
+      //   duration: Duration(seconds: 2),
+      // );
+    } else if (r.statusCode == 401) {
+      Get.snackbar(
+        "Unauthorized",
+        "Incorrect username or password",
+        duration: Duration(seconds: 2),
+      );
+    } else {
+      print("Error Response: ${r.body}");
+      Get.snackbar(
+        "Error",
+        "Something went wrong. Please try again.",
+        duration: Duration(seconds: 2),
+      );
+    }
+
+    // Ensure a response is always returned
+    return r;
+  }
+
+  ///todo: get profile api....game ..3
+  static PriofileApi() async {
+    var prefs = GetStorage();
+
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID2: $userId');
+    print('Token2: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID2: $userId2');
+    print('Token2: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+
+    var url = '${baseUrl}Account/GetProfileDetail/$userId';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (r.statusCode == 200) {
+        print("Request URL: $url");
+        print("Response Body: ${r.body}");
+
+        // Parse the response body
+        ProfileModel? geetprofilemodel = profileModelFromJson(r.body);
+        print("Profile Email ID: ${geetprofilemodel.profile?.id}");
+        return geetprofilemodel;
+      } else {
+        print("Failed to fetch profile. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching profile details: $error');
+    }
+    return null;
+  }
+
+  ///todo: update Profile lucky six.....3.0...SS..
+  Future<http.Response?> updateProfile({
+    String? id,
+    String? fullName,
+    String? phoneNumber,
+    String? email,
+    String? address,
+    String? pinCode,
+    String? dob,
+    String? profileImagePath,
+    File? profileImage,
+  }) async {
+    try {
+      var uri = Uri.parse('https://api.luckysix.in/api/Account/UpdateProfile');
+
+      var request = http.MultipartRequest('POST', uri);
+
+      var prefs = GetStorage();
+
+      // Retrieve the saved user ID and token
+      var userId = prefs.read("Id").toString();
+      var token = prefs.read("Token").toString();
+      print('User ID2: $userId');
+      print('Token2: $token');
+
+      SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+      // Retrieve the saved user ID and token
+      var userId2 = sharedPrefs.getString("Id");
+      var token2 = sharedPrefs.getString("Token");
+      print('User ID2: $userId2');
+      print('Token2: $token2');
+
+      if (userId == null || token == null) {
+        print('User ID or Token is null');
+        return null;
+      }
+
+      request.fields['Id'] = userId!;
+      request.fields['FullName'] = fullName!;
+      request.fields['Phonenumber'] = phoneNumber!;
+      request.fields['Email'] = email!;
+      request.fields['Address'] = address!;
+      request.fields['PinCode'] = pinCode!;
+      request.fields['DOB'] = dob!;
+      request.fields['ProfileImagePath'] = profileImagePath!;
+
+      if (profileImage != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'ProfileImage',
+          profileImage.path,
+        ));
+      }
+
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      // Print the raw response to the console
+      print('Raw response body: ${response.body}');
+      print('Response status code: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        throw Exception('Failed to update profile: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error updating profile: $e');
+    }
+  }
+
+  ///todo: get game type api....game ..3.01
+  static GameTypeApi() async {
+    var prefs = GetStorage();
+
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID2: $userId');
+    print('Token2: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID2: $userId2');
+    print('Token2: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+
+    var url = '${baseUrl}Home/GameTypeList';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (r.statusCode == 200) {
+        print("Request URLxaa: $url");
+        print("Response Bodyaxax: ${r.body}");
+
+        // Parse the response body
+        GameTypeModel? getgametypemodel = gameTypeModelFromJson(r.body);
+        print("Game  ID: ${getgametypemodel.getGames?[0].id}");
+        return getgametypemodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo: get game price list api....game ..3.1....
+  static GamePriceListApi(String? gameTypeId) async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID3: $userId');
+    print('Token3: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID3: $userId2');
+    print('Token3: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+    //https://api.luckysix.in/api/Home/GamePriceByGameId?GameId=1
+
+    var url = '${baseUrl}Home/GamePriceByGameId?GameId=$gameTypeId';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URLpricelist: $url");
+
+      if (r.statusCode == 200) {
+        print("Request URLpricelist: $url");
+        print("Response URLpricebody: ${r.body}");
+
+        // Parse the response body
+        GamePriceListModel? getgameListmodel =
+            gamePriceListModelFromJson(r.body);
+        print("Game List ID: ${getgameListmodel.getGameAmount?[0].id}");
+        return getgameListmodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo: get game price list api....game ..3.1....
+  static GamePriceListDoubleApi(String? gameTypeId) async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID3: $userId');
+    print('Token3: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID3: $userId2');
+    print('Token3: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+    //https://api.luckysix.in/api/Home/GamePriceByGameId?GameId=1
+
+    var url = '${baseUrl}Home/GamePriceByGameId?GameId=$gameTypeId';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URLpricelist: $url");
+
+      if (r.statusCode == 200) {
+        print("Request URLpricelist: $url");
+        print("Response URLpricebody: ${r.body}");
+
+        // Parse the response body
+        GamePriceListModel? getgameListmodel =
+            gamePriceListModelFromJson(r.body);
+        print("Game List ID: ${getgameListmodel.getGameAmount?[0].id}");
+        return getgameListmodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo: get game price list api....game ..3.2....
+  static GamePriceListSelfApi(String? gameTypeId) async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID3: $userId');
+    print('Token3: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID3: $userId2');
+    print('Token3: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+    //https://api.luckysix.in/api/Home/GamePriceByGameId?GameId=1
+
+    var url = '${baseUrl}Home/GamePriceByGameId?GameId=$gameTypeId';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URLpricelist: $url");
+
+      if (r.statusCode == 200) {
+        print("Request URLpricelist: $url");
+        print("Response URLpricebody: ${r.body}");
+
+        // Parse the response body
+        GamePriceListModel? getgameListmodel =
+            gamePriceListModelFromJson(r.body);
+        print("Game List ID: ${getgameListmodel.getGameAmount?[0].id}");
+        return getgameListmodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo: forget password api.....game...4
+  static Future<http.Response> ForgetPasswordApi(String username) async {
+    var url = "${baseUrl}Account/Login";
+
+    // Encode the body as JSON
+    var body = jsonEncode({
+      "username": username,
     });
 
     print("Request Body: $body");
@@ -210,18 +658,29 @@ class ApiProvider {
     return r;
   }
 
-  ///todo: get profile api....game ..3
-  static PriofileApi() async {
+  ///todo: get wallet api....game ..5
+  static GetWalletApi() async {
     var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID55: $userId');
+    print('Token55: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
 
     // Retrieve the saved user ID and token
-    String userId = prefs.read("Id") ?? "";
-    String token = prefs.read("Token") ?? "";
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID5: $userId2');
+    print('Token5: $token2');
 
-    print('User ID: $userId');
-    print('Token: $token');
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
 
-    var url = '${baseUrl}Account/GetProfileDetail/$userId';
+    var url = '${baseUrl}Wallet/GetWalletAmount?UserId=$userId';
 
     try {
       // Send the HTTP GET request with authorization header
@@ -239,9 +698,8 @@ class ApiProvider {
         print("Response Body: ${r.body}");
 
         // Parse the response body
-        ProfileModel? geetprofilemodel = profileModelFromJson(r.body);
-        print("Profile Email ID: ${geetprofilemodel.profile?.id}");
-
+        GetWallettModel? geetprofilemodel = getWallettModelFromJson(r.body);
+        print("Profile Email ID: ${geetprofilemodel.getWallet?.id}");
         return geetprofilemodel;
       } else {
         print("Failed to fetch profile. Status code: ${r.statusCode}");
@@ -249,8 +707,239 @@ class ApiProvider {
     } catch (error) {
       print('Error fetching profile details: $error');
     }
-
     return null;
+  }
+
+  ///todo: get wallet api....game ..5
+  static GetBankDetailsApi() async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID66: $userId');
+    print('Token66: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID6: $userId2');
+    print('Token6: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+
+    var url = '${baseUrl}Home/GetBankDetail?UserId=$userId';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (r.statusCode == 200) {
+        print("Request URL: $url");
+        print("Response Body: ${r.body}");
+//GetBankModel getBankModelFromJson
+        // Parse the response body
+        GetBankModel? geetbankmodel = getBankModelFromJson(r.body);
+        print("Profile Email ID: ${geetbankmodel.bankDetail?.id}");
+        return geetbankmodel;
+      } else {
+        print("Failed to fetch profile. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching profile details: $error');
+    }
+    return null;
+  }
+
+  ///wallet post api..........................................wallet......section.....
+  // static WalletPostApi(var walletAmount) async {
+  //   //var url = baseUrl1 + 'api/AdminApi/AddWalletMoney';
+  //   var url = '${baseUrl}Wallet/AddWalletAmount';
+  //   var prefs = GetStorage();
+  //
+  //   // Retrieve the saved user ID and token
+  //   var userId = prefs.read("Id").toString();
+  //   print('User ID55: $userId');
+  //
+  //   SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+  //
+  //   // Retrieve the saved user ID and token
+  //   var userId2 = sharedPrefs.getString("Id");
+  //   var token2 = sharedPrefs.getString("Token");
+  //   print('User ID5: $userId2');
+  //   print('Token5: $token2');
+  //
+  //   if (userId == null || token == null) {
+  //     print('User ID or Token is null');
+  //     return null;
+  //   }
+  //   //
+  //   // token = prefs.read("token").toString();
+  //   // print('&&&&&&&&&&&&&&&&&&&&&&okok:${token}');
+  //
+  //   var body = {
+  //     // "UserId": UserId,
+  //     "userId": userId,
+  //     "walletAmount": walletAmount,
+  //   };
+  //   // final headers = {"Authorization": "Bearer $token"};
+  //
+  //   print(body);
+  //   http.Response r = await http.post(Uri.parse(url),
+  //       headers: {
+  //         "Content-Type": "application/json", // Set content-type to JSON
+  //       },
+  //       body: body);
+  //   print(url);
+  //   print(r.body);
+  //   print(r.statusCode);
+  //
+  //   if (r.statusCode == 200) {
+  //     print("urlafter200${url}");
+  //     print("urlafter200body${r.body}");
+  //
+  //     //print(r.body);
+  //     print(r.statusCode);
+  //     //  var prefs = GetStorage();
+  //     // // saved id..........
+  //     //  prefs.write("Id".toString(), json.decode(r.body)['Id']);
+  //     //  Id = prefs.read("Id").toString();
+  //     //  print('kjkjkljjkl:${Id}');
+  //     // Get.snackbar('Sucess', 'Added cart Sucessfully');
+  //     return r;
+  //   } else if (r.statusCode == 200) {
+  //     Get.snackbar('message', r.body);
+  //   } else {
+  //     Get.snackbar('Error', r.body);
+  //     return r;
+  //   }
+  // }
+
+  static Future<http.Response?> WalletPostApi(var walletAmount) async {
+    var url = '${baseUrl}Wallet/AddWalletAmount';
+    var prefs = GetStorage();
+
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    print('User ID55: $userId');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID5: $userId2');
+    print('Token5: $token2');
+
+    if (userId == null || token2 == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+
+    var body = {
+      "userId": userId,
+      "walletAmount": walletAmount,
+    };
+
+    print(body);
+    http.Response r = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json", // Set content-type to JSON
+        "Authorization":
+            "Bearer $token2", // Include the token in the headers if required by the API
+      },
+      body: json.encode(body), // Encode body as JSON
+    );
+
+    print(url);
+    print(r.body);
+    print(r.statusCode);
+
+    if (r.statusCode == 200) {
+      print("urlafter200${url}");
+      print("urlafter200body${r.body}");
+      return r;
+    } else {
+      Get.snackbar('Error', r.body);
+      return r;
+    }
+  }
+
+  ///todo: Update bank profile....game....app...
+
+  // static String apiUrl11 = "${baseUrl}Home/UpdateBankDetail";
+
+  static String apiUrl11 = "${baseUrl}Home/UpdateBankDetail";
+
+  Future<bool> updateBankDetail({
+    ///required String userId,
+    String? accountNo,
+    String? accountHolderName,
+    String? phone,
+    String? email,
+    String? bankName,
+    String? ifsc,
+    String? address,
+    String? upiId,
+  }) async {
+    final url = Uri.parse(apiUrl11);
+
+    var prefs = GetStorage();
+
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    print('User ID55: $userId');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID5: $userId2');
+    print('Token5: $token2');
+
+    // Construct the request body with the required userId and optional fields
+    final Map<String, dynamic> requestBody = {
+      'userId': userId, // Required field
+    };
+
+    // Add optional fields if they are not null
+    if (accountNo != null) requestBody['accountNo'] = accountNo;
+    if (accountHolderName != null)
+      requestBody['accountHolderName'] = accountHolderName;
+    if (phone != null) requestBody['phone'] = phone;
+    if (email != null) requestBody['email'] = email;
+    if (bankName != null) requestBody['bankName'] = bankName;
+    if (ifsc != null) requestBody['ifsc'] = ifsc;
+    if (address != null) requestBody['address'] = address;
+    if (upiId != null) requestBody['upiId'] = upiId;
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any necessary authorization headers here if needed
+      },
+      body: json.encode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      ///Get.offAll(Settingsss());
+
+      // Handle success
+      return true;
+    } else {
+      // Handle error
+      return false;
+    }
   }
 
   ///todo: end ....game ...api...
@@ -258,13 +947,12 @@ class ApiProvider {
 
   ///user_ profile__update.........15 jun
 
-  static String apiUrl7 = "${baseUrl}App/UpdateProfile";
+  static String apiUrl7 = "${baseUrl}Account/UpdateProfile";
+
   static Future<http.Response> updateuserProfileApi(
     Map<String, String> formData,
-    //Uint8List cvFileContent,
-    //String CVFileName,
-    Uint8List cvFileContent2,
-    // String ProfileImage,
+    Uint8List profileImage,
+    String profileImagePath,
   ) async {
     var uri = Uri.parse(apiUrl7);
     var request = http.MultipartRequest('POST', uri);
@@ -274,58 +962,15 @@ class ApiProvider {
       request.fields[key] = value;
     });
 
-    // Helper function to determine the MediaType based on the file extension
-    MediaType getMediaType(String filename) {
-      String ext = filename.split('.').last.toLowerCase();
-      switch (ext) {
-        // case 'jpg':
-        // case 'jpeg':
-        //   return MediaType('image', 'jpeg');
-        // case 'png':
-        //   return MediaType('image', 'png');
-        case 'pdf':
-          return MediaType('application', 'pdf');
-        default:
-          throw Exception('Unsupported file type');
-      }
-    }
-
-    MediaType getMediaType2(String filename) {
-      String ext = filename.split('.').last.toLowerCase();
-      switch (ext) {
-        case 'jpg':
-        case 'jpeg':
-          return MediaType('image', 'jpeg');
-        case 'png':
-          return MediaType('image', 'png');
-        // case 'pdf':
-        //   return MediaType('application', 'pdf');
-        default:
-          throw Exception('Unsupported file type');
-      }
-    }
-
-    // Add file field
-
+    // Add profile image as a file
     request.files.add(http.MultipartFile.fromBytes(
-      'ProfileImage', // The name of the file field
-      cvFileContent2,
-      //filename: ProfileImage,
-      // Use the file name from the parameter
-      //contentType: getMediaType2(ProfileImage)
-
-      //contentType:
-      //MediaType('application', 'pdf'), // Use MediaType from http_parser
+      'ProfileImage', // This should match the field name expected by your server
+      profileImage,
+      filename: profileImagePath, // Use the profileImagePath as the filename
+      contentType:
+          MediaType('image', 'jpeg'), // Use a MediaType based on the image type
     ));
 
-    // Get token from GetStorage
-    // final storage = GetStorage();
-    // var token = storage.read('token');
-
-    // Set token in headers
-    //request.headers['Authorization'] = 'Bearer $token';
-
-    // Send the request
     var response = await request.send();
 
     // Parse the response
@@ -740,7 +1385,7 @@ class ApiProvider {
 
         // Parse the response body
         GetProfileModel? geetprofilemodel = getProfileModelFromJson(r.body);
-        print("Profile Email ID: ${geetprofilemodel.response!.emailId}");
+        print("Profile Email ID: ${geetprofilemodel.profile!.email}");
 
         return geetprofilemodel;
       } else {

@@ -7,9 +7,8 @@ class UserProfilesController extends GetxController {
   RxBool isLoading = true.obs;
   ProfileModel? profileModel;
 
-  void userprofileApi() async {
+  Future<void> userprofileApi() async {
     isLoading(true);
-
     profileModel = await ApiProvider.PriofileApi();
 
     // Print the response to debug

@@ -10,6 +10,7 @@ class RozarwalletController extends GetxController {
 
   RxBool isLoading = false.obs;
   final GlobalKey<FormState> walletamountFormKey = GlobalKey();
+
   //final CartController controller = Get.put(CartController());
   Wallet_2_Controller _walletController = Get.put(Wallet_2_Controller());
   //Wallet_2_Controller _walletPostController = Get.put(WalletPostController());
@@ -82,31 +83,30 @@ class RozarwalletController extends GetxController {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     Get.snackbar("SUCCESS", "ID: ${response.paymentId}");
     print('payment sucess');
+    _walletController.walletPostApi().then((statusCode) {
+      // _postOrderController.postOrderApi().then((statusCode) {
+      if (statusCode == 200) {
+        ///This is the main thing to provide updated list history...
+        // _getProfileController.OrderHistoryApi();
+        _walletController.getWalletApi();
+        //  Get.to(OrderConfirmationPage());
+        // _getProfileController.update();
+        // _walletController.getwalletlist!.result[index].walletAmount!.toDouble()
+        // _walletController.getwalletlist!.result.first.walletAmount!.toDouble();
 
-    // _walletController.walletPostApi().then((statusCode) {
-    //   // _postOrderController.postOrderApi().then((statusCode) {
-    //   if (statusCode == 200) {
-    //     ///This is the main thing to provide updated list history...
-    //     // _getProfileController.OrderHistoryApi();
-    //     _walletController.walletListssApi();
-    //     //  Get.to(OrderConfirmationPage());
-    //     // _getProfileController.update();
-    //     // _walletController.getwalletlist!.result[index].walletAmount!.toDouble()
-    //     // _walletController.getwalletlist!.result.first.walletAmount!.toDouble();
-    //
-    //     _walletController.walletAmount.text;
-    //
-    //     //_walletPostController.walletPostApi();
-    //     //_walletPostController.update();
-    //
-    //     //_walletPostController.checkAmount();
-    //     //Get.to(Wallet());
-    //     // Get.to(OrderConfirmationPage());
-    //     Get.back();
-    //   } else {
-    //     // SHow
-    //   }
-    // });
+        _walletController.walletAmount.text;
+
+        //_walletPostController.walletPostApi();
+        //_walletPostController.update();
+
+        //_walletPostController.checkAmount();
+        //Get.to(Wallet());
+        // Get.to(OrderConfirmationPage());
+        Get.back();
+      } else {
+        // SHow
+      }
+    });
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {

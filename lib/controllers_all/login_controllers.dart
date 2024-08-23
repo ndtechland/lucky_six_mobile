@@ -14,10 +14,16 @@ class LoginController extends GetxController {
   final GlobalKey<FormState> loginpasswordformkey =
       GlobalKey<FormState>(debugLabel: '_loginKey');
 
+  final key1 = GlobalKey<FormState>();
+  final key2 = GlobalKey<FormState>();
+
   ///new experiment....
   //User_1_Controller _user_1_controller = Get.put(User_1_Controller());
 
   var Id = '';
+  var emailError = "".obs;
+  var passwordError = "".obs;
+
   RxBool isLoading = true.obs;
   // bool termsAccepted = true;
 

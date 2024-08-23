@@ -6,12 +6,14 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constantt/circular_loader/circular_loaderr.dart';
 import '../contact_us_suppport_page/support_page.dart';
+import '../controllers_all/game_price_list_controller.dart';
+import '../controllers_all/game_price_list_double_controller.dart';
+import '../controllers_all/game_price_list_self_controller.dart';
+import '../controllers_all/game_type_get_controller.dart';
 import '../controllers_all/get_profile_controller.dart';
 import '../earn_money/earn_money_page.dart';
-import '../game_type/self_dice_game/play_now_self_game.dart';
-import '../price_listts/price_listfor_twodice.dart';
-import '../price_listts/price_listtss.dart';
 import '../profiles/profile_user.dart';
 import '../settingss/settings_page.dart';
 import '../suggessions_pages/sugession_pagesss.dart';
@@ -27,6 +29,19 @@ class Home_Page extends StatefulWidget {
 class _Home_PageState extends State<Home_Page> {
   ///todo: how can i suggest screen hover....
   bool _showSuggestion = false;
+
+  GetGameTypeController _gameTypeController = Get.put(GetGameTypeController());
+
+  GetGamePriceListController _getGamePriceListController =
+      Get.put(GetGamePriceListController());
+
+  //GetWelletController _getWelletController = Get.put(GetWelletController());
+
+  GetGamePriceListDoubleController _gamePriceListDoubleController =
+      Get.put(GetGamePriceListDoubleController());
+
+  GetGamePriceListSelfController _getGamePriceListSelfController =
+      Get.put(GetGamePriceListSelfController());
 
   @override
   void initState() {
@@ -220,6 +235,8 @@ class _Home_PageState extends State<Home_Page> {
 
         break;
       case 1:
+        //_getWelletController.userwalletgetApi();
+        Future.delayed(Duration(milliseconds: 100));
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -228,7 +245,7 @@ class _Home_PageState extends State<Home_Page> {
         );
         break;
       case 2:
-        _userProfilesController.userprofileApi();
+        await _userProfilesController.userprofileApi();
         await Navigator.push(
           context,
           MaterialPageRoute(
@@ -496,29 +513,139 @@ class _Home_PageState extends State<Home_Page> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20), // Reduced spacing
-                _buildGameOption(
-                  context,
-                  "Single Dice Game",
-                  [Colors.red.shade900, Colors.red.shade400],
-                  PriceListss(),
-                ),
-                SizedBox(height: 15), // Reduced spacing
-                _buildGameOption(
-                  context,
-                  "Double Dice Game",
-                  [Colors.black54, Colors.black87],
-                  PriceListssfortwodice(),
-                ),
-                SizedBox(height: 15), // Reduced spacing
-                _buildGameOption(
-                  context,
-                  "Self Dice Game",
-                  [Colors.green.shade900, Colors.green.shade400],
-                  Play_Now_self_game(),
+                //SizedBox(height: 09),
+                Spacer(),
+                SizedBox(
+                  width: dialogSize * 0.9,
+                  height: dialogSize * 0.65,
+                  child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount:
+                          _gameTypeController.gametypeModel?.getGames?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () async {
+                            Get.back();
+                            if (index == 0) {
+                              CallLoader.loader();
+                              await Future.delayed(Duration(seconds: 1));
 
-                  ///PriceListssSelfdice(),
+                              CallLoader.hideLoader();
+
+                              _getGamePriceListController.gamePriceListApi(
+                                  gameTypeId: _gameTypeController
+                                      .gametypeModel?.getGames?[index].id
+                                      .toString());
+                            } else if (index == 1) {
+                              CallLoader.loader();
+                              await Future.delayed(Duration(seconds: 1));
+                              CallLoader.hideLoader();
+
+                              _gamePriceListDoubleController
+                                  .gamePriceListDoubleApi(
+                                      gameTypeId: _gameTypeController
+                                          .gametypeModel?.getGames?[index].id
+                                          .toString());
+                            } else if (index == 2) {
+                              CallLoader.loader();
+                              await Future.delayed(Duration(seconds: 1));
+                              CallLoader.hideLoader();
+                              _getGamePriceListSelfController
+                                  .gamePriceListSelfApi(
+                                      gameTypeId: _gameTypeController
+                                          .gametypeModel?.getGames?[index].id
+                                          .toString());
+                              //_getGamePriceListSelfController
+                              //await Get.to(Play_Now_self_game());
+                            }
+                            // Get.to(navigationTarget);
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2, vertical: 5.5),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Colors.red.shade300, Colors.black45],
+                                  //gradientColors,
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(18.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(0, 4),
+                                    blurRadius: 5.0,
+                                  ),
+                                ],
+                              ),
+                              padding: EdgeInsets.all(14.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Obx(
+                                    () => (_gameTypeController.isLoading.value)
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : _gameTypeController
+                                                    .gametypeModel!
+                                                    .getGames![index]
+                                                    .gameName ==
+                                                null
+                                            ? const Center(
+                                                child: Text('No Data'),
+                                              )
+                                            : Text(
+                                                _gameTypeController
+                                                    .gametypeModel!
+                                                    .getGames![index]
+                                                    .gameName
+                                                    .toString(),
+                                                style: GoogleFonts.roboto(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                  ),
+                                  Icon(Icons.arrow_forward,
+                                      color: Colors.white),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                 ),
+                // Reduced spacing
+                // _buildGameOption(
+                //   context,
+                //   "${_gameTypeController.gametypeModel?.getGames![0].id}",
+                //   //"Single Dice Game",
+                //   [Colors.red.shade900, Colors.red.shade400],
+                //   PriceListss(),
+                // ),
+                ///
+                SizedBox(height: 15), // Reduced spacing
+                // _buildGameOption(
+                //   context,
+                //   "Double Dice Game",
+                //   [Colors.black54, Colors.black87],
+                //   PriceListssfortwodice(),
+                // ),
+                ///
+                // SizedBox(height: 15), // Reduced spacing
+                // _buildGameOption(
+                //   context,
+                //   "Self Dice Game",
+                //   [Colors.green.shade900, Colors.green.shade400],
+                //   Play_Now_self_game(),
+                //
+                //   ///PriceListssSelfdice(),
+                // ),
               ],
             ),
           ),

@@ -6,9 +6,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Controllersss/profiles/edit_profile.dart';
-import '../Controllersss/profiles/profile_controller.dart';
-import '../constantt/responsive_button.dart';
 import '../constantt/responsive_text_color.dart';
+import 'controllers_all/get_bank_controller.dart';
+import 'controllers_all/get_profile_controller.dart';
+import 'controllers_all/update_bank_controller.dart';
 
 class AddBank extends StatefulWidget {
   const AddBank({Key? key}) : super(key: key);
@@ -17,10 +18,15 @@ class AddBank extends StatefulWidget {
 }
 
 class _AddBankState extends State<AddBank> {
-  final ProfileController _getprofilee = Get.put(ProfileController());
+  final UserProfilesController _getprofilee = Get.put(UserProfilesController());
   UserProfileUodateController _userProfileUodateController =
       Get.put(UserProfileUodateController());
-  final ProfileController _profileController = Get.find();
+  final UserProfilesController _profileController = Get.find();
+
+  GetBankDEtailsController _getBankDEtailsController =
+      Get.put(GetBankDEtailsController());
+
+  BankUpdateController _bankUpdateController = Get.put(BankUpdateController());
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -36,17 +42,27 @@ class _AddBankState extends State<AddBank> {
   @override
   void initState() {
     super.initState();
-    if (_getprofilee.getprofileModel != null) {
-      _nameController.text = _getprofilee.getprofileModel!.response!.fullName!;
-      _emailController.text = _getprofilee.getprofileModel!.response!.emailId!;
+    if (_getBankDEtailsController.getbankModel != null) {
+      _nameController.text = _getBankDEtailsController
+          .getbankModel!.bankDetail!.accountHolderName!
+          .toString();
+      _emailController.text =
+          _getBankDEtailsController.getbankModel!.bankDetail!.email!;
       _mobileNumbercontroller.text =
-          _getprofilee.getprofileModel!.response!.mobileNumber.toString();
+          _getBankDEtailsController.getbankModel!.bankDetail!.phone!.toString();
       _upiid.text =
-          _getprofilee.getprofileModel!.response!.dateofbirth.toString();
-      _accountnumber.text = _getprofilee.getprofileModel!.response!.experience!;
-      _ifsc.text = _getprofilee.getprofileModel!.response!.address!;
-      _bankname.text =
-          _getprofilee.getprofileModel!.response!.pincode.toString();
+          _getBankDEtailsController.getbankModel!.bankDetail!.upiId!.toString();
+      //_accountnumber.text = _getprofilee.getprofileModel!.profile!.experience!;
+      _ifsc.text = _getBankDEtailsController.getbankModel!.bankDetail!.ifsc!;
+      _bankname.text = _getBankDEtailsController
+          .getbankModel!.bankDetail!.bankName!
+          .toString();
+      _accountnumber.text = _getBankDEtailsController
+          .getbankModel!.bankDetail!.accountNo!
+          .toString();
+      _bankaddress.text = _getBankDEtailsController
+          .getbankModel!.bankDetail!.address!
+          .toString();
     }
   }
 
@@ -65,10 +81,10 @@ class _AddBankState extends State<AddBank> {
             fit: BoxFit.cover,
           ),
           Obx(
-            () => (_getprofilee.isLoading.isFalse)
+            () => (_getBankDEtailsController.isLoading.value)
                 ? Center(child: CircularProgressIndicator())
                 : Form(
-                    key: _userProfileUodateController.userprifileFormKey,
+                    key: _bankUpdateController.updatebankFormKey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: SingleChildScrollView(
                       child: Column(
@@ -79,28 +95,6 @@ class _AddBankState extends State<AddBank> {
                                       Orientation.portrait
                                   ? 10
                                   : 8),
-                          // Container(
-                          //   padding: const EdgeInsets.symmetric(
-                          //       horizontal: 16, vertical: 16),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       blackHeadingSmall(
-                          //           'Basic Informations'.toUpperCase(),
-                          //       ),
-                          //       GestureDetector(
-                          //           onTap: () async {
-                          //             await _profileController.profileApi();
-                          //             _profileController.update();
-                          //             await Navigator.push(
-                          //                 context,
-                          //                 MaterialPageRoute(
-                          //                     builder: (context) => Profile()));
-                          //           },
-                          //           child: appcolorText('View'))
-                          //     ],
-                          //   ),
-                          // ),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 0, horizontal: 16),
@@ -120,7 +114,7 @@ class _AddBankState extends State<AddBank> {
                             child: Column(
                               children: [
                                 TextFormField(
-                                  readOnly: true,
+                                  //readOnly: true,
                                   keyboardType: TextInputType.name,
                                   controller: _nameController,
                                   decoration: InputDecoration(
@@ -198,7 +192,7 @@ class _AddBankState extends State<AddBank> {
                                 Container(
                                   padding: EdgeInsets.symmetric(vertical: 0),
                                   child: TextFormField(
-                                    readOnly: true,
+                                    //readOnly: true,
                                     controller: _accountnumber,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -310,90 +304,54 @@ class _AddBankState extends State<AddBank> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 15,
-                                ),
-                                Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      height: 20,
-                                      width: 55,
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "UPI ID",
-                                          style: GoogleFonts.abyssinicaSil(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    )),
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 0),
-                                  child: TextFormField(
-                                    controller: _upiid,
-                                    decoration: InputDecoration(
-                                      suffixIcon: Icon(
-                                        Icons.add_moderator,
-                                        size: 23,
-                                        color: Colors.black12,
-                                      ),
-                                      labelText: "Enter UPI ID",
-                                      hintStyle: (TextStyle(
-                                        fontSize: 13,
-                                      )),
-                                      labelStyle: const TextStyle(
-                                          color: Colors.black54, fontSize: 13),
-                                      focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(color: appColor),
-                                      ),
-                                      enabledBorder: const UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.black12),
-                                      ),
+                                    height:
+                                        MediaQuery.of(context).orientation ==
+                                                Orientation.portrait
+                                            ? 25
+                                            : 10),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    // Only use userId for updating bank details
+                                    // final String userId =
+                                    //     _getprofilee.profileModel!.profile!.id!;
+
+                                    await _bankUpdateController
+                                        .updateBankDetails(
+                                      //userId: userId,
+                                      accountHolderName: _nameController.text,
+                                      email: _emailController.text,
+                                      phone: _mobileNumbercontroller.text,
+                                      upiId: _upiid.text,
+                                      accountNo: _accountnumber.text,
+                                      ifsc: _ifsc.text,
+                                      bankName: _bankname.text,
+                                      address: _bankaddress.text,
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size(size.width, 45),
+                                    backgroundColor: appColor,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
                                     ),
                                   ),
+                                  child: const Text(
+                                    'Update Details',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15),
+                                  ),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(
+                                    height:
+                                        MediaQuery.of(context).orientation ==
+                                                Orientation.portrait
+                                            ? 15
+                                            : 8),
                               ],
                             ),
                           ),
-                          SizedBox(
-                              height: MediaQuery.of(context).orientation ==
-                                      Orientation.portrait
-                                  ? 4
-                                  : 4),
-
-                          ///profile....
-
-                          SizedBox(height: 10),
-
-                          MyElevatedButton(
-                            onPressed: () {
-                              // Ensure date is formatted correctly
-                              // String formattedDateOfBirth = formatDateOfBirth(
-                              //     _dateOfBirthController.text);
-
-                              // _userProfileUodateController.updateUseerrProfile(
-                              //   fullName: _nameController.text,
-                              //   emailID: _emailController.text,
-                              //   mobileNumber: _mobileNumbercontroller.text,
-                              //   experience: _experienceController.text,
-                              //   dateofbirth: formattedDateOfBirth,
-                              //   address: _addressController.text,
-                              //   pincode: _pincodeController.text,
-                              //   cvFileContent2:
-                              //   _cvFileContent2!, // Pass file content
-                              //   // Pass PAN file name
-                              // );
-                            },
-                            text: Text('Submit'),
-                            height: 40,
-                            width: 200,
-                          ),
-
-                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
@@ -406,41 +364,62 @@ class _AddBankState extends State<AddBank> {
 
   Widget _buildHeader() {
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 0),
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: <Color>[appColor2, appColor]),
+      height: MediaQuery.of(context).orientation == Orientation.portrait
+          ? 150
+          : 145,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.red.shade600,
+            Colors.red.shade200,
+
+            //const Color(0xFF1B7DAF).withOpacity(0.9)
+          ],
         ),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(0),
+          bottomRight: Radius.circular(0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 18),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Get.back();
-                      // Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back, color: Colors.white)),
-                const Expanded(
-                  child: Center(
-                    child: Text(
-                      'Add Bank',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'medium',
-                          fontSize: 20),
-                    ),
+            InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
+                    size: 20,
                   ),
-                ),
-                const SizedBox(width: 40)
-              ],
+                  const SizedBox(width: 10),
+                  const Text(
+                    "Bank Details",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              "Update your Bank Information",
+              style: GoogleFonts.roboto(
+                color: Colors.white,
+                fontSize: 16,
+              ),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

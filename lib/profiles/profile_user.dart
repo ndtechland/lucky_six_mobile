@@ -91,7 +91,7 @@ class Profileuserr extends StatelessWidget {
                                                 child:
                                                     CircularProgressIndicator())
                                             : Text(
-                                                "${_userProfilesController.profileModel?.profile?.userName.toString()}",
+                                                "${_userProfilesController.profileModel?.profile?.fullName.toString()}",
                                                 //"Kumar Prince",
                                                 style: TextStyle(
                                                     fontSize: 13,
@@ -190,7 +190,7 @@ class Profileuserr extends StatelessWidget {
                                                 child:
                                                     CircularProgressIndicator())
                                             : Text(
-                                                "${_userProfilesController.profileModel?.profile?.userName.toString()}",
+                                                "${_userProfilesController.profileModel?.profile?.phoneNumber.toString()}",
                                                 //"Kumar Prince",
                                                 style: TextStyle(
                                                     fontSize: 13,
@@ -230,7 +230,9 @@ class Profileuserr extends StatelessWidget {
                                         width: 10,
                                       ),
                                       Text(
-                                        "12/12/2002",
+                                        "${_userProfilesController.profileModel?.profile?.dob.toString()}",
+
+                                        //"12/12/2002",
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontFamily: 'medium',
@@ -277,7 +279,9 @@ class Profileuserr extends StatelessWidget {
                                         child: Align(
                                           child: responsiveText(
                                             text:
-                                                "Noida sector 15, near priya gold office",
+                                                "${_userProfilesController.profileModel?.profile?.address.toString()}",
+
+                                            //"Noida sector 15, near priya gold office",
                                             fontSizeLandscape:
                                                 MediaQuery.of(context)
                                                         .size
@@ -353,7 +357,8 @@ class Profileuserr extends StatelessWidget {
                 onPressed: () async {
                   _userProfilesController.userprofileApi();
                   _userProfilesController.update();
-                  await Get.to(EditProfile());
+                  Get.to(UpdateProfilePage());
+                  //Get.to(EditProfile());
                 },
                 icon: const Icon(Icons.edit, color: Colors.white),
               ),

@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:game_app/constantt/responsive_text_color.dart';
+import 'package:game_app/login_email.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../add_bank.dart';
 import '../change_password.dart';
 import '../constantt/responsive_container_text.dart';
+import '../controllers_all/get_bank_controller.dart';
+import '../controllers_all/login_controllers.dart';
 import '../profiles/profile_user.dart';
 
 class Settingsss extends StatelessWidget {
   Settingsss({Key? key}) : super(key: key);
   //GetProfileModel? getprofileModel;
+  LoginController _loginController = Get.put(LoginController());
+  GetBankDEtailsController _getBankDEtailsController =
+      Get.put(GetBankDEtailsController());
 
   // Define a list of items
   final List<String> items = [
@@ -19,7 +26,7 @@ class Settingsss extends StatelessWidget {
     'Profile',
     'Logout',
     'Feedback',
-    'Add Bank',
+    'Bank Details',
     'Change Password'
   ];
 
@@ -81,7 +88,7 @@ class Settingsss extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     vertical: 02, horizontal: 0),
                                 child: GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
                                     if (index == 0) {
                                       //
                                       // Get.to(
@@ -90,11 +97,30 @@ class Settingsss extends StatelessWidget {
                                     } else if (index == 1) {
                                       Get.to(() => Profileuserr());
                                     } else if (index == 2) {
+                                      Get.defaultDialog(
+                                        title: "Welcome To  LuckySix",
+                                        // middleText: "You content goes here...",
+                                        content: getContent(),
+                                        barrierDismissible: true,
+                                        radius: 20.0,
+                                        confirm: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: confirmBtn(context),
+                                        ),
+                                        cancel: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: cancelBtn(),
+                                        ),
+                                      );
+
                                       //Get.to(() => Profile());
                                     } else if (index == 3) {
                                       //Get.to(() => Profile());
                                     } else if (index == 4) {
-                                      Get.to(() => AddBank());
+                                      await _getBankDEtailsController
+                                          .BankDetailsGetApi();
+                                      _getBankDEtailsController.update();
+                                      await Get.to(() => AddBank());
                                     } else if (index == 5) {
                                       Get.to(() => ChangePassword());
                                     }
@@ -258,6 +284,86 @@ class Settingsss extends StatelessWidget {
           const SizedBox(height: 10),
         ],
       ),
+    );
+  }
+
+  Widget confirmBtn(context) {
+    return ElevatedButton(
+        onPressed: () async {
+// Show loading dialog
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          );
+
+          _loginController.onInit();
+
+          await Future.delayed(Duration(seconds: 1));
+
+          await SharedPreferences.getInstance().then((prefs) => prefs.clear());
+
+          // Hide loading dialog
+          Get.back();
+
+          // Navigate to login screen
+          await Get.offAll(() => LoginEmail());
+
+          // Show success snackbar
+          Get.snackbar(
+            'Success',
+            'Successfully logged out',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 3), // Set the duration
+          );
+        },
+        style: ElevatedButton.styleFrom(
+            primary: Colors.red,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            textStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+        child: Text("Confirm"));
+  }
+
+  Widget cancelBtn() {
+    return ElevatedButton(
+        onPressed: () {
+          Get.back();
+        },
+        style: ElevatedButton.styleFrom(
+            primary: Colors.green,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            textStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+        child: Text("Cancel"));
+  }
+
+  Widget getContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "You want to Logout From app?,",
+
+          // "If You want to remove your account,",
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+        ),
+        // Text(
+        //   "Then you please click confirm button",
+        //   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+        // ),
+        // Text(
+        //   "Your data will erase if you press confirm.",
+        //   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+        // ),
+        // Text(
+        //   "If you don't want to delete press cancel",
+        //   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+        // ),
+      ],
     );
   }
 }

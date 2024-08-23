@@ -3,20 +3,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'dart:ui' as ui;
 import 'package:playing_cards_layouts/playing_cards_layouts.dart';
 
-
-
 class NawAni extends StatefulWidget {
-
   final String card1;
   final String card2;
   final String card3;
 
-  NawAni({Key? key, required this.card1, required this.card2, required this.card3}) : super(key: key);
-
-
+  NawAni(
+      {Key? key, required this.card1, required this.card2, required this.card3})
+      : super(key: key);
 
   @override
   State<NawAni> createState() => _NawAniState();
@@ -52,17 +48,15 @@ class _NawAniState extends State<NawAni> with TickerProviderStateMixin {
   void generateCards() {
     for (int i = 0; i < 3; i++) {
       flowCards.add({
-        'id':UniqueKey().toString(),
+        'id': UniqueKey().toString(),
         "color": Colors.red,
-        "image":AssetImage("assets/cardback.png"),
+        "image": AssetImage("assets/cardback.png"),
         // // Color.fromARGB(
         // //     255, Colors.purple.red, Colors.purple.green, Colors.purple.blue),
         // "id": UniqueKey().toString(),
         "width": 70.0,
         "height": 100.0,
       });
-
-
     }
 
     List<Map<String, dynamic>> _cards = fanCards(flowCards, {
@@ -74,14 +68,11 @@ class _NawAniState extends State<NawAni> with TickerProviderStateMixin {
       "width": 80.0,
     });
 
-
-
     flowCards.clear();
     blockCards.clear();
     columnCards.clear();
     setState(() {
       flowCards = _cards;
-
     });
   }
 
@@ -289,19 +280,18 @@ class _NawAniState extends State<NawAni> with TickerProviderStateMixin {
     AnimationController controller = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     Animation<double> tween =
-    Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-          parent: _controller,
-          curve: Interval(
-            0.1 * index,
-            1.0,
-            curve: Curves.ease,
-          ),
-        ));
+        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Interval(
+        0.1 * index,
+        1.0,
+        curve: Curves.ease,
+      ),
+    ));
 
     tween.addListener(() => {
-      //setState(() => {}),
-    });
+          //setState(() => {}),
+        });
 
     Future.delayed(const Duration(milliseconds: 1000), () {
       _controller.forward();
@@ -315,8 +305,8 @@ class _NawAniState extends State<NawAni> with TickerProviderStateMixin {
     var card = mode == "horizontal"
         ? blockCards[cardIndex]
         : mode == "horizontal_rotated"
-        ? flowCards[cardIndex]
-        : columnCards[cardIndex];
+            ? flowCards[cardIndex]
+            : columnCards[cardIndex];
     if (mode == "horizontal_rotated") {
       card = flowCards[cardIndex];
     }
@@ -362,29 +352,27 @@ class _NawAniState extends State<NawAni> with TickerProviderStateMixin {
     AnimationController controller = AnimationController(
         duration: const Duration(milliseconds: 100), vsync: this);
     final Animation<double> curve =
-    CurvedAnimation(parent: controller, curve: Curves.easeOut);
+        CurvedAnimation(parent: controller, curve: Curves.easeOut);
     Animation<double> tween = Tween(begin: from, end: to).animate(curve);
 
     tween.addListener(() => {
-      if (mode == "horizontal" || mode == "horizontal_rotated")
-        {
-          card["coords"]["y"] = tween.value,
-        }
-      else
-        {
-          card["coords"]["x"] = tween.value,
-        },
-      updateFn(),
-    });
+          if (mode == "horizontal" || mode == "horizontal_rotated")
+            {
+              card["coords"]["y"] = tween.value,
+            }
+          else
+            {
+              card["coords"]["x"] = tween.value,
+            },
+          updateFn(),
+        });
     controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Colors.white,
-
         body: LayoutBuilder(builder:
             (BuildContext context, BoxConstraints viewportConstraints) {
           this.viewportConstraints = viewportConstraints;
@@ -399,15 +387,13 @@ class _NawAniState extends State<NawAni> with TickerProviderStateMixin {
                 child: Stack(
                   fit: StackFit.passthrough,
                   clipBehavior: Clip.none,
-                  children:
-                  getCards(flowCards, "horizontal_rotated",),
-
+                  children: getCards(
+                    flowCards,
+                    "horizontal_rotated",
+                  ),
                 ),
               ),
-
             ),
-
-
           ]);
 
           //);

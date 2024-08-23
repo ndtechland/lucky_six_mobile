@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../Controllersss/pricelist_controller.dart';
 import '../HomePage/homePage.dart';
 import '../HomePage/select_dice/select_number_of_dice.dart';
+import '../controllers_all/game_price_list_controller.dart';
+import '../controllers_all/game_type_get_controller.dart';
 
 class PriceListss extends StatelessWidget {
   static const String id = 'Company';
@@ -13,27 +15,33 @@ class PriceListss extends StatelessWidget {
   final PriceListController _priceListController =
       Get.put(PriceListController());
 
-  final List<String> _priceList = [
-    '₹50',
-    '₹100',
-    '₹200',
-    '₹300',
-    '₹400',
-    '₹500',
-    '₹1000',
-    '₹2000',
-  ];
+  // final List<String> _priceList = [
+  //   '₹50',
+  //   '₹100',
+  //   '₹200',
+  //   '₹300',
+  //   '₹400',
+  //   '₹500',
+  //   '₹1000',
+  //   '₹2000',
+  // ];
 
-  final List<String> _priceList2 = [
-    '₹100',
-    '₹200',
-    '₹400',
-    '₹600',
-    '₹800',
-    '₹1000',
-    '₹2000',
-    '₹4000',
-  ];
+  ///
+
+  // final List<String> _priceList2 = [
+  //   '₹100',
+  //   '₹200',
+  //   '₹400',
+  //   '₹600',
+  //   '₹800',
+  //   '₹1000',
+  //   '₹2000',
+  //   '₹4000',
+  // ];
+
+  GetGamePriceListController _getGamePriceListController =
+      Get.put(GetGamePriceListController());
+  GetGameTypeController _gameTypeController = Get.put(GetGameTypeController());
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +149,9 @@ class PriceListss extends StatelessWidget {
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                           ),
-                          itemCount: _priceList.length,
+                          itemCount: _getGamePriceListController
+                              .getpricelistModel?.getGameAmount?.length,
+                          //_priceList.length,
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
@@ -227,14 +237,36 @@ class PriceListss extends StatelessWidget {
 
                                 // navigateToScreen(index);
                               },
-                              child: buildImageContainer(_priceList2[index],
-                                  _priceList[index], height, width, isPortrait),
+                              child: Obx(
+                                () => (_getGamePriceListController
+                                        .isLoading.value)
+                                    ? const Center(
+                                        child: CircularProgressIndicator())
+                                    : _getGamePriceListController
+                                                .getpricelistModel
+                                                ?.getGameAmount![index]
+                                                .gameName ==
+                                            null
+                                        ? const Center(
+                                            child: Text('No Data'),
+                                          )
+                                        : buildImageContainer(
+                                            "${_getGamePriceListController.getpricelistModel?.getGameAmount![index].winingAmt}",
+                                            "${_getGamePriceListController.getpricelistModel?.getGameAmount![index].gameAmt}",
+                                            // _priceList2[index],
+                                            // _priceList[index],
+                                            height,
+                                            width,
+                                            isPortrait),
+                              ),
                             );
                           },
                         )
                       : ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: _priceList.length,
+                          itemCount: _getGamePriceListController
+                              .getpricelistModel!.getGameAmount!.length,
+                          //_priceList.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: EdgeInsets.only(
@@ -329,12 +361,29 @@ class PriceListss extends StatelessWidget {
 
                                   //navigateToScreen(index);
                                 },
-                                child: buildImageContainer(
-                                    _priceList2[index],
-                                    _priceList[index],
-                                    height,
-                                    width,
-                                    isPortrait),
+                                child: Obx(
+                                  () => (_getGamePriceListController
+                                          .isLoading.value)
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : _getGamePriceListController
+                                                  .getpricelistModel
+                                                  ?.getGameAmount![index]
+                                                  .gameName ==
+                                              null
+                                          ? const Center(
+                                              child: Text('No Data'),
+                                            )
+                                          : buildImageContainer(
+                                              "${_getGamePriceListController.getpricelistModel?.getGameAmount![index].winingAmt}",
+                                              " ${_getGamePriceListController.getpricelistModel?.getGameAmount![index].gameAmt}",
+
+                                              // _priceList2[index],
+                                              // _priceList[index],
+                                              height,
+                                              width,
+                                              isPortrait),
+                                ),
                               ),
                             );
                           },
@@ -446,8 +495,8 @@ class PriceListss extends StatelessWidget {
   //   );
   // }
 
-  Widget buildImageContainer(String _priceList2, _priceList, double height,
-      double width, bool isPortrait) {
+  Widget buildImageContainer(String _priceList2, String _priceList,
+      double height, double width, bool isPortrait) {
     double containerHeight = isPortrait ? height * 0.2 : height * 0.43;
     double containerWidth = isPortrait ? width * 0.34 : width * 0.18;
     double containerHeight2 = isPortrait ? height * 0.2 : height * 0.4;

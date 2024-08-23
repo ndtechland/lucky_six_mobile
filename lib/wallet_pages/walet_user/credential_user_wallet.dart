@@ -8,7 +8,10 @@ import '../../Controllersss/rezaypay_controller/wallet_controller.dart';
 
 class WalletCredentials extends StatelessWidget {
   WalletCredentials({Key? key}) : super(key: key);
-  final TextEditingController walletAmountController = TextEditingController();
+
+  /// final TextEditingController walletAmountController = TextEditingController();
+
+  ///GetWelletController _getWelletController = Get.put(GetWelletController());
 
   final Wallet_2_Controller wallet2Controller = Get.put(Wallet_2_Controller());
   final RozarwalletController rozarwalletController =
@@ -77,6 +80,7 @@ class WalletCredentials extends StatelessWidget {
                       ),
                       child: Form(
                         key: wallet2Controller.walletformkey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: imageHeight * 0.12,
@@ -207,14 +211,18 @@ class WalletCredentials extends StatelessWidget {
           //border: Border.all(color: Colors.white)
         ),
         child: Center(
-            child: Text(
-          "300",
-          style: GoogleFonts.alata(
-            fontSize: 15,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.w200,
-            color: Colors.white,
-          ),
+            child: Obx(
+          () => (wallet2Controller.isLoading.value)
+              ? Center(child: CircularProgressIndicator())
+              : Text(
+                  "${wallet2Controller.getWallettModel?.getWallet?.walletAmount}",
+                  style: GoogleFonts.alata(
+                    fontSize: 15,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w200,
+                    color: Colors.white,
+                  ),
+                ),
         )));
   }
 
@@ -404,6 +412,7 @@ class WalletCredentials extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
+          print("jhgvjdfhvjkfhvfi: ${wallet2Controller.walletAmount.text}");
           rozarwalletController.openCheckout();
         },
         child: Padding(

@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
+import '../../1_models/get_wallet_model.dart';
+import '../../2_servicea_apis/api_services.dart';
 
 class Wallet_2_Controller extends GetxController {
   final GlobalKey<FormState> walletformkey = GlobalKey<FormState>();
+  // RxBool isLoading = false.obs;
   RxBool isLoading = false.obs;
+
   //WalletModel? getwalletlist;
+  GetWallettModel? getWallettModel;
 
   /// wallet list api..............
+  ///
+  Future<void> getWalletApi() async {
+    isLoading(true);
+    getWallettModel = await ApiProvider.GetWalletApi();
+
+    // Print the response to debug
+    print("Profile Model Response: ${getWallettModel?.toJson()}");
+
+    if (getWallettModel?.getWallet?.id != null) {
+      isLoading(false);
+    } else {
+      isLoading(false);
+    }
+  }
 
   // void walletListssApi() async {
   //   isLoading(true);
@@ -17,27 +38,26 @@ class Wallet_2_Controller extends GetxController {
   // }
 
   ///.......................lower method is commented on 28 feb .................by rahul
-  // Future<int> walletPostApi() async {
-  //   isLoading(true);
-  //   http.Response r =
-  //   await ApiProvider.WalletPostApi(UserId.text, walletAmount.text);
-  //   if (r.statusCode == 200) {
-  //     ///TODO: we can navigate directly this page through this navigation with add to cart with Id.
-  //     // Get.to(
-  //     //       () => HomePagePractice(), //next page class
-  //     //   duration: Duration(
-  //     //       milliseconds: 300), //duration of transitions, default 1 sec
-  //     //   transition:
-  //     //
-  //     //   Transition.zoom,
-  //     // );
-  //   }
-  //   isLoading(false);
-  //   //todo///////01/03
-  //   return r.statusCode;
-  // }
+  Future<int?> walletPostApi() async {
+    isLoading(true);
+    http.Response? r = await ApiProvider.WalletPostApi(walletAmount.text);
+    if (r?.statusCode == 200) {
+      ///TODO: we can navigate directly this page through this navigation with add to cart with Id.
+      // Get.to(
+      //       () => HomePagePractice(), //next page class
+      //   duration: Duration(
+      //       milliseconds: 300), //duration of transitions, default 1 sec
+      //   transition:
+      //
+      //   Transition.zoom,
+      // );
+    }
+    isLoading(false);
+    //todo///////01/03
+    return r?.statusCode;
+  }
 
-  ///............................................................................................
+  ///.............................................
   ///
   ///
   ///.......................lower method is commented on 28 feb .................
@@ -78,7 +98,6 @@ class Wallet_2_Controller extends GetxController {
   // }
 
   ///............................................................................................
-  TextEditingController UserId = TextEditingController();
   TextEditingController walletAmount = TextEditingController();
   TextEditingController walletAmount2 = TextEditingController();
 
@@ -92,6 +111,7 @@ class Wallet_2_Controller extends GetxController {
 
   @override
   void onInit() {
+    getWalletApi();
     // stateCitymap((key, value) {
     //   states.add(key);
     // }
@@ -105,7 +125,7 @@ class Wallet_2_Controller extends GetxController {
     ///walletListssApi();
 
     super.onInit();
-    UserId;
+    //UserId;
     amount;
     walletAmount;
   }

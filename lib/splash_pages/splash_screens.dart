@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:game_app/HomePage/homePage.dart';
 import 'package:get/get.dart';
 
+import '../1_models/login_model/account_service.dart';
 import '../login_email.dart';
 import 'splash_controller.dart';
 
@@ -96,16 +98,49 @@ class SplashScreen extends StatelessWidget {
                     builder: (controller) {
                       if (controller.animation.status ==
                           AnimationStatus.completed) {
-                        //Start the timer
-                        Timer(Duration(seconds: 2), () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginEmail()),
-                          );
+                        // Start the timer
+                        Timer(Duration(seconds: 2), () async {
+                          try {
+                            final accountData =
+                                await accountService.getAccountData;
+                            print("AccountData: $accountData");
+
+                            if (accountData != null) {
+                              //await _getprofileepersonal.profileemployeeApi();
+                              //await _homedashboardController.dashboarddApi();
+                              //_homedashboardController.update();
+                              await Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Home_Page()),
+                              );
+                            } else {
+                              //await _profileController.profileApi();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginEmail()),
+                              );
+                            }
+                          } catch (error) {
+                            print('Error in SplashScreen: $error');
+                            // Handle error accordingly
+                          }
                         });
                       }
 
+                      ///
+                      // if (controller.animation.status ==
+                      //     AnimationStatus.completed) {
+                      //   //Start the timer
+                      //   Timer(Duration(seconds: 2), () async {
+                      //     Navigator.pushReplacement(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => LoginEmail()),
+                      //     );
+                      //   });
+                      // }
                       return Center(
                         child: AnimatedBuilder(
                           animation: controller.animation,

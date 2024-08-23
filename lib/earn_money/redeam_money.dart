@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../Controllersss/profiles/edit_profile.dart';
-import '../Controllersss/profiles/profile_controller.dart';
 import '../constantt/responsive_button.dart';
 import '../constantt/responsive_text_color.dart';
+import '../controllers_all/get_profile_controller.dart';
 
 class RedeemeRequest extends StatefulWidget {
   const RedeemeRequest({Key? key}) : super(key: key);
@@ -16,10 +16,10 @@ class RedeemeRequest extends StatefulWidget {
 }
 
 class _RedeemeRequestState extends State<RedeemeRequest> {
-  final ProfileController _getprofilee = Get.put(ProfileController());
+  final UserProfilesController _getprofilee = Get.put(UserProfilesController());
   UserProfileUodateController _userProfileUodateController =
       Get.put(UserProfileUodateController());
-  final ProfileController _profileController = Get.find();
+  final UserProfilesController _profileController = Get.find();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -34,17 +34,14 @@ class _RedeemeRequestState extends State<RedeemeRequest> {
   @override
   void initState() {
     super.initState();
-    if (_getprofilee.getprofileModel != null) {
-      _nameController.text = _getprofilee.getprofileModel!.response!.fullName!;
-      _emailController.text = _getprofilee.getprofileModel!.response!.emailId!;
+    if (_getprofilee.profileModel != null) {
+      _nameController.text = _getprofilee.profileModel!.profile!.fullName!;
+      _emailController.text = _getprofilee.profileModel!.profile!.email!;
       _mobileNumbercontroller.text =
-          _getprofilee.getprofileModel!.response!.mobileNumber.toString();
-      _upiid.text =
-          _getprofilee.getprofileModel!.response!.dateofbirth.toString();
-      _accountnumber.text = _getprofilee.getprofileModel!.response!.experience!;
-      _ifsc.text = _getprofilee.getprofileModel!.response!.address!;
-      _bankname.text =
-          _getprofilee.getprofileModel!.response!.pincode.toString();
+          _getprofilee.profileModel!.profile!.phoneNumber.toString();
+      _upiid.text = _getprofilee.profileModel!.profile!.dob.toString();
+      _ifsc.text = _getprofilee.profileModel!.profile!.address!;
+      _bankname.text = _getprofilee.profileModel!.profile!.pinCode.toString();
     }
   }
 

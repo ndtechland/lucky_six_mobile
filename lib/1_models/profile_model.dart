@@ -36,28 +36,44 @@ class ProfileModel {
 
 class Profile {
   String? id;
-  String? userName;
+  String? fullName;
   String? email;
   String? phoneNumber;
+  String? profilePicture;
+  DateTime? dob;
+  String? address;
+  String? pinCode;
 
   Profile({
     this.id,
-    this.userName,
+    this.fullName,
     this.email,
     this.phoneNumber,
+    this.profilePicture,
+    this.dob,
+    this.address,
+    this.pinCode,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
         id: json["id"],
-        userName: json["userName"],
+        fullName: json["fullName"],
         email: json["email"],
         phoneNumber: json["phoneNumber"],
+        profilePicture: json["profilePicture"],
+        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
+        address: json["address"],
+        pinCode: json["pinCode"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "userName": userName,
+        "fullName": fullName,
         "email": email,
         "phoneNumber": phoneNumber,
+        "profilePicture": profilePicture,
+        "dob": dob?.toIso8601String(),
+        "address": address,
+        "pinCode": pinCode,
       };
 }

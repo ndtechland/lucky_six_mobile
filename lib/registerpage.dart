@@ -266,6 +266,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           maxLength: maxLength,
           validator: validator ?? (value) => null, // Optional validation
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(top: 2),
             counterText: "",
             border: InputBorder.none,
             hintText: "  $hintText",
@@ -303,6 +304,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           style: TextStyle(color: Colors.white),
           validator: validator ?? (value) => null, // Optional validation
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(top: 19),
             border: InputBorder.none,
             hintText: "  $hintText",
             hintStyle: TextStyle(color: Colors.white70),
@@ -318,7 +320,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       ),
     );
   }
-
   // Future<void> register(
   //     String name, String phone, String pin, String confirmpin) async {
   //   final SharedPreferences sharedPreferences =

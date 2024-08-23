@@ -100,6 +100,10 @@
 ///..
 import 'dart:convert';
 
+// To parse this JSON data, do
+//
+//     final getProfileModel = getProfileModelFromJson(jsonString);
+
 GetProfileModel getProfileModelFromJson(String str) =>
     GetProfileModel.fromJson(json.decode(str));
 
@@ -107,108 +111,71 @@ String getProfileModelToJson(GetProfileModel data) =>
     json.encode(data.toJson());
 
 class GetProfileModel {
-  Response? response;
   int? status;
   String? message;
+  Profile? profile;
 
   GetProfileModel({
-    this.response,
     this.status,
     this.message,
+    this.profile,
   });
 
   factory GetProfileModel.fromJson(Map<String, dynamic> json) =>
       GetProfileModel(
-        response: json["response"] == null
-            ? null
-            : Response.fromJson(json["response"]),
         status: json["status"],
         message: json["message"],
+        profile:
+            json["profile"] == null ? null : Profile.fromJson(json["profile"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "response": response?.toJson(),
         "status": status,
         "message": message,
+        "profile": profile?.toJson(),
       };
 }
 
-class Response {
-  num? id;
+class Profile {
+  String? id;
   String? fullName;
-  String? emailId;
-  int? mobileNumber;
-  String? experience;
-  String? stateName;
-  String? cityName;
-  String? genderName;
-  String? dateofbirth;
-  String? resumeFilePath;
-  num? pincode;
+  String? email;
+  String? phoneNumber;
+  String? profilePicture;
+  DateTime? dob;
   String? address;
-  String? profileImage;
-  double? currentCtc;
-  double? expectedCtc;
-  num? stateid;
-  num? cityid;
+  String? pinCode;
 
-  Response({
+  Profile({
     this.id,
     this.fullName,
-    this.emailId,
-    this.mobileNumber,
-    this.experience,
-    this.stateName,
-    this.cityName,
-    this.genderName,
-    this.dateofbirth,
-    this.resumeFilePath,
-    this.pincode,
+    this.email,
+    this.phoneNumber,
+    this.profilePicture,
+    this.dob,
     this.address,
-    this.profileImage,
-    this.currentCtc,
-    this.expectedCtc,
-    this.stateid,
-    this.cityid,
+    this.pinCode,
   });
 
-  factory Response.fromJson(Map<String, dynamic> json) => Response(
+  factory Profile.fromJson(Map<String, dynamic> json) => Profile(
         id: json["id"],
         fullName: json["fullName"],
-        emailId: json["emailID"],
-        mobileNumber: json["mobileNumber"],
-        experience: json["experience"],
-        stateName: json["stateName"],
-        cityName: json["cityName"],
-        genderName: json["genderName"],
-        dateofbirth: json["dateofbirth"],
-        resumeFilePath: json["resumeFilePath"],
-        pincode: json["pincode"],
+        email: json["email"],
+        phoneNumber: json["phoneNumber"],
+        profilePicture: json["profilePicture"],
+        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
         address: json["address"],
-        profileImage: json["profileImage"],
-        currentCtc: json["currentCTC"],
-        expectedCtc: json["expectedCTC"],
-        stateid: json["stateid"],
-        cityid: json["cityid"],
+        pinCode: json["pinCode"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "fullName": fullName,
-        "emailID": emailId,
-        "mobileNumber": mobileNumber,
-        "experience": experience,
-        "stateName": stateName,
-        "cityName": cityName,
-        "genderName": genderName,
-        "dateofbirth": dateofbirth,
-        "resumeFilePath": resumeFilePath,
-        "pincode": pincode,
+        "email": email,
+        "phoneNumber": phoneNumber,
+        "profilePicture": profilePicture,
+        "dob": dob?.toIso8601String(),
         "address": address,
-        "profileImage": profileImage,
-        "currentCTC": currentCtc,
-        "expectedCTC": expectedCtc,
-        "stateid": stateid,
-        "cityid": cityid,
+        "pinCode": pinCode,
       };
 }

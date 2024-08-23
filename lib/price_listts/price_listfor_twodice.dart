@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../Controllersss/pricelist_controller.dart';
 import '../HomePage/homePage.dart';
 import '../HomePage/select_dice/select_21_dice.dart';
+import '../controllers_all/game_price_list_double_controller.dart';
 
 class PriceListssfortwodice extends StatelessWidget {
   static const String id = 'Company';
@@ -13,27 +14,31 @@ class PriceListssfortwodice extends StatelessWidget {
   final PriceListController _priceListController =
       Get.put(PriceListController());
 
-  final List<String> _priceList = [
-    '₹50',
-    '₹100',
-    '₹200',
-    '₹300',
-    '₹400',
-    '₹500',
-    '₹1000',
-    '₹2000',
-  ];
+  GetGamePriceListDoubleController _gamePriceListDoubleController =
+      Get.put(GetGamePriceListDoubleController());
 
-  final List<String> _priceList2 = [
-    '₹75',
-    '₹150',
-    '₹300',
-    '₹450',
-    '₹600',
-    '₹750',
-    '₹1500',
-    '₹3000',
-  ];
+  // final List<String> _priceList = [
+  //   '₹50',
+  //   '₹100',
+  //   '₹200',
+  //   '₹300',
+  //   '₹400',
+  //   '₹500',
+  //   '₹1000',
+  //   '₹2000',
+  // ];
+  ///
+
+  // final List<String> _priceList2 = [
+  //   '₹75',
+  //   '₹150',
+  //   '₹300',
+  //   '₹450',
+  //   '₹600',
+  //   '₹750',
+  //   '₹1500',
+  //   '₹3000',
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +146,8 @@ class PriceListssfortwodice extends StatelessWidget {
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                           ),
-                          itemCount: _priceList.length,
+                          itemCount: _gamePriceListDoubleController
+                              .getpricelistModel?.getGameAmount?.length,
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
@@ -227,14 +233,28 @@ class PriceListssfortwodice extends StatelessWidget {
 
                                 // navigateToScreen(index);
                               },
-                              child: buildImageContainer(_priceList2[index],
-                                  _priceList[index], height, width, isPortrait),
+                              //_gamePriceListDoubleController
+                              //                               .getpricelistModel?.getGameAmount?
+                              child: Obx(
+                                () => (_gamePriceListDoubleController
+                                        .isLoading.value)
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : buildImageContainer(
+                                        "${_gamePriceListDoubleController.getpricelistModel?.getGameAmount![index].winingAmt}",
+                                        "${_gamePriceListDoubleController.getpricelistModel?.getGameAmount![index].gameAmt}",
+                                        height,
+                                        width,
+                                        isPortrait),
+                              ),
                             );
                           },
                         )
                       : ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: _priceList.length,
+                          itemCount: _gamePriceListDoubleController
+                              .getpricelistModel?.getGameAmount?.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: EdgeInsets.only(
@@ -329,12 +349,27 @@ class PriceListssfortwodice extends StatelessWidget {
 
                                   //navigateToScreen(index);
                                 },
-                                child: buildImageContainer(
-                                    _priceList2[index],
-                                    _priceList[index],
-                                    height,
-                                    width,
-                                    isPortrait),
+                                child: Obx(
+                                  () => (_gamePriceListDoubleController
+                                          .isLoading.value)
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : _gamePriceListDoubleController
+                                                  .getpricelistModel
+                                                  ?.getGameAmount![index]
+                                                  .gameName ==
+                                              null
+                                          ? const Center(
+                                              child: Text('No Data'),
+                                            )
+                                          : buildImageContainer(
+                                              "${_gamePriceListDoubleController.getpricelistModel?.getGameAmount![index].winingAmt}",
+                                              " ${_gamePriceListDoubleController.getpricelistModel?.getGameAmount![index].gameAmt}",
+                                              height,
+                                              width,
+                                              isPortrait),
+                                ),
                               ),
                             );
                           },
