@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:game_app/1_models/login_model/account_service.dart';
-import 'package:game_app/controllers_all/show_case_controller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -53,9 +52,9 @@ class LoginController extends GetxController {
       await accountService.setAccountData(accountData);
 
       // Assuming the user has successfully logged in
-      final ShowcaseController showcaseController =
-          Get.put(ShowcaseController());
-      showcaseController.markUserLoggedIn();
+      // final ShowcaseController showcaseController =
+      //     Get.put(ShowcaseController());
+      /// showcaseController.markUserLoggedIn();
 
       // Navigate to the home page
 

@@ -22,6 +22,7 @@ import '../wallet_pages/walet_user/wallet_user.dart';
 
 class Home_Page extends StatefulWidget {
   const Home_Page({Key? key}) : super(key: key);
+
   @override
   State<Home_Page> createState() => _Home_PageState();
 }
@@ -29,15 +30,20 @@ class Home_Page extends StatefulWidget {
 class _Home_PageState extends State<Home_Page> {
   ///todo: how can i suggest screen hover....
   bool _showSuggestion = false;
+
   GetGameTypeController _gameTypeController = Get.put(GetGameTypeController());
+
   GetGamePriceListController _getGamePriceListController =
       Get.put(GetGamePriceListController());
+
   GetGamePriceListDoubleController _gamePriceListDoubleController =
       Get.put(GetGamePriceListDoubleController());
+
   GetGamePriceListSelfController _getGamePriceListSelfController =
       Get.put(GetGamePriceListSelfController());
   GetDiceListSelfController _getDiceListSelfController =
       Get.put(GetDiceListSelfController());
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +53,7 @@ class _Home_PageState extends State<Home_Page> {
   Future<void> _checkIfFirstTimeUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool hasSeenSuggestion = prefs.getBool('hasSeenSuggestion') ?? false;
+
     if (!hasSeenSuggestion) {
       setState(() {
         _showSuggestion = true;
@@ -71,12 +78,14 @@ class _Home_PageState extends State<Home_Page> {
     "assets/images/svg_images/5.gif",
     "assets/images/svg_images/6.gif",
   ];
+
   @override
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -102,7 +111,9 @@ class _Home_PageState extends State<Home_Page> {
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            //Get.back();
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.transparent,
@@ -280,12 +291,14 @@ class _Home_PageState extends State<Home_Page> {
       String imagePath, double height, double width, bool isPortrait) {
     double containerHeight = isPortrait ? height * 0.2 : height * 0.4;
     double containerWidth = isPortrait ? width * 0.34 : width * 0.24;
+
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: PhysicalModel(
         elevation: 12,
         color: Colors.white,
         shadowColor: Colors.black,
+        //clipBehavior: Clip.none,
         borderRadius: BorderRadius.circular(10),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
@@ -300,13 +313,13 @@ class _Home_PageState extends State<Home_Page> {
                 fit: BoxFit.contain,
               ),
             ),
+            // Optionally, you can add a child widget here if needed
           ),
         ),
       ),
     );
   }
 
-  ///void show dilog box for game type...
   void showCustomGameDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -505,4 +518,53 @@ class _Home_PageState extends State<Home_Page> {
       },
     );
   }
+
+  Widget _buildGameOption(
+    BuildContext context,
+    String title,
+    List<Color> gradientColors,
+    Widget navigationTarget,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        Get.back();
+        Get.to(navigationTarget);
+      },
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: gradientColors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(18.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 4),
+              blurRadius: 5.0,
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(14.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.roboto(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+            Icon(Icons.arrow_forward, color: Colors.white),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ///
 }
