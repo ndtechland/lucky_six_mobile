@@ -11,13 +11,15 @@ String gamePriceListModelToJson(GamePriceListModel data) =>
     json.encode(data.toJson());
 
 class GamePriceListModel {
-  int? status;
+  num? status;
   String? message;
+  num? gameid;
   List<GetGameAmount>? getGameAmount;
 
   GamePriceListModel({
     this.status,
     this.message,
+    this.gameid,
     this.getGameAmount,
   });
 
@@ -25,6 +27,7 @@ class GamePriceListModel {
       GamePriceListModel(
         status: json["status"],
         message: json["message"],
+        gameid: json["gameid"],
         getGameAmount: json["getGameAmount"] == null
             ? []
             : List<GetGameAmount>.from(
@@ -34,6 +37,7 @@ class GamePriceListModel {
   Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
+        "gameid": gameid,
         "getGameAmount": getGameAmount == null
             ? []
             : List<dynamic>.from(getGameAmount!.map((x) => x.toJson())),
@@ -42,6 +46,7 @@ class GamePriceListModel {
 
 class GetGameAmount {
   num? id;
+  num? gameId;
   String? gameName;
   num? gameAmt;
   num? winingAmt;
@@ -50,6 +55,7 @@ class GetGameAmount {
 
   GetGameAmount({
     this.id,
+    this.gameId,
     this.gameName,
     this.gameAmt,
     this.winingAmt,
@@ -59,6 +65,7 @@ class GetGameAmount {
 
   factory GetGameAmount.fromJson(Map<String, dynamic> json) => GetGameAmount(
         id: json["id"],
+        gameId: json["gameId"],
         gameName: json["gameName"],
         gameAmt: json["gameAmt"],
         winingAmt: json["winingAmt"],
@@ -70,6 +77,7 @@ class GetGameAmount {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "gameId": gameId,
         "gameName": gameName,
         "gameAmt": gameAmt,
         "winingAmt": winingAmt,

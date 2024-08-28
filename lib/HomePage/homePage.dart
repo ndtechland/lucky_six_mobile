@@ -12,6 +12,7 @@ import '../controllers_all/game_price_list_controller.dart';
 import '../controllers_all/game_price_list_double_controller.dart';
 import '../controllers_all/game_price_list_self_controller.dart';
 import '../controllers_all/game_type_get_controller.dart';
+import '../controllers_all/get_dice_list_self_controller.dart';
 import '../controllers_all/get_profile_controller.dart';
 import '../earn_money/earn_money_page.dart';
 import '../profiles/profile_user.dart';
@@ -21,7 +22,6 @@ import '../wallet_pages/walet_user/wallet_user.dart';
 
 class Home_Page extends StatefulWidget {
   const Home_Page({Key? key}) : super(key: key);
-
   @override
   State<Home_Page> createState() => _Home_PageState();
 }
@@ -29,20 +29,15 @@ class Home_Page extends StatefulWidget {
 class _Home_PageState extends State<Home_Page> {
   ///todo: how can i suggest screen hover....
   bool _showSuggestion = false;
-
   GetGameTypeController _gameTypeController = Get.put(GetGameTypeController());
-
   GetGamePriceListController _getGamePriceListController =
       Get.put(GetGamePriceListController());
-
-  //GetWelletController _getWelletController = Get.put(GetWelletController());
-
   GetGamePriceListDoubleController _gamePriceListDoubleController =
       Get.put(GetGamePriceListDoubleController());
-
   GetGamePriceListSelfController _getGamePriceListSelfController =
       Get.put(GetGamePriceListSelfController());
-
+  GetDiceListSelfController _getDiceListSelfController =
+      Get.put(GetDiceListSelfController());
   @override
   void initState() {
     super.initState();
@@ -52,7 +47,6 @@ class _Home_PageState extends State<Home_Page> {
   Future<void> _checkIfFirstTimeUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool hasSeenSuggestion = prefs.getBool('hasSeenSuggestion') ?? false;
-
     if (!hasSeenSuggestion) {
       setState(() {
         _showSuggestion = true;
@@ -77,14 +71,12 @@ class _Home_PageState extends State<Home_Page> {
     "assets/images/svg_images/5.gif",
     "assets/images/svg_images/6.gif",
   ];
-
   @override
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: Stack(
         children: [
@@ -93,12 +85,7 @@ class _Home_PageState extends State<Home_Page> {
             width: width,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/svg_images/ludobackblack.png"
-                    //"assets/images/svg_images/backgroundddice.jpeg"
-                    // "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    //"assets/images/svg_images/backgroundddice.jpeg"
-                    // "assets/images/backgroundhome2.jpg"
-                    ),
+                image: AssetImage("assets/images/svg_images/ludobackblack.png"),
                 fit: BoxFit.cover,
               ),
             ),
@@ -115,9 +102,7 @@ class _Home_PageState extends State<Home_Page> {
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: GestureDetector(
-                          onTap: () {
-                            //Get.back();
-                          },
+                          onTap: () {},
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.transparent,
@@ -295,14 +280,12 @@ class _Home_PageState extends State<Home_Page> {
       String imagePath, double height, double width, bool isPortrait) {
     double containerHeight = isPortrait ? height * 0.2 : height * 0.4;
     double containerWidth = isPortrait ? width * 0.34 : width * 0.24;
-
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: PhysicalModel(
         elevation: 12,
         color: Colors.white,
         shadowColor: Colors.black,
-        //clipBehavior: Clip.none,
         borderRadius: BorderRadius.circular(10),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
@@ -317,7 +300,6 @@ class _Home_PageState extends State<Home_Page> {
                 fit: BoxFit.contain,
               ),
             ),
-            // Optionally, you can add a child widget here if needed
           ),
         ),
       ),
@@ -325,136 +307,6 @@ class _Home_PageState extends State<Home_Page> {
   }
 
   ///void show dilog box for game type...
-  //
-  // void showCustomGameDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Dialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(20.0),
-  //         ),
-  //         backgroundColor: Colors.transparent,
-  //         child: Container(
-  //           padding: EdgeInsets.all(16.0),
-  //           decoration: BoxDecoration(
-  //             gradient: LinearGradient(
-  //               colors: [Colors.blueGrey.shade900, Colors.blueGrey.shade600],
-  //               begin: Alignment.topLeft,
-  //               end: Alignment.bottomRight,
-  //             ),
-  //             borderRadius: BorderRadius.circular(20.0),
-  //             boxShadow: [
-  //               BoxShadow(
-  //                 color: Colors.black54,
-  //                 blurRadius: 10.0,
-  //                 offset: Offset(0, 10),
-  //               ),
-  //             ],
-  //           ),
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: [
-  //               GestureDetector(
-  //                 onTap: () {
-  //                   // Get.to(Loadingone());
-  //                 },
-  //                 child: Container(
-  //                   width: double.infinity,
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.blue.shade900,
-  //                     borderRadius: BorderRadius.circular(10.0),
-  //                   ),
-  //                   padding: EdgeInsets.all(12.0),
-  //                   child: Text(
-  //                     "SELECT GAME TYPE!",
-  //                     style: GoogleFonts.roboto(
-  //                       fontWeight: FontWeight.bold,
-  //                       color: Colors.white,
-  //                       fontSize: 18,
-  //                     ),
-  //                     textAlign: TextAlign.center,
-  //                   ),
-  //                 ),
-  //               ),
-  //               SizedBox(height: 20),
-  //               _buildGameOption(
-  //                 context,
-  //                 "Single Dice Game",
-  //                 [Colors.red.shade900, Colors.red.shade400],
-  //                 PriceListss(),
-  //               ),
-  //               SizedBox(height: 20),
-  //               _buildGameOption(
-  //                 context,
-  //                 "Double Dice Game",
-  //                 [Colors.black54, Colors.black87],
-  //                 PriceListssfortwodice(),
-  //               ),
-  //               SizedBox(height: 20),
-  //               _buildGameOption(
-  //                 context,
-  //                 "Self Dice Game",
-  //                 [Colors.green.shade900, Colors.green.shade400],
-  //                 PriceListssSelfdice(),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-  //
-  // Widget _buildGameOption(
-  //   BuildContext context,
-  //   String title,
-  //   List<Color> gradientColors,
-  //   Widget navigationTarget,
-  // ) {
-  //   return GestureDetector(
-  //     onTap: () {
-  //       Get.back();
-  //       Get.to(navigationTarget);
-  //     },
-  //
-  //     ///todo:....
-  //     child: Container(
-  //       width: double.infinity,
-  //       decoration: BoxDecoration(
-  //         gradient: LinearGradient(
-  //           colors: gradientColors,
-  //           begin: Alignment.topLeft,
-  //           end: Alignment.bottomRight,
-  //         ),
-  //         borderRadius: BorderRadius.circular(15.0),
-  //         boxShadow: [
-  //           BoxShadow(
-  //             color: Colors.black26,
-  //             offset: Offset(0, 4),
-  //             blurRadius: 5.0,
-  //           ),
-  //         ],
-  //       ),
-  //       padding: EdgeInsets.all(16.0),
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           Text(
-  //             title,
-  //             style: GoogleFonts.roboto(
-  //               fontWeight: FontWeight.bold,
-  //               color: Colors.white,
-  //               fontSize: 16,
-  //             ),
-  //           ),
-  //           Icon(Icons.arrow_forward, color: Colors.white),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-  ///
   void showCustomGameDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -533,9 +385,26 @@ class _Home_PageState extends State<Home_Page> {
                               CallLoader.hideLoader();
 
                               _getGamePriceListController.gamePriceListApi(
-                                  gameTypeId: _gameTypeController
-                                      .gametypeModel?.getGames?[index].id
-                                      .toString());
+                                gameTypeId: _gameTypeController
+                                    .gametypeModel?.getGames?[index].id
+                                    .toString(),
+                              );
+
+                              SharedPreferences sharedPrefs =
+                                  await SharedPreferences.getInstance();
+
+                              ///todo: Save the game type ID
+                              await sharedPrefs.setString(
+                                'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
+                                "${_gameTypeController.gametypeModel?.getGames?[index].id}",
+                              );
+
+                              // Retrieve the game type ID
+                              var gameTypeId2 = sharedPrefs.getString(
+                                'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
+                              );
+
+                              print('game type id: $gameTypeId2');
                             } else if (index == 1) {
                               CallLoader.loader();
                               await Future.delayed(Duration(seconds: 1));
@@ -543,22 +412,28 @@ class _Home_PageState extends State<Home_Page> {
 
                               _gamePriceListDoubleController
                                   .gamePriceListDoubleApi(
-                                      gameTypeId: _gameTypeController
-                                          .gametypeModel?.getGames?[index].id
-                                          .toString());
+                                gameTypeId: _gameTypeController
+                                    .gametypeModel?.getGames?[index].id
+                                    .toString(),
+                              );
                             } else if (index == 2) {
                               CallLoader.loader();
                               await Future.delayed(Duration(seconds: 1));
                               CallLoader.hideLoader();
+
                               _getGamePriceListSelfController
                                   .gamePriceListSelfApi(
-                                      gameTypeId: _gameTypeController
-                                          .gametypeModel?.getGames?[index].id
-                                          .toString());
-                              //_getGamePriceListSelfController
-                              //await Get.to(Play_Now_self_game());
+                                gameTypeId: _gameTypeController
+                                    .gametypeModel?.getGames?[index].id
+                                    .toString(),
+                              );
+
+                              _getDiceListSelfController.gameDiceSelfListApi(
+                                gameTypeId2: _gameTypeController
+                                    .gametypeModel?.getGames?[index].id
+                                    .toString(),
+                              );
                             }
-                            // Get.to(navigationTarget);
                           },
                           child: Padding(
                             padding: EdgeInsets.symmetric(
@@ -568,7 +443,6 @@ class _Home_PageState extends State<Home_Page> {
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [Colors.red.shade300, Colors.black45],
-                                  //gradientColors,
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
@@ -596,8 +470,7 @@ class _Home_PageState extends State<Home_Page> {
                                                     .gameName ==
                                                 null
                                             ? const Center(
-                                                child: Text('No Data'),
-                                              )
+                                                child: Text('No Data'))
                                             : Text(
                                                 _gameTypeController
                                                     .gametypeModel!
@@ -620,32 +493,11 @@ class _Home_PageState extends State<Home_Page> {
                         );
                       }),
                 ),
-                // Reduced spacing
-                // _buildGameOption(
-                //   context,
-                //   "${_gameTypeController.gametypeModel?.getGames![0].id}",
-                //   //"Single Dice Game",
-                //   [Colors.red.shade900, Colors.red.shade400],
-                //   PriceListss(),
-                // ),
+
                 ///
-                SizedBox(height: 15), // Reduced spacing
-                // _buildGameOption(
-                //   context,
-                //   "Double Dice Game",
-                //   [Colors.black54, Colors.black87],
-                //   PriceListssfortwodice(),
-                // ),
+                SizedBox(height: 15),
+
                 ///
-                // SizedBox(height: 15), // Reduced spacing
-                // _buildGameOption(
-                //   context,
-                //   "Self Dice Game",
-                //   [Colors.green.shade900, Colors.green.shade400],
-                //   Play_Now_self_game(),
-                //
-                //   ///PriceListssSelfdice(),
-                // ),
               ],
             ),
           ),
@@ -653,252 +505,4 @@ class _Home_PageState extends State<Home_Page> {
       },
     );
   }
-
-  Widget _buildGameOption(
-    BuildContext context,
-    String title,
-    List<Color> gradientColors,
-    Widget navigationTarget,
-  ) {
-    return GestureDetector(
-      onTap: () {
-        Get.back();
-        Get.to(navigationTarget);
-      },
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: gradientColors,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(18.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 4),
-              blurRadius: 5.0,
-            ),
-          ],
-        ),
-        padding: EdgeInsets.all(14.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: GoogleFonts.roboto(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
-            Icon(Icons.arrow_forward, color: Colors.white),
-          ],
-        ),
-      ),
-    );
-  }
-
-  ///
-  // void showCustomGameDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) => CupertinoAlertDialog(
-  //       title: GestureDetector(
-  //         onTap: () {
-  //           // Get.to(Loadingone());
-  //         },
-  //         child: Container(
-  //           width: double.infinity,
-  //           decoration: BoxDecoration(
-  //             color: Colors.blue.shade900,
-  //             borderRadius: BorderRadius.circular(5.0),
-  //           ),
-  //           padding: EdgeInsets.all(12.0),
-  //           child: Text(
-  //             "SELECT GAME TYPE!",
-  //             style: GoogleFonts.poppins(
-  //               fontWeight: FontWeight.w600,
-  //               color: Colors.white,
-  //               fontSize: 14,
-  //             ),
-  //             textAlign: TextAlign.center,
-  //           ),
-  //         ),
-  //       ),
-  //       content: Padding(
-  //         padding: EdgeInsets.only(top: 20),
-  //         child: Column(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             GestureDetector(
-  //               onTap: () {
-  //                 Get.back();
-  //                 Get.to(PriceListss());
-  //               },
-  //               child: Container(
-  //                 width: double.infinity,
-  //                 decoration: BoxDecoration(
-  //                   gradient: LinearGradient(
-  //                     colors: [Colors.red.shade900, Colors.red.shade400],
-  //                     begin: Alignment.topLeft,
-  //                     end: Alignment.bottomRight,
-  //                   ),
-  //                   borderRadius: BorderRadius.circular(15.0),
-  //                   boxShadow: [
-  //                     BoxShadow(
-  //                       color: Colors.black26,
-  //                       offset: Offset(0, 4),
-  //                       blurRadius: 5.0,
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 padding: EdgeInsets.all(16.0),
-  //                 child: Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     Text(
-  //                       "Single Dice Game",
-  //                       style: GoogleFonts.poppins(
-  //                         fontWeight: FontWeight.w600,
-  //                         color: Colors.white,
-  //                         fontSize: 14,
-  //                       ),
-  //                     ),
-  //                     Icon(Icons.arrow_forward, color: Colors.white),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //             SizedBox(height: 20),
-  //             GestureDetector(
-  //               onTap: () {
-  //                 Get.back();
-  //                 Get.to(PriceListssfortwodice());
-  //               },
-  //               child: Container(
-  //                 width: double.infinity,
-  //                 decoration: BoxDecoration(
-  //                   gradient: LinearGradient(
-  //                     colors: [Colors.black54, Colors.black87],
-  //                     begin: Alignment.topLeft,
-  //                     end: Alignment.bottomRight,
-  //                   ),
-  //                   borderRadius: BorderRadius.circular(15.0),
-  //                   boxShadow: [
-  //                     BoxShadow(
-  //                       color: Colors.black26,
-  //                       offset: Offset(0, 4),
-  //                       blurRadius: 5.0,
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 padding: EdgeInsets.all(16.0),
-  //                 child: Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     Text(
-  //                       "Double Dice Game",
-  //                       style: GoogleFonts.poppins(
-  //                         fontWeight: FontWeight.w600,
-  //                         color: Colors.white,
-  //                         fontSize: 14,
-  //                       ),
-  //                     ),
-  //                     Icon(Icons.arrow_forward, color: Colors.white),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //             SizedBox(height: 20),
-  //             GestureDetector(
-  //               onTap: () {
-  //                 Get.back();
-  //                 Get.to(PriceListssSelfdice());
-  //               },
-  //               child: Container(
-  //                 width: double.infinity,
-  //                 decoration: BoxDecoration(
-  //                   gradient: LinearGradient(
-  //                     colors: [Colors.green.shade900, Colors.green.shade400],
-  //                     begin: Alignment.topLeft,
-  //                     end: Alignment.bottomRight,
-  //                   ),
-  //                   borderRadius: BorderRadius.circular(15.0),
-  //                   boxShadow: [
-  //                     BoxShadow(
-  //                       color: Colors.black26,
-  //                       offset: Offset(0, 4),
-  //                       blurRadius: 5.0,
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 padding: EdgeInsets.all(16.0),
-  //                 child: Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     Text(
-  //                       "Self Dice Game",
-  //                       style: GoogleFonts.poppins(
-  //                         fontWeight: FontWeight.w600,
-  //                         color: Colors.white,
-  //                         fontSize: 14,
-  //                       ),
-  //                     ),
-  //                     Icon(Icons.arrow_forward, color: Colors.white),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       // actions: <Widget>[
-  //       //   GestureDetector(
-  //       //       onTap: () {
-  //       //         Get.back();
-  //       //       },
-  //       //       child: Align(
-  //       //         alignment: Alignment.center,
-  //       //         child: Text(
-  //       //           "Cancel",
-  //       //           style: GoogleFonts.abyssinicaSil(
-  //       //             fontSize: 20,
-  //       //           ),
-  //       //         ),
-  //       //       )
-  //       //       // Container(
-  //       //       //   margin: EdgeInsets.only(bottom: 8.0),
-  //       //       //   decoration: BoxDecoration(
-  //       //       //     gradient: LinearGradient(
-  //       //       //       colors: [Colors.grey.shade800, Colors.grey.shade600],
-  //       //       //       begin: Alignment.topLeft,
-  //       //       //       end: Alignment.bottomRight,
-  //       //       //     ),
-  //       //       //     borderRadius: BorderRadius.circular(10.0),
-  //       //       //     boxShadow: [
-  //       //       //       BoxShadow(
-  //       //       //         color: Colors.black26,
-  //       //       //         offset: Offset(0, 4),
-  //       //       //         blurRadius: 5.0,
-  //       //       //       ),
-  //       //       //     ],
-  //       //       //   ),
-  //       //       //   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-  //       //       //   child: Text(
-  //       //       //     "Cancel",
-  //       //       //     style: GoogleFonts.poppins(
-  //       //       //       fontSize: 14,
-  //       //       //       fontWeight: FontWeight.w500,
-  //       //       //       color: Colors.white,
-  //       //       //     ),
-  //       //       //   ),
-  //       //       // ),
-  //       //       )
-  //       // ],
-  //     ),
-  //   );
-  // }
 }

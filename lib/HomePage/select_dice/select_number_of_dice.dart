@@ -3,25 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../Controllersss/home_controllers.dart';
 import '../../Controllersss/rezaypay_controller/pay_amount_controller.dart';
+import '../../controllers_all/dice_list_controller_byid.dart';
+import '../../controllers_all/single_dice_selection_controllers.dart';
 import '../../game_type/single_dice_game/player_lists.dart';
 
 class NumberSelection extends StatelessWidget {
   static const String id = 'Company';
 
-  final HomeeeController _homeeeController = Get.put(HomeeeController());
+  final SinglediceSelectionController _homeeeController =
+      Get.put(SinglediceSelectionController());
   final RozarpayamountController _rozarpayamountController =
       Get.put(RozarpayamountController());
-  //
-  // final List<String> _priceList = [
-  //   '1',
-  //   '2',
-  //   '3',
-  //   '4',
-  //   '5',
-  //   '6',
-  // ];
+  GetDiceListController _getDiceListController =
+      Get.put(GetDiceListController());
 
   final List<String> _diceImages2 = [
     'assets/images/dice1.png',
@@ -189,8 +184,10 @@ class NumberSelection extends StatelessWidget {
   }
 
   Widget buildGridView(BuildContext context) {
+    GetDiceListController _getDiceListController =
+        Get.put(GetDiceListController());
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0),
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -199,7 +196,9 @@ class NumberSelection extends StatelessWidget {
           mainAxisSpacing: 18.0,
           childAspectRatio: 1.0,
         ),
-        itemCount: _diceImages2.length,
+        itemCount: _getDiceListController.diceList?.diceNumvers?.length,
+
+        /// _diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
             bool isSelected = _homeeeController.selectedIndices.contains(index);
@@ -320,7 +319,9 @@ class NumberSelection extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 2, vertical: 30),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _diceImages2.length,
+        itemCount: _getDiceListController.diceList?.diceNumvers?.length,
+        //_getDiceListController._getDiceListnumberModel?.diceNumvers.
+        //_diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
             bool isSelected = _homeeeController.selectedIndices.contains(index);

@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../Controllersss/home_controllers.dart';
 import '../../Controllersss/rezaypay_controller/pay_twicw_amount_controller.dart';
+import '../../controllers_all/dicelist_for_double_dice_controller.dart';
+import '../../controllers_all/double_dice_selection_controller.dart';
 import '../../game_type/double_gamee/player_list_for2dice.dart';
 
 class TwiceNumberSelection2 extends StatelessWidget {
   // static const String id = 'Company';
 
-  final HomeeeController _homeeeController = Get.put(HomeeeController());
+  final DoublediceSelectionController _doublediceController =
+      Get.put(DoublediceSelectionController());
+
+  GetTwoDiceListController _getTwoDiceListController =
+      Get.put(GetTwoDiceListController());
+
   final RozarpaytwiceamountController _rozarpayamountController =
       Get.put(RozarpaytwiceamountController());
   //
@@ -202,10 +208,12 @@ class TwiceNumberSelection2 extends StatelessWidget {
         itemCount: _diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
-            bool isSelected = _homeeeController.selectedIndices.contains(index);
+            bool isSelected =
+                _doublediceController.selectedIndices.contains(index);
+
             return InkWell(
               onTap: () {
-                _homeeeController.toggleSelection(index);
+                _doublediceController.toggleSelection(index);
               },
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 300),
@@ -323,10 +331,11 @@ class TwiceNumberSelection2 extends StatelessWidget {
         itemCount: _diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
-            bool isSelected = _homeeeController.selectedIndices.contains(index);
+            bool isSelected =
+                _doublediceController.selectedIndices.contains(index);
             return InkWell(
               onTap: () {
-                _homeeeController.toggleSelection(index);
+                _doublediceController.toggleSelection(index);
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 13),

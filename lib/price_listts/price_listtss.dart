@@ -6,8 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../Controllersss/pricelist_controller.dart';
 import '../HomePage/homePage.dart';
 import '../HomePage/select_dice/select_number_of_dice.dart';
+import '../constantt/circular_loader/circular_loaderr.dart';
+import '../controllers_all/dice_list_controller_byid.dart';
 import '../controllers_all/game_price_list_controller.dart';
 import '../controllers_all/game_type_get_controller.dart';
+import '../controllers_all/wining_percentage_controller.dart';
 
 class PriceListss extends StatelessWidget {
   static const String id = 'Company';
@@ -15,33 +18,15 @@ class PriceListss extends StatelessWidget {
   final PriceListController _priceListController =
       Get.put(PriceListController());
 
-  // final List<String> _priceList = [
-  //   '₹50',
-  //   '₹100',
-  //   '₹200',
-  //   '₹300',
-  //   '₹400',
-  //   '₹500',
-  //   '₹1000',
-  //   '₹2000',
-  // ];
-
-  ///
-
-  // final List<String> _priceList2 = [
-  //   '₹100',
-  //   '₹200',
-  //   '₹400',
-  //   '₹600',
-  //   '₹800',
-  //   '₹1000',
-  //   '₹2000',
-  //   '₹4000',
-  // ];
+  WiningAmtPercentageController _winingAmtPercentageController =
+      Get.put(WiningAmtPercentageController());
 
   GetGamePriceListController _getGamePriceListController =
       Get.put(GetGamePriceListController());
   GetGameTypeController _gameTypeController = Get.put(GetGameTypeController());
+
+  GetDiceListController _getDiceListController =
+      Get.put(GetDiceListController());
 
   @override
   Widget build(BuildContext context) {
@@ -188,12 +173,22 @@ class PriceListss extends StatelessWidget {
                                         children: [
                                           Align(
                                             alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "If you will win the game then we will send wining amount to your account after deduct 28% of total transaction amount.",
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                              ),
+                                            child: Obx(
+                                              () =>
+                                                  (_winingAmtPercentageController
+                                                          .isLoading.value)
+                                                      ? Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        )
+                                                      : Text(
+                                                          "If you will win the game then we will send wining amount to your account after deduct ${_winingAmtPercentageController.winingPercentModel?.data?.amount}% of total transaction amount.",
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            fontSize: 14,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
                                             ),
                                           ),
                                           //SizedBox(height: 0),
@@ -215,9 +210,36 @@ class PriceListss extends StatelessWidget {
                                         ),
                                       ),
                                       CupertinoDialogAction(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           Get.back();
-                                          Get.to(NumberSelection());
+                                          CallLoader.loader();
+                                          await Future.delayed(
+                                              Duration(seconds: 1));
+                                          // CallLoader.hideLoader();
+                                          _getDiceListController.gameDiceListApi(
+                                              gameTypeId2:
+                                                  "${_getGamePriceListController.getpricelistModel?.gameid.toString()}"
+                                              //"${_gameTypeController.gametypeModel?.getGames?[index].id.toString()}"
+                                              );
+                                          await Future.delayed(
+                                              Duration(seconds: 1));
+
+                                          CallLoader.hideLoader();
+                                          await Get.to(() => NumberSelection());
+                                          // CallLoader.loader();
+                                          // await Future.delayed(
+                                          //     Duration(seconds: 1));
+                                          // CallLoader.hideLoader();
+                                          //
+                                          // _gamePriceListDoubleController
+                                          //     .gamePriceListDoubleApi(
+                                          //         gameTypeId:
+                                          //             _gameTypeController
+                                          //                 .gametypeModel
+                                          //                 ?.getGames?[index]
+                                          //                 .id
+                                          //                 .toString());
+                                          // Get.to(NumberSelection());
 
                                           // Navigate to a new screen when the OK button is pressed
                                           // Get.to(SomeOtherScreen()); // Replace SomeOtherScreen with your desired screen
@@ -338,10 +360,28 @@ class PriceListss extends StatelessWidget {
                                           ),
                                         ),
                                         CupertinoDialogAction(
-                                          onPressed: () {
+                                          onPressed: () async {
                                             Get.back();
 
-                                            Get.to(NumberSelection());
+                                            CallLoader.loader();
+                                            await Future.delayed(
+                                                Duration(seconds: 1));
+
+                                            CallLoader.hideLoader();
+
+                                            await _getGamePriceListController
+                                                .gamePriceListApi();
+                                            await _getDiceListController
+                                                .gameDiceListApi(
+                                                    gameTypeId2:
+                                                        "${_getGamePriceListController.getpricelistModel?.gameid.toString()}"
+
+                                                    // gameTypeId2:
+                                                    // "${_gameTypeController.gametypeModel?.getGames?[index].id}"
+                                                    );
+                                            print(
+                                                "okgameid${_getGamePriceListController.getpricelistModel?.gameid.toString()}");
+                                            Get.to(() => NumberSelection());
 
                                             // Navigate to a new screen when the OK button is pressed
                                             // Get.to(SomeOtherScreen()); // Replace SomeOtherScreen with your desired screen

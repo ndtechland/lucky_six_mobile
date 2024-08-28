@@ -4,13 +4,14 @@ import 'package:game_app/game_type/self_dice_game/play_now_self_game.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../Controllersss/home_controllers.dart';
 import '../../Controllersss/rezaypay_controller/pay_amount_controller.dart';
+import '../../controllers_all/single_dice_selection_controllers.dart';
 
 class NumberSelectionSelfDice extends StatelessWidget {
   static const String id = 'Company';
 
-  final HomeeeController _homeeeController = Get.put(HomeeeController());
+  final SinglediceSelectionController _homeeeController =
+      Get.put(SinglediceSelectionController());
   final RozarpayamountController _rozarpayamountController =
       Get.put(RozarpayamountController());
   //

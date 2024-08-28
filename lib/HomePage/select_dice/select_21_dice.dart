@@ -4,24 +4,20 @@ import 'package:game_app/HomePage/select_dice/select_22_dice.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../Controllersss/home_controllers.dart';
 import '../../Controllersss/rezaypay_controller/pay_amount_controller.dart';
+import '../../controllers_all/dicelist_for_double_dice_controller.dart';
+import '../../controllers_all/double_dice_selection_controller.dart';
 
 class TwiceNumberSelection extends StatelessWidget {
   static const String id = 'Company';
 
-  final HomeeeController _homeeeController = Get.put(HomeeeController());
+  final DoublediceSelectionController _doublediceController =
+      Get.put(DoublediceSelectionController());
   final RozarpayamountController _rozarpayamountController =
       Get.put(RozarpayamountController());
-  //
-  // final List<String> _priceList = [
-  //   '1',
-  //   '2',
-  //   '3',
-  //   '4',
-  //   '5',
-  //   '6',
-  // ];
+
+  GetTwoDiceListController _getTwoDiceListController =
+      Get.put(GetTwoDiceListController());
 
   final List<String> _diceImages2 = [
     'assets/images/dice1.png',
@@ -47,78 +43,6 @@ class TwiceNumberSelection extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 Get.to(TwiceNumberSelection2());
-                // showDialog(
-                //   context: context,
-                //   builder: (BuildContext context) => CupertinoAlertDialog(
-                //     title: GestureDetector(
-                //       onTap: () {},
-                //       child: Container(
-                //         width: double.infinity,
-                //         decoration: BoxDecoration(
-                //           color: Colors.red.shade300,
-                //           borderRadius: BorderRadius.circular(5.0),
-                //         ),
-                //         padding: EdgeInsets.all(10.0),
-                //         child: Text(
-                //           "NOTE!",
-                //           style: GoogleFonts.poppins(
-                //             fontWeight: FontWeight.w600,
-                //             color: Colors.white,
-                //             fontSize: 18,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //     content: Padding(
-                //       padding: EdgeInsets.all(10.0),
-                //       child: Column(
-                //         mainAxisSize: MainAxisSize.min,
-                //         mainAxisAlignment: MainAxisAlignment.start,
-                //         children: [
-                //           Align(
-                //             alignment: Alignment.centerLeft,
-                //             child: Text(
-                //               "Your Selected dice is  1,3,4 \n You have to pay your payable Amount for start your game and your payable Amount is\n ₹300.",
-                //               style: GoogleFonts.poppins(
-                //                 fontSize: 14,
-                //                 color: Colors.black,
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //     actions: <Widget>[
-                //       CupertinoDialogAction(
-                //         onPressed: () {
-                //           Get.back();
-                //         },
-                //         child: Text(
-                //           "Cancel",
-                //           style: GoogleFonts.poppins(
-                //             fontSize: 16,
-                //             fontWeight: FontWeight.w500,
-                //             color: Colors.red,
-                //           ),
-                //         ),
-                //       ),
-                //       CupertinoDialogAction(
-                //         onPressed: () {
-                //           Get.back();
-                //           _rozarpayamountController.openCheckout();
-                //         },
-                //         child: Text(
-                //           "Pay",
-                //           style: GoogleFonts.poppins(
-                //             fontSize: 16,
-                //             fontWeight: FontWeight.w500,
-                //             color: Colors.green.shade700,
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // );
               },
               child: PhysicalModel(
                 color: Colors.white10,
@@ -181,13 +105,15 @@ class TwiceNumberSelection extends StatelessWidget {
           mainAxisSpacing: 18.0,
           childAspectRatio: 1.0,
         ),
-        itemCount: _diceImages2.length,
+        itemCount: _getTwoDiceListController.diceList!.diceNumvers!.length,
+        //_diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
-            bool isSelected = _homeeeController.selectedIndices.contains(index);
+            bool isSelected =
+                _doublediceController.selectedIndices.contains(index);
             return InkWell(
               onTap: () {
-                _homeeeController.toggleSelection(index);
+                _doublediceController.toggleSelection(index);
               },
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 300),
@@ -302,13 +228,16 @@ class TwiceNumberSelection extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 2, vertical: 30),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _diceImages2.length,
+        itemCount: _getTwoDiceListController.diceList!.diceNumvers!.length,
+
+        //_diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
-            bool isSelected = _homeeeController.selectedIndices.contains(index);
+            bool isSelected =
+                _doublediceController.selectedIndices.contains(index);
             return InkWell(
               onTap: () {
-                _homeeeController.toggleSelection(index);
+                _doublediceController.toggleSelection(index);
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 13),

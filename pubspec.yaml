@@ -59,6 +59,8 @@ dependencies:
   just_audio: ^0.9.31
   file_picker: ^5.2.4
   permission_handler:
+  showcaseview: ^2.0.0
+
 
 
   #flutter_cube: ^0.1.1

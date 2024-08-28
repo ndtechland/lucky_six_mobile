@@ -11,12 +11,14 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../1_models/dice_list_model_bygameid.dart';
 import '../1_models/game_type_model.dart';
 import '../1_models/get_bank_model.dart';
 import '../1_models/get_wallet_model.dart';
 import '../1_models/price_list_model.dart';
 import '../1_models/profile_model.dart';
 import '../1_models/profiles.dart';
+import '../1_models/wining_amount_model_percentage.dart';
 import '../constantt/fixed_texes.dart';
 
 var prefs = GetStorage();
@@ -710,7 +712,7 @@ class ApiProvider {
     return null;
   }
 
-  ///todo: get wallet api....game ..5
+  ///todo: get wallet api....game ..6
   static GetBankDetailsApi() async {
     var prefs = GetStorage();
     // Retrieve the saved user ID and token
@@ -762,7 +764,7 @@ class ApiProvider {
     return null;
   }
 
-  ///wallet post api..........................................wallet......section.....
+  ///todo: wallet post api..........................................wallet......section....7.
   // static WalletPostApi(var walletAmount) async {
   //   //var url = baseUrl1 + 'api/AdminApi/AddWalletMoney';
   //   var url = '${baseUrl}Wallet/AddWalletAmount';
@@ -875,6 +877,174 @@ class ApiProvider {
     }
   }
 
+  ///todo: get game dice list api....game ..8.
+  static diceListByIdApi(String? gameTypeId2) async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID3: $userId');
+    print('Token3: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID3: $userId2');
+    print('Token3: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+    //https://api.luckysix.in/api/Home/GamePriceByGameId?GameId=1
+
+    var url = '${baseUrl}Home/GetDiceNumberByGameId?GameId=$gameTypeId2';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URLpricelist: $url");
+
+      if (r.statusCode == 200) {
+        print("Request URLdicelist: $url");
+        print("Response bodydicelist: ${r.body}");
+
+        // Parse the response body
+        GetDiceListModel? getgamediceListmodel =
+            getDiceListModelFromJson(r.body);
+        print("Game dice List ID: ${getgamediceListmodel.diceNumvers?[0].id}");
+        return getgamediceListmodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo: get game dice self list api....game ..9.
+  static diceSelfListByIdApi(String? gameTypeId2) async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID3: $userId');
+    print('Token3: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID3: $userId2');
+    print('Token3: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+    //https://api.luckysix.in/api/Home/GamePriceByGameId?GameId=1
+
+    var url = '${baseUrl}Home/GetDiceNumberByGameId?GameId=$gameTypeId2';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URLpricelist: $url");
+
+      if (r.statusCode == 200) {
+        print("Request URLdicelist: $url");
+        print("Response bodydicelist: ${r.body}");
+
+        // Parse the response body
+        GetDiceListModel? getgamediceListmodel =
+            getDiceListModelFromJson(r.body);
+        print("Game dice List ID: ${getgamediceListmodel.diceNumvers?[0].id}");
+        return getgamediceListmodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo: get game dice list for two dice api....game ..10.
+  static diceDoubleListByIdApi(String? gameTypeId3) async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID3: $userId');
+    print('Token3: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID3: $userId2');
+    print('Token3: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+    //https://api.luckysix.in/api/Home/GamePriceByGameId?GameId=1
+
+    var url = '${baseUrl}Home/GetDiceNumberByGameId?GameId=$gameTypeId3';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URLpricelist: $url");
+
+      if (r.statusCode == 200) {
+        print("Request URLdicelist: $url");
+        print("Response bodydicelist: ${r.body}");
+
+        // Parse the response body
+        GetDiceListModel? getgamediceListmodel =
+            getDiceListModelFromJson(r.body);
+        print("Game dice List ID: ${getgamediceListmodel.diceNumvers?[0].id}");
+        return getgamediceListmodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
   ///todo: Update bank profile....game....app...
 
   // static String apiUrl11 = "${baseUrl}Home/UpdateBankDetail";
@@ -893,9 +1063,7 @@ class ApiProvider {
     String? upiId,
   }) async {
     final url = Uri.parse(apiUrl11);
-
     var prefs = GetStorage();
-
     // Retrieve the saved user ID and token
     var userId = prefs.read("Id").toString();
     print('User ID55: $userId');
@@ -940,6 +1108,111 @@ class ApiProvider {
       // Handle error
       return false;
     }
+  }
+
+  ///todo: change password....
+  static String apiUrlChangePassword = "${baseUrl}Account/ChangePassword";
+
+  Future<bool> changePasswordApi({
+    required String currentPassword,
+    required String currentNewPassword,
+    required String currentNewConfirmPassword,
+  }) async {
+    final url = Uri.parse(apiUrlChangePassword);
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved token
+    var token = sharedPrefs.getString("Token");
+
+    if (token == null) {
+      print("Token is null");
+      return false; // Handle case where token is not found
+    }
+
+    // Construct the request body
+    final Map<String, dynamic> requestBody = {
+      'currentPassword': currentPassword,
+      'currentNewPassword': currentNewPassword,
+      'currentNewConfirmPassword': currentNewConfirmPassword,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode(requestBody),
+      );
+
+      // Decode the JSON response body
+      final responseBody = json.decode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 400) {
+        print(responseBody['message']);
+      }
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          // response.data['message']
+          msg: "Success: ${responseBody['message']}",
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+        );
+        print("Password changed successfully");
+        return true;
+      } else {
+        ///print(response.data['message']);
+        Fluttertoast.showToast(
+          // response.data['message']
+          msg: "Failed: ${responseBody['message']}",
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+        );
+        print("Failed to change password: ${response.statusCode}");
+        return false;
+      }
+    } catch (e) {
+      print("Error changing password: $e");
+      return false;
+    }
+  }
+
+  ///todo: get profile api....game ..3
+  static WiningPricePercentageApi() async {
+    var url = '${baseUrl}Home/GetWinningDeductionCharge';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (r.statusCode == 200) {
+        print("Request URL: $url");
+        print("Response Body: ${r.body}");
+
+        // Parse the response body
+        GeWiningPercentModel? getwiningamtpercentagemodel =
+            geWiningPercentModelFromJson(r.body);
+        print("Wining ID: ${getwiningamtpercentagemodel.data?.id}");
+        return getwiningamtpercentagemodel;
+      } else {
+        print("Failed to fetch profile. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching profile details: $error');
+    }
+    return null;
   }
 
   ///todo: end ....game ...api...

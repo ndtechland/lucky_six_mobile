@@ -6,39 +6,30 @@ import 'package:google_fonts/google_fonts.dart';
 import '../Controllersss/pricelist_controller.dart';
 import '../HomePage/homePage.dart';
 import '../HomePage/select_dice/select_21_dice.dart';
+import '../constantt/circular_loader/circular_loaderr.dart';
+import '../controllers_all/dicelist_for_double_dice_controller.dart';
 import '../controllers_all/game_price_list_double_controller.dart';
+import '../controllers_all/wining_percentage_controller.dart';
 
 class PriceListssfortwodice extends StatelessWidget {
   static const String id = 'Company';
 
   final PriceListController _priceListController =
       Get.put(PriceListController());
+  WiningAmtPercentageController _winingAmtPercentageController =
+      Get.put(WiningAmtPercentageController());
 
   GetGamePriceListDoubleController _gamePriceListDoubleController =
       Get.put(GetGamePriceListDoubleController());
+  // GetDiceListController _getDiceListController =
+  //     Get.put(GetDiceListController());
+  // GetTwoDiceListController
 
-  // final List<String> _priceList = [
-  //   '₹50',
-  //   '₹100',
-  //   '₹200',
-  //   '₹300',
-  //   '₹400',
-  //   '₹500',
-  //   '₹1000',
-  //   '₹2000',
-  // ];
-  ///
+  // GetGamePriceListController _getGamePriceListController =
+  // Get.put(GetGamePriceListController());
 
-  // final List<String> _priceList2 = [
-  //   '₹75',
-  //   '₹150',
-  //   '₹300',
-  //   '₹450',
-  //   '₹600',
-  //   '₹750',
-  //   '₹1500',
-  //   '₹3000',
-  // ];
+  GetTwoDiceListController _getTwoDiceListController =
+      Get.put(GetTwoDiceListController());
 
   @override
   Widget build(BuildContext context) {
@@ -80,61 +71,6 @@ class PriceListssfortwodice extends StatelessWidget {
           child: SafeArea(
             child: Column(
               children: [
-                // SizedBox(
-                //   height: isPortrait ? height * 0.02 : height * 0.02,
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.start,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsets.all(4.0),
-                //       child: GestureDetector(
-                //         onTap: () {
-                //           Get.back();
-                //         },
-                //         child: Container(
-                //           decoration: BoxDecoration(
-                //             color: Colors.red,
-                //           ),
-                //           child: Center(
-                //             child: Icon(
-                //               Icons.arrow_back,
-                //               color: Colors.white,
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       flex: 1,
-                //       child: Padding(
-                //         padding: EdgeInsets.only(
-                //           top: MediaQuery.of(context).viewInsets.top + 12,
-                //           left: MediaQuery.of(context).viewInsets.left +
-                //               (isPortrait ? 50 : 250),
-                //           right: MediaQuery.of(context).viewInsets.left +
-                //               (isPortrait ? 80 : 250),
-                //         ),
-                //         child: Container(
-                //           height: isPortrait ? height * 0.15 : height * 0.25,
-                //           width: isPortrait ? width * 0.32 : width * 0.2,
-                //           decoration: BoxDecoration(
-                //             //border: Border.all(width: 2),
-                //             borderRadius: BorderRadius.circular(7),
-                //
-                //             // image: DecorationImage(
-                //             //   image:
-                //             //       AssetImage("assets/images/svg_images/rlg.jpg"),
-                //             //   fit: BoxFit.fill,
-                //             // ),
-                //           ),
-                //           child: Text("Price List"),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 SizedBox(
                   height: isPortrait ? height * 0.00 : height * 0.01,
                 ),
@@ -184,12 +120,22 @@ class PriceListssfortwodice extends StatelessWidget {
                                         children: [
                                           Align(
                                             alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "If you will win the game then we will send wining amount to your account after deduct 28% of total transaction amount.",
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                              ),
+                                            child: Obx(
+                                              () =>
+                                                  (_winingAmtPercentageController
+                                                          .isLoading.value)
+                                                      ? Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        )
+                                                      : Text(
+                                                          "If you will win the game then we will send wining amount to your account after deduct ${_winingAmtPercentageController.winingPercentModel?.data?.amount}% of total transaction amount.",
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            fontSize: 14,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
                                             ),
                                           ),
                                           //SizedBox(height: 0),
@@ -211,9 +157,28 @@ class PriceListssfortwodice extends StatelessWidget {
                                         ),
                                       ),
                                       CupertinoDialogAction(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           Get.back();
-                                          Get.to(TwiceNumberSelection());
+                                          CallLoader.loader();
+                                          await Future.delayed(
+                                              Duration(seconds: 1));
+
+                                          // CallLoader.hideLoader();
+
+                                          // await _gamePriceListDoubleController
+                                          //     .gamePriceListDoubleApi();
+                                          await _getTwoDiceListController
+                                              .gameDiceList2Api(
+                                                  gameTypeId3:
+                                                      "${_gamePriceListDoubleController.getpricelistModel?.gameid.toString()}"
+
+                                                  // gameTypeId2:
+                                                  // "${_gameTypeController.gametypeModel?.getGames?[index].id}"
+                                                  );
+                                          Get.to(() => TwiceNumberSelection());
+
+                                          print(
+                                              "okgameid3${_gamePriceListDoubleController.getpricelistModel?.gameid.toString()}");
 
                                           // Navigate to a new screen when the OK button is pressed
                                           // Get.to(SomeOtherScreen()); // Replace SomeOtherScreen with your desired screen

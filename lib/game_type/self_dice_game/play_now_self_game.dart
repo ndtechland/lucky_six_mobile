@@ -9,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../controllers_all/game_price_list_self_controller.dart';
+import '../../controllers_all/get_dice_list_self_controller.dart';
 import '3D_animated_dice_self.dart';
 import 'controller_selecteddice_number.dart';
 import 'exit_buttom_selfdice.dart';
@@ -25,6 +26,8 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
   final SelectedDiceController controller = Get.put(SelectedDiceController());
   GetGamePriceListSelfController _getGamePriceListSelfController =
       Get.put(GetGamePriceListSelfController());
+  GetDiceListSelfController _getDiceListSelfController =
+      Get.put(GetDiceListSelfController());
   // Add a variable to store the selected index
   //late AudioPlayer _audioPlayer;
   Timer? _startTimer;
@@ -87,7 +90,7 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
               children: [
                 ///table.....
                 Positioned(
-                    top: MediaQuery.of(context).size.height * 0.11,
+                    top: MediaQuery.of(context).size.height * 0.07,
                     right: MediaQuery.of(context).size.width * 0.05,
                     left: MediaQuery.of(context).size.width * 0.05,
                     //bottom: 10,
@@ -99,7 +102,8 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                         color: Colors.black54,
                         image: DecorationImage(
                             image: AssetImage(
-                              "assets/images/svg_images/singledice66.png",
+                              "assets/images/svg_images/single_table_dice.png",
+                              //"assets/images/svg_images/singledice66.png",
                             ),
                             fit: BoxFit.fill),
                       ),
@@ -385,20 +389,39 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
 
                 /// 1 no user....
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.0833,
+                  top: MediaQuery.of(context).size.height * 0.109,
                   //right: MediaQuery.of(context).size.width * 0.2765,
                   // top: MediaQuery.of(context).size.height * 0.073,
                   //right: MediaQuery.of(context).size.width * 0.27,
-                  left: MediaQuery.of(context).size.width * 0.2765,
+                  left: MediaQuery.of(context).size.width * 0.004,
+                  right: MediaQuery.of(context).size.width * 0,
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.24,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     width: MediaQuery.of(context).size.width * 0.22,
                     child: Center(
-                      child: Row(
+                      child: Column(
                         children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            width: MediaQuery.of(context).size.width * 0.060,
+                            child: Center(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Prince',
+                                  style: GoogleFonts.akshar(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          ///
                           Container(
-                            height: MediaQuery.of(context).size.height * 0.21,
-                            width: MediaQuery.of(context).size.width * 0.07,
+                            height: MediaQuery.of(context).size.height * 0.205,
+                            width: MediaQuery.of(context).size.width * 0.073,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
@@ -409,256 +432,13 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                                   fit: BoxFit.cover,
                                 )),
                           ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.043,
-                            width: MediaQuery.of(context).size.width * 0.060,
-                            child: Center(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Prince',
-                                  style: GoogleFonts.akshar(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11),
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
 
-                /// 6 no user....
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.0833,
-                  right: MediaQuery.of(context).size.width * 0.2765,
-                  //  left: MediaQuery.of(context).size.width * 0.333,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.24,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.043,
-                          width: MediaQuery.of(context).size.width * 0.060,
-                          child: Center(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Prince',
-                                style: GoogleFonts.akshar(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 11),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.21,
-                          width: MediaQuery.of(context).size.width * 0.07,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
-                                    // "assets/images/person1.png"
-                                    ),
-                                fit: BoxFit.cover,
-                              )),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                /// 2 no user....
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.408,
-                  //right: MediaQuery.of(context).size.width * 0.2765,
-                  // top: MediaQuery.of(context).size.height * 0.073,
-                  //right: MediaQuery.of(context).size.width * 0.27,
-                  left: MediaQuery.of(context).size.width * 0.141,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.24,
-                    width: MediaQuery.of(context).size.width * 0.22,
-                    child: Center(
-                      child: Row(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.21,
-                            width: MediaQuery.of(context).size.width * 0.07,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://cdn.pixabay.com/photo/2019/09/03/01/51/child-4448370_1280.jpg"
-                                      // "assets/images/person1.png"
-                                      ),
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.043,
-                            width: MediaQuery.of(context).size.width * 0.060,
-                            child: Center(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Prince',
-                                  style: GoogleFonts.akshar(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                /// 5 no user....
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.408,
-                  right: MediaQuery.of(context).size.width * 0.1446,
-                  //  left: MediaQuery.of(context).size.width * 0.333,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.24,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.043,
-                          width: MediaQuery.of(context).size.width * 0.060,
-                          child: Center(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Prince',
-                                style: GoogleFonts.akshar(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 11),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.21,
-                          width: MediaQuery.of(context).size.width * 0.07,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
-
-                                    // "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
-                                    // "assets/images/person1.png"
-                                    ),
-                                fit: BoxFit.cover,
-                              )),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                /// 3 no user....
-                Positioned(
-                  // top: MediaQuery.of(context).size.height * 0.0833,
-                  top: MediaQuery.of(context).size.height * 0.777,
-                  left: MediaQuery.of(context).size.width * 0.2765,
-                  //right: MediaQuery.of(context).size.width * 0.2765,
-                  // top: MediaQuery.of(context).size.height * 0.073,
-                  //right: MediaQuery.of(context).size.width * 0.27,
-                  // left: MediaQuery.of(context).size.width * 0.2765,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.24,
-                    width: MediaQuery.of(context).size.width * 0.22,
-                    child: Center(
-                      child: Row(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.21,
-                            width: MediaQuery.of(context).size.width * 0.07,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://cdn.pixabay.com/photo/2017/11/06/13/45/cap-2923682_1280.jpg"
-                                      // "assets/images/person1.png"
-                                      ),
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.043,
-                            width: MediaQuery.of(context).size.width * 0.060,
-                            child: Center(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Prince',
-                                  style: GoogleFonts.akshar(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                /// 4 no user....
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.777,
-                  right: MediaQuery.of(context).size.width * 0.2765,
-                  //  left: MediaQuery.of(context).size.width * 0.333,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.24,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.043,
-                          width: MediaQuery.of(context).size.width * 0.060,
-                          child: Center(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Prince',
-                                style: GoogleFonts.akshar(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 11),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.21,
-                          width: MediaQuery.of(context).size.width * 0.07,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://cdn.pixabay.com/photo/2016/10/14/22/31/cute-1741376_1280.jpg"
-                                    // "assets/images/person1.png"
-                                    ),
-                                fit: BoxFit.cover,
-                              )),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ///
 
                 ///todo:timer...
                 // Positioned(
@@ -721,28 +501,15 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                       ),
                     ),
                   ),
-                  // Text(
-                  //   "Avl.Coins",
-                  //   style: GoogleFonts.abyssinicaSil(
-                  //       color: Colors.yellow,
-                  //       fontSize:
-                  //           MediaQuery.of(context).size.height * 0.039,
-                  //       fontWeight: FontWeight.w700,
-                  //       letterSpacing: 1),
-                  //   maxLines: 2,
-                  //   overflow: TextOverflow.ellipsis,
-                  // ),
-                  //   ],
-                  // ),
                 ),
 
                 ///todo:selected  dice number...
 
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.44,
+                  top: MediaQuery.of(context).size.height * 0.43,
                   right: MediaQuery.of(context).size.width * 0,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.54,
+                    height: MediaQuery.of(context).size.height * 0.55,
                     width: MediaQuery.of(context).size.width * 0.145,
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -755,7 +522,7 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                       alignment: Alignment.topCenter,
                       child: Padding(
                         padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * 0.094,
+                          top: MediaQuery.of(context).size.height * 0.096,
                           left: MediaQuery.of(context).size.width * 0.0,
                           right: MediaQuery.of(context).size.width * 0.0,
                         ),
@@ -764,7 +531,9 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                           height: MediaQuery.of(context).size.height * 0.38,
                           child: GridView.builder(
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: _imageList.length,
+                            itemCount: _getDiceListSelfController
+                                .diceList?.diceNumvers?.length,
+                            // _imageList.length,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -792,7 +561,7 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                                             : Colors.white,
                                         border: Border.all(
                                             color: isSelected
-                                                ? Colors.red.shade300
+                                                ? Colors.green.shade600
                                                 : Colors.white,
                                             width: 3.3),
                                         image: DecorationImage(
@@ -812,145 +581,7 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                   ),
                 ),
 
-                // ///todo: beeting amt...
-                // Positioned(
-                //   top: MediaQuery.of(context).size.height * 0.22,
-                //   left: MediaQuery.of(context).size.width * 0.01,
-                //   //left: 550,
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: [
-                //       Container(
-                //         height: MediaQuery.of(context).size.height * 0.22,
-                //         width: MediaQuery.of(context).size.width * 0.11,
-                //         decoration: BoxDecoration(
-                //             // color: Colors.white,
-                //             // shape: BoxShape.circle,
-                //             image: DecorationImage(
-                //                 image: AssetImage(
-                //                     "assets/images/svg_images/widcoin.png"
-                //                     // "assets/images/svg_images/bettinamt.png"
-                //                     ),
-                //                 fit: BoxFit.fill)),
-                //         child: Center(
-                //           child: SizedBox(
-                //             width: MediaQuery.of(context).size.width * 0.14,
-                //             height: MediaQuery.of(context).size.height * 0.12,
-                //             child: Align(
-                //               alignment: Alignment.center,
-                //               child: Text(
-                //                 "5000",
-                //                 style: GoogleFonts.abyssinicaSil(
-                //                   color: Colors.black,
-                //                   fontSize: MediaQuery.of(context).size.height *
-                //                       0.042,
-                //                   fontWeight: FontWeight.bold,
-                //                 ),
-                //                 maxLines: 1,
-                //                 overflow: TextOverflow.ellipsis,
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //       Text(
-                //         "BID",
-                //         style: GoogleFonts.abyssinicaSil(
-                //             color: Colors.yellow,
-                //             fontSize:
-                //                 MediaQuery.of(context).size.height * 0.039,
-                //             fontWeight: FontWeight.w700,
-                //             letterSpacing: 1),
-                //         maxLines: 2,
-                //         overflow: TextOverflow.ellipsis,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // //assets/images/svg_images/crownwin.png
-                // ///todo:crown win...
-                // Positioned(
-                //   bottom: MediaQuery.of(context).size.height * 0.02,
-                //   left: MediaQuery.of(context).size.width * 0.02,
-                //   //left: 550,
-                //   child: Container(
-                //     height: MediaQuery.of(context).size.height * 0.2,
-                //     width: MediaQuery.of(context).size.width * 0.1,
-                //     decoration: BoxDecoration(
-                //         // color: Colors.white,
-                //         // shape: BoxShape.circle,
-                //         image: DecorationImage(
-                //             image: AssetImage(
-                //                 "assets/images/svg_images/crownwin.png"),
-                //             fit: BoxFit.fill)),
-                //   ),
-                // ),
-
                 ///todo: winning amt...
-                // Positioned(
-                //   bottom: MediaQuery.of(context).size.height * 0.07,
-                //   //left: MediaQuery.of(context).size.width * -0.005,
-                //   //left: 550,
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: [
-                //       Container(
-                //         height: MediaQuery.of(context).size.height * 0.28,
-                //         width: MediaQuery.of(context).size.width * 0.14,
-                //         decoration: BoxDecoration(
-                //             // color: Colors.white,
-                //             // shape: BoxShape.circle,
-                //             image: DecorationImage(
-                //                 image: AssetImage(
-                //                     "assets/images/svg_images/wincoin.png"),
-                //                 fit: BoxFit.fill)),
-                //         child: Center(
-                //           child: SizedBox(
-                //             width: MediaQuery.of(context).size.width * 0.1,
-                //             height: MediaQuery.of(context).size.height * 0.14,
-                //             child: Align(
-                //               alignment: Alignment.center,
-                //               child: Padding(
-                //                 padding: EdgeInsets.only(
-                //                   bottom: MediaQuery.of(context).size.height *
-                //                       0.013,
-                //                 ),
-                //                 child: Text(
-                //                   "10000",
-                //                   style: GoogleFonts.abyssinicaSil(
-                //                     color: Colors.black,
-                //                     fontSize:
-                //                         MediaQuery.of(context).size.height *
-                //                             0.045,
-                //                     fontWeight: FontWeight.bold,
-                //                   ),
-                //                   maxLines: 1,
-                //                   overflow: TextOverflow.ellipsis,
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //       SizedBox(
-                //         height: MediaQuery.of(context).size.height * 0.03,
-                //       ),
-                //       Text(
-                //         "WIN",
-                //         style: GoogleFonts.abyssinicaSil(
-                //             color: Colors.yellow,
-                //             fontSize:
-                //                 MediaQuery.of(context).size.height * 0.039,
-                //             fontWeight: FontWeight.w700,
-                //             letterSpacing: 1),
-                //         maxLines: 2,
-                //         overflow: TextOverflow.ellipsis,
-                //       ),
-                //     ],
-                //   ),
-                // ),
 
                 ///ExitIconButton
                 Positioned(
