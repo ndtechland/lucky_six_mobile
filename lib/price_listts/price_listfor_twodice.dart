@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Controllersss/pricelist_controller.dart';
 import '../HomePage/homePage.dart';
@@ -16,6 +17,7 @@ class PriceListssfortwodice extends StatelessWidget {
 
   final PriceListController _priceListController =
       Get.put(PriceListController());
+
   WiningAmtPercentageController _winingAmtPercentageController =
       Get.put(WiningAmtPercentageController());
 
@@ -86,7 +88,31 @@ class PriceListssfortwodice extends StatelessWidget {
                               .getpricelistModel?.getGameAmount?.length,
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                SharedPreferences sharedPrefs =
+                                    await SharedPreferences.getInstance();
+
+                                // Retrieve the gameTypeId from your controller/model
+                                String? gamePriceTypeId =
+                                    _gamePriceListDoubleController
+                                        .getpricelistModel
+                                        ?.getGameAmount?[index]
+                                        .id
+                                        ?.toString();
+
+                                if (gamePriceTypeId != null) {
+                                  await sharedPrefs.setString(
+                                      'gamePriceTypeId_', gamePriceTypeId);
+
+                                  /// Save with consistent key.....
+                                  print(
+                                      "Game price Type 2 ID saved: $gamePriceTypeId");
+                                } else {
+                                  print(
+                                      "Game price Type ID is null, not saving.");
+                                }
+
+                                ///todo: upper code .........save price list id....
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
@@ -230,7 +256,31 @@ class PriceListssfortwodice extends StatelessWidget {
                                 bottom: height * 0.1,
                               ),
                               child: GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  SharedPreferences sharedPrefs =
+                                      await SharedPreferences.getInstance();
+
+                                  // Retrieve the gameTypeId from your controller/model
+                                  String? gamePriceTypeId =
+                                      _gamePriceListDoubleController
+                                          .getpricelistModel
+                                          ?.getGameAmount?[index]
+                                          .id
+                                          ?.toString();
+
+                                  if (gamePriceTypeId != null) {
+                                    await sharedPrefs.setString(
+                                        'gamePriceTypeId_', gamePriceTypeId);
+
+                                    /// Save with consistent key.....
+                                    print(
+                                        "Game price Type 2 ID saved: $gamePriceTypeId");
+                                  } else {
+                                    print(
+                                        "Game price Type ID is null, not saving.");
+                                  }
+
+                                  ///todo: upper code .........save price list id....
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) =>
@@ -492,7 +542,8 @@ class PriceListssfortwodice extends StatelessWidget {
                       // color: Colors.black,
                       image: DecorationImage(
                         image: AssetImage(
-                            "assets/images/svg_images/rupiesbackground.png"
+                            "assets/images/svg_images/coin_pricelistbackground.png"
+                            //"assets/images/svg_images/rupiesbackground.png"
                             //  "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                             //"assets/images/svg_images/backgroundddice.jpeg"
                             // "assets/images/backgroundhome2.jpg"
@@ -502,15 +553,43 @@ class PriceListssfortwodice extends StatelessWidget {
                       //border: Border.all(color: Colors.white)
                     ),
                     child: Center(
-                        child: Text(
-                      _priceList,
-                      style: GoogleFonts.alata(
-                        fontSize: 15,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white,
-                      ),
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "BID",
+                          style: GoogleFonts.alata(
+                            fontSize: 11,
+                            //fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey.shade700,
+                            ////todo:....
+                          ),
+                        ),
+                        Text(
+                          _priceList,
+                          style: GoogleFonts.alata(
+                            fontSize: 16,
+                            //fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                            ////todo:....
+                          ),
+                        ),
+                        Text(
+                          "Coins",
+                          style: GoogleFonts.alata(
+                            fontSize: 10,
+                            //fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.yellow.shade300,
+                            ////todo:....
+                          ),
+                        ),
+                      ],
                     ))),
+
+                ///
                 // Spacer(),
                 // Container(
                 //     height: containerHeight3 * 0.9,
@@ -536,23 +615,49 @@ class PriceListssfortwodice extends StatelessWidget {
                     width: containerWidth3,
                     decoration: BoxDecoration(
                         //shape: BoxShape.circle,
-                        color: Colors.red.shade300,
+                        color: Color(0xffbf9b30),
+                        //orangeAccent,
+                        //red.shade300,
                         borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(10),
                             bottomLeft: Radius.circular(10)),
                         border: Border.all(color: Colors.white)),
                     child: Center(
-                        child: Text(
-                      "Wining Amount:${_priceList2}",
-                      style: GoogleFonts.alata(
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white,
-                      ),
-                    )))
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Win",
+                          style: GoogleFonts.alata(
+                            fontSize: 13,
+                            //fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          " ${_priceList2}",
+                          style: GoogleFonts.roboto(
+                            fontSize: 15,
+                            //fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        Text(
+                          " Coins",
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            //fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.yellow.shade200,
+                          ),
+                        ),
+                      ],
+                    ))),
               ],
             ),
+
             // Optionally, you can add a child widget here if needed
           ),
         ),

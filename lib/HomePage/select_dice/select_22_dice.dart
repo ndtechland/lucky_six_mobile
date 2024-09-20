@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../Controllersss/rezaypay_controller/pay_twicw_amount_controller.dart';
+import '../../controllers_all/dice_popup_avlbal_controller.dart';
 import '../../controllers_all/dicelist_for_double_dice_controller.dart';
 import '../../controllers_all/double_dice_selection_controller.dart';
 import '../../game_type/double_gamee/player_list_for2dice.dart';
@@ -19,6 +20,8 @@ class TwiceNumberSelection2 extends StatelessWidget {
 
   final RozarpaytwiceamountController _rozarpayamountController =
       Get.put(RozarpaytwiceamountController());
+  DiceAvlBalpopupController _diceAvlBalpopupController =
+      Get.put(DiceAvlBalpopupController());
   //
   // final List<String> _priceList = [
   //   '1',
@@ -62,34 +65,41 @@ class TwiceNumberSelection2 extends StatelessWidget {
                     title: GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Avl Balance : ",
-                              style: GoogleFonts.abyssinicaSil(
-                                fontSize: fontheight * 0.11,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Obx(
+                                () => _diceAvlBalpopupController.isLoading.value
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Text(
+                                        "Avl Balance: ",
+                                        style: GoogleFonts.abyssinicaSil(
+                                          fontSize: fontheight * 0.12,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                               ),
-                            ),
-                            Text(
-                              "500",
-                              style: GoogleFonts.abyssinicaSil(
-                                fontSize: fontheight * 0.12,
-                                color: Colors.red.shade300,
-                                fontWeight: FontWeight.w600,
+                              Obx(
+                                () => Text(
+                                  "${_diceAvlBalpopupController.data2.value?.totalAvlAmt?.toInt()}", // Use .value for RxString
+                                  style: GoogleFonts.abyssinicaSil(
+                                    fontSize: fontheight * 0.13,
+                                    color: Colors.red.shade300,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            ],
+                          )),
                     ),
                     content: Padding(
                       padding: EdgeInsets.all(10.0),
@@ -100,12 +110,26 @@ class TwiceNumberSelection2 extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Your Selected dice is  1-2,3-4,4-1 \n You have to pay your payable Amount for start your game and your payable Amount is\n ₹200.",
+                              "Your Selected dice is  1-2,3-4,4-1 \n You have to pay your payable Amount for start your game and your payable Amount is:-",
                               style: GoogleFonts.poppins(
                                 fontSize: 13,
                                 color: Colors.black,
                               ),
                             ),
+                          ),
+                          Obx(
+                            () => _diceAvlBalpopupController.isLoading.value
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Text(
+                                    "${_diceAvlBalpopupController.data2.value?.bettingAmount.toString()}", // Use .value for RxString
+                                    style: GoogleFonts.poppins(
+                                      fontSize: fontheight * 0.12,
+                                      color: Colors.green.shade900,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                           ),
                         ],
                       ),
@@ -129,7 +153,9 @@ class TwiceNumberSelection2 extends StatelessWidget {
                           Get.back();
 
                           /// _rozarpayamountController.openCheckout();
-                          Get.to(PlayerLists2dice());
+                          Get.to(
+                              // DoubleDiceRollFaceSelection());
+                              PlayerLists2dice());
                         },
                         child: Text(
                           "Pay",

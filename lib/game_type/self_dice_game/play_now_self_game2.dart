@@ -7,7 +7,6 @@ import 'package:game_app/game_type/self_dice_game/timer_audio_selfgame.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controllers_all/game_price_list_self_controller.dart';
 import '../../controllers_all/get_dice_list_self_controller.dart';
@@ -15,14 +14,14 @@ import '3D_animated_dice_self.dart';
 import 'controller_selecteddice_number.dart';
 import 'exit_buttom_selfdice.dart';
 
-class Play_Now_self_game extends StatefulWidget {
-  const Play_Now_self_game({Key? key}) : super(key: key);
+class Play_Now_self_game2 extends StatefulWidget {
+  const Play_Now_self_game2({Key? key}) : super(key: key);
 
   @override
-  State<Play_Now_self_game> createState() => _Play_Now_self_gameState();
+  State<Play_Now_self_game2> createState() => _Play_Now_self_game2State();
 }
 
-class _Play_Now_self_gameState extends State<Play_Now_self_game> {
+class _Play_Now_self_game2State extends State<Play_Now_self_game2> {
   int _selectedIndex = -1;
   final SelectedDiceController controller = Get.put(SelectedDiceController());
   GetGamePriceListSelfController _getGamePriceListSelfController =
@@ -267,7 +266,7 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                   ),
                 ),
 
-                ///todo:play_again button...7 sep 2024..
+                ///todo:play_again button...7 sep 2024...
                 // Positioned(
                 //   top: tableTop + (tableHeight / 6) - (screenHeight * 0.3 / 1),
                 //   left:
@@ -638,33 +637,7 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                                           child: Text('No Data'),
                                         )
                                       : GestureDetector(
-                                          onTap: () async {
-                                            SharedPreferences sharedPrefs =
-                                                await SharedPreferences
-                                                    .getInstance();
-
-                                            // Retrieve the gameTypeId from your controller/model
-                                            String? gamePriceTypeId =
-                                                _getGamePriceListSelfController
-                                                    .getpricelistModel
-                                                    ?.getGameAmount![index]
-                                                    .id
-                                                    ?.toString();
-
-                                            if (gamePriceTypeId != null) {
-                                              await sharedPrefs.setString(
-                                                  'gamePriceTypeId_',
-                                                  gamePriceTypeId);
-
-                                              /// Save with consistent key.....
-                                              print(
-                                                  "Game price Type 2 ID saved: $gamePriceTypeId");
-                                            } else {
-                                              print(
-                                                  "Game price Type ID is null, not saving.");
-                                            }
-
-                                            ///todo: upper code .........save price list id....
+                                          onTap: () {
                                             setState(() {
                                               _selectedIndex = index;
                                             });

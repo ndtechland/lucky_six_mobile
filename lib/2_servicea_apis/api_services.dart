@@ -12,6 +12,8 @@ import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../1_models/dice_list_model_bygameid.dart';
+import '../1_models/dice_popup_avlbalance_bidbalancemodel.dart';
+import '../1_models/dice_selection_red_white_model.dart';
 import '../1_models/game_type_model.dart';
 import '../1_models/get_bank_model.dart';
 import '../1_models/get_wallet_model.dart';
@@ -1036,6 +1038,142 @@ class ApiProvider {
             getDiceListModelFromJson(r.body);
         print("Game dice List ID: ${getgamediceListmodel.diceNumvers?[0].id}");
         return getgamediceListmodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo: get game dice color list api....game ..10...
+  static diceColorListApi() async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID3: $userId');
+    print('Token3: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID3: $userId2');
+    print('Token3: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+    //https://api.luckysix.in/api/Home/GamePriceByGameId?GameId=1
+    //https://api.luckysix.in/api/Dice/GetDiceType
+
+    var url = '${baseUrl}Dice/GetDiceType';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URLpricelist: $url");
+
+      if (r.statusCode == 200) {
+        print("Request URLdicelist: $url");
+        print("Response bodydicelist: ${r.body}");
+
+        // Parse the response body
+        DiceSelection? getgamediceColorListmodel =
+            diceSelectionFromJson(r.body);
+        print(
+            "Game dice color List ID: ${getgamediceColorListmodel.data?[0].id}");
+        return getgamediceColorListmodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo: get game dice color list api....game ..10......static.....
+  static diceAvlBalPopupApi() async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID3: $userId');
+    print('Token3: $token');
+
+    ///gameColorID
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID3: $userId2');
+    print('Token3: $token2');
+    // SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved game type ID
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+
+    // Retrieve the saved game type ID with the same key used for saving
+    var gameTypeIdType2 = sharedPrefs.getString('gameTypeId_');
+
+    if (gameTypeIdType2 == null) {
+      print("Game Type ID is null, cannot proceed with API call.");
+      return;
+    }
+
+    print("Retrieved Game Type ID: $gameTypeIdType2");
+    // Retrieve the saved game price type ID with the same key used for saving
+    var gamePriceTypeIdType2 = sharedPrefs.getString('gamePriceTypeId_');
+
+    if (gamePriceTypeIdType2 == null) {
+      print("Game Price Type ID is null, cannot proceed with API call.");
+      return;
+    }
+
+    print("Retrieved Game price Type ID: $gamePriceTypeIdType2");
+    var url =
+        '${baseUrl}Home/GetTotalAmtAndBetAmt/32ef4a35-4874-4a31-a47b-f81a749c8141/$gamePriceTypeIdType2/$gameTypeIdType2';
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URLpricelist: $url");
+
+      if (r.statusCode == 200) {
+        print("Request URLdicelist: $url");
+        print("Response bodydicelist: ${r.body}");
+        // Parse the response body
+        DicepipupBidAvlPriceModel? gamedicepopupbalancemodel =
+            dicepipupBidAvlPriceModelFromJson(r.body);
+        print(
+            "Game popup avl bal ID: ${gamedicepopupbalancemodel.data2?.bettingAmount}");
+        return gamedicepopupbalancemodel;
       } else {
         print("Failed to fetch Game. Status code: ${r.statusCode}");
       }

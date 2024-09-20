@@ -5,14 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../Controllersss/rezaypay_controller/pay_amount_controller.dart';
 import '../../controllers_all/dice_list_controller_byid.dart';
-import '../../controllers_all/single_dice_selection_controllers.dart';
+import '../../controllers_all/dice_popup_avlbal_controller.dart';
 import '../../game_type/single_dice_game/player_lists.dart';
 
 class NumberSelection extends StatelessWidget {
   static const String id = 'Company';
 
-  final SinglediceSelectionController _homeeeController =
-      Get.put(SinglediceSelectionController());
+  DiceAvlBalpopupController _diceAvlBalpopupController =
+      Get.put(DiceAvlBalpopupController());
   final RozarpayamountController _rozarpayamountController =
       Get.put(RozarpayamountController());
   GetDiceListController _getDiceListController =
@@ -27,8 +27,13 @@ class NumberSelection extends StatelessWidget {
     'assets/images/dice6.png',
   ];
 
+  ///todo:........................................
+  ///todo:............... ... ... ... ... ... ..........
+
   @override
   Widget build(BuildContext context) {
+    // DiceAvlBalpopupController _diceAvlBalpopupController = Get.put(DiceAvlBalpopupController());
+
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     var fontheight = isPortrait
         ? MediaQuery.of(context).size.height * 0.21
@@ -51,34 +56,41 @@ class NumberSelection extends StatelessWidget {
                     title: GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Avl Balance : ",
-                              style: GoogleFonts.abyssinicaSil(
-                                fontSize: fontheight * 0.12,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Obx(
+                                () => _diceAvlBalpopupController.isLoading.value
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Text(
+                                        "Avl Balance: ",
+                                        style: GoogleFonts.abyssinicaSil(
+                                          fontSize: fontheight * 0.12,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                               ),
-                            ),
-                            Text(
-                              "500",
-                              style: GoogleFonts.abyssinicaSil(
-                                fontSize: fontheight * 0.13,
-                                color: Colors.red.shade300,
-                                fontWeight: FontWeight.w600,
+                              Obx(
+                                () => Text(
+                                  "${_diceAvlBalpopupController.data2.value?.totalAvlAmt?.toInt()}", // Use .value for RxString
+                                  style: GoogleFonts.abyssinicaSil(
+                                    fontSize: fontheight * 0.13,
+                                    color: Colors.red.shade300,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            ],
+                          )),
                     ),
                     content: Padding(
                       padding: EdgeInsets.all(10.0),
@@ -89,12 +101,29 @@ class NumberSelection extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Your Selected dice is  1,3,4 \n You have to pay your payable Coins for start your game and your payable Coins is\n 300.",
+                              /// "${_getDiceListController.selectedIndex.value + 1}",
+                              "Your Selected dice is  ${_getDiceListController.selectedIndex.value + 1} \n You have to pay your payable Coins for start your game and your payable Coins is:-",
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
+
+                                ///todo:.......................
                                 color: Colors.black,
                               ),
                             ),
+                          ),
+                          Obx(
+                            () => _diceAvlBalpopupController.isLoading.value
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Text(
+                                    "${_diceAvlBalpopupController.data2.value?.bettingAmount.toString()}", // Use .value for RxString
+                                    style: GoogleFonts.poppins(
+                                      fontSize: fontheight * 0.12,
+                                      color: Colors.green.shade900,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                           ),
                         ],
                       ),
@@ -196,15 +225,19 @@ class NumberSelection extends StatelessWidget {
           mainAxisSpacing: 18.0,
           childAspectRatio: 1.0,
         ),
-        itemCount: _getDiceListController.diceList?.diceNumvers?.length,
+        itemCount: 6,
+        //_getDiceListController.diceList?.diceNumvers?.length,
 
         /// _diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
-            bool isSelected = _homeeeController.selectedIndices.contains(index);
+            bool isSelected =
+                _getDiceListController.selectedIndex.value == index;
+            // bool isSelected =
+            //     _getDiceListController.selectedIndices.contains(index);
             return InkWell(
               onTap: () {
-                _homeeeController.toggleSelection(index);
+                _getDiceListController.toggleSelection(index);
               },
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 300),
@@ -319,15 +352,16 @@ class NumberSelection extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 2, vertical: 30),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _getDiceListController.diceList?.diceNumvers?.length,
-        //_getDiceListController._getDiceListnumberModel?.diceNumvers.
-        //_diceImages2.length,
+        itemCount: _diceImages2.length, // Make sure this is correct
         itemBuilder: (context, index) {
           return Obx(() {
-            bool isSelected = _homeeeController.selectedIndices.contains(index);
+            // Determine if the current index is selected
+            bool isSelected =
+                _getDiceListController.selectedIndex.value == index;
+
             return InkWell(
               onTap: () {
-                _homeeeController.toggleSelection(index);
+                _getDiceListController.toggleSelection(index);
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 13),
@@ -368,6 +402,7 @@ class NumberSelection extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
+                          ///
                           image: AssetImage(
                             "assets/images/svg_images/ludobackblack.png",
                           ),

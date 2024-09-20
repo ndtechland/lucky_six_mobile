@@ -15,6 +15,8 @@ class EarnMoney extends StatelessWidget {
     '02-03-2024',
     '01-04-2024',
     '24-05-2024',
+    '22-02-2023',
+    '23-04-2023',
   ];
   final List<String> items2 = [
     'Win',
@@ -23,6 +25,8 @@ class EarnMoney extends StatelessWidget {
     'Win',
     'Win',
     'Loose',
+    'Loose',
+    'Win',
     'Loose',
     'Win',
     'Loose'
@@ -37,6 +41,8 @@ class EarnMoney extends StatelessWidget {
     '400 Coins',
     '100 Coins',
     '700 Coins',
+    '300 Coins',
+    '500 Coins',
   ];
 
   @override
@@ -217,17 +223,29 @@ class EarnMoney extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.green.shade200),
+                        color: Colors.green.shade900),
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(5.0),
-                        child: Text(
-                          'Earn Coins: 3000',
-                          style: GoogleFonts.abyssinicaSil(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17,
-                          ),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Total Earn Coins:',
+                              style: GoogleFonts.roboto(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              ' 3800',
+                              style: GoogleFonts.abyssinicaSil(
+                                color: Colors.yellow.shade500,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

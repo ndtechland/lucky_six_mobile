@@ -87,135 +87,142 @@ class _Home_PageState extends State<Home_Page> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/svg_images/ludobackblack.png"),
-                fit: BoxFit.cover,
+      backgroundColor: Colors.red.shade100,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              height: height,
+              width: width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image:
+                      AssetImage("assets/images/svg_images/ludobackblack.png"),
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            child: SafeArea(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: isPortrait ? height * 0.02 : height * 0.02,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            //Get.back();
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.arrow_back,
-                                color: Colors.transparent,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).viewInsets.top + 4,
-                            left: MediaQuery.of(context).viewInsets.left +
-                                (isPortrait ? 80 : 280),
-                            right: MediaQuery.of(context).viewInsets.left +
-                                (isPortrait ? 100 : 280),
-                          ),
-                          child: PhysicalModel(
-                            color: appColor2,
-                            clipBehavior: Clip.none,
-                            borderRadius: BorderRadius.circular(12),
-                            elevation: 10,
-                            shadowColor: Colors.white,
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: isPortrait ? height * 0.02 : height * 0.02,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              //Get.back();
+                            },
                             child: Container(
-                              height:
-                                  isPortrait ? height * 0.15 : height * 0.277,
-                              width: isPortrait ? width * 0.05 : width * 0.04,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                      "assets/images/svg_images/play_store_512.png"),
-                                  fit: BoxFit.cover,
+                                color: Colors.transparent,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.transparent,
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: isPortrait ? height * 0.02 : height * 0.01,
-                  ),
-                  Expanded(
-                    child: isPortrait
-                        ? GridView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).viewInsets.top + 4,
+                              left: MediaQuery.of(context).viewInsets.left +
+                                  (isPortrait ? 80 : 280),
+                              right: MediaQuery.of(context).viewInsets.left +
+                                  (isPortrait ? 100 : 280),
                             ),
-                            itemCount: imagePaths.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  navigateToScreen(index);
-                                },
-                                child: buildImageContainer(imagePaths[index],
-                                    height, width, isPortrait),
-                              );
-                            },
-                          )
-                        : ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: imagePaths.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                    left: index == 0
-                                        ? width * 0.0400
-                                        : width * 0.0300),
-                                child: GestureDetector(
+                            child: PhysicalModel(
+                              color: appColor2,
+                              clipBehavior: Clip.none,
+                              borderRadius: BorderRadius.circular(12),
+                              elevation: 10,
+                              shadowColor: Colors.white,
+                              child: Container(
+                                height:
+                                    isPortrait ? height * 0.15 : height * 0.277,
+                                width: isPortrait ? width * 0.05 : width * 0.04,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/svg_images/play_store_512.png"),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: isPortrait ? height * 0.02 : height * 0.01,
+                    ),
+                    Expanded(
+                      child: isPortrait
+                          ? GridView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                              ),
+                              itemCount: imagePaths.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
                                   onTap: () {
                                     navigateToScreen(index);
                                   },
                                   child: buildImageContainer(imagePaths[index],
                                       height, width, isPortrait),
-                                ),
-                              );
-                            },
-                          ),
-                  ),
-                  SizedBox(
-                    height: isPortrait ? height * 0.0450 : height * 0.02,
-                  ),
-                ],
+                                );
+                              },
+                            )
+                          : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: imagePaths.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      left: index == 0
+                                          ? width * 0.0400
+                                          : width * 0.0300),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      navigateToScreen(index);
+                                    },
+                                    child: buildImageContainer(
+                                        imagePaths[index],
+                                        height,
+                                        width,
+                                        isPortrait),
+                                  ),
+                                );
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      height: isPortrait ? height * 0.0450 : height * 0.02,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
 
-          ///todo: suggessionss.....hover.....
-          if (_showSuggestion)
-            SuggestionOverlay(onFinish: _markSuggestionAsSeen),
-        ],
+            ///todo: suggessionss.....hover.....
+            if (_showSuggestion)
+              SuggestionOverlay(onFinish: _markSuggestionAsSeen),
+          ],
+        ),
       ),
     );
   }
@@ -225,6 +232,18 @@ class _Home_PageState extends State<Home_Page> {
         Get.put(UserProfilesController());
     switch (index) {
       case 0:
+        SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+        ///todo: Save the game type ID
+        await sharedPrefs.setString(
+          'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
+          "${_gameTypeController.gametypeModel?.getGames?[index].id}",
+        );
+
+        // Retrieve the game type ID
+        var gameTypeIdType = sharedPrefs.getString(
+          'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
+        );
         showCustomGameDialog(context);
 
         ///
@@ -391,10 +410,31 @@ class _Home_PageState extends State<Home_Page> {
                         return GestureDetector(
                           onTap: () async {
                             Get.back();
+                            SharedPreferences sharedPrefs =
+                                await SharedPreferences.getInstance();
+
+                            // Retrieve the gameTypeId from your controller/model
+                            String? gameTypeId = _gameTypeController
+                                .gametypeModel?.getGames?[index].id
+                                ?.toString();
+
+                            if (gameTypeId != null) {
+                              await sharedPrefs.setString('gameTypeId_',
+                                  gameTypeId); // Save with consistent key
+                              print("Game Type ID saved: $gameTypeId");
+                            } else {
+                              print("Game Type ID is null, not saving.");
+                            }
+
+                            // Retrieve the saved game type ID
+                            // var gameTypeIdType2 =
+                            //     sharedPrefs.getString('gameTypeId_$gameTypeId');
+                            // print("Retrieved Game Type ID: $gameTypeIdType2");
+
+                            // Logic to handle based on index
                             if (index == 0) {
                               CallLoader.loader();
                               await Future.delayed(Duration(seconds: 1));
-
                               CallLoader.hideLoader();
 
                               _getGamePriceListController.gamePriceListApi(
@@ -407,17 +447,11 @@ class _Home_PageState extends State<Home_Page> {
                                   await SharedPreferences.getInstance();
 
                               ///todo: Save the game type ID
-                              await sharedPrefs.setString(
-                                'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
-                                "${_gameTypeController.gametypeModel?.getGames?[index].id}",
-                              );
 
                               // Retrieve the game type ID
-                              var gameTypeId2 = sharedPrefs.getString(
-                                'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
-                              );
-
-                              print('game type id: $gameTypeId2');
+                              var gameTypeIdType2 = sharedPrefs.getString(
+                                  'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}');
+                              print("game id 3${gameTypeIdType2}");
                             } else if (index == 1) {
                               CallLoader.loader();
                               await Future.delayed(Duration(seconds: 1));
@@ -429,18 +463,36 @@ class _Home_PageState extends State<Home_Page> {
                                     .gametypeModel?.getGames?[index].id
                                     .toString(),
                               );
+
+                              SharedPreferences sharedPrefs =
+                                  await SharedPreferences.getInstance();
+
+                              ///todo: Save the game type ID
+
+                              // Retrieve the game type ID
+                              var gameTypeIdType2 = sharedPrefs.getString(
+                                  'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}');
+                              print("game id 4${gameTypeIdType2}");
                             } else if (index == 2) {
                               CallLoader.loader();
                               await Future.delayed(Duration(seconds: 1));
                               CallLoader.hideLoader();
+                              SharedPreferences sharedPrefs =
+                                  await SharedPreferences.getInstance();
 
+                              ///todo: Save the game type ID
+
+                              // Retrieve the game type ID
+                              var gameTypeIdType2 = sharedPrefs.getString(
+                                  'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}');
+                              print("game id 5${gameTypeIdType2}");
+                              // Get.to(() => SelfDiceRollFaceSelection());
                               _getGamePriceListSelfController
                                   .gamePriceListSelfApi(
                                 gameTypeId: _gameTypeController
                                     .gametypeModel?.getGames?[index].id
                                     .toString(),
                               );
-
                               _getDiceListSelfController.gameDiceSelfListApi(
                                 gameTypeId2: _gameTypeController
                                     .gametypeModel?.getGames?[index].id

@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:game_app/splash_pages/splash_screens.dart';
+import 'package:game_app/test_testing/showcase_test_controller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 
 Future<void> main() async {
+  ///todo:...
+  Get.put(UserController());
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(); // Initialize GetStorage
 
@@ -49,15 +52,28 @@ class MyApp extends StatelessWidget {
           //Play_Now_self_game(),
           ///PaymentHistory(),
           ///Play_Now_2dice(),
+          ///......
           // HomePageDicetest(),
           /// Play_Now_test(),
+
           ///Play_Now_2dice(),
           ///Play_Now_2dice(),
-          ///Play_Now()
+          ///Play_Now(),
+          ///todo:....original splash..........
           SplashScreen(),
 
-      ///ShowcaseViewExample(),
+      ///todo:
 
+      /// TaskScreen(),
+      //TaskList(),
+
+      /// EventsScreen(),
+      ///
+      //InputPage()
+      ///EventCalendarScreen(),
+      /// DiceRollSpeedList(),
+      //WebViewEasydinner(),
+      ///ShowcaseViewExample(),
       ///DocumentScreen(),
       ///PlayerLists(),
       //DiceRollingMusic(),
@@ -67,5 +83,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
+///
 ///
 ///

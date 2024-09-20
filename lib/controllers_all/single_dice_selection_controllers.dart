@@ -11,12 +11,12 @@ class SinglediceSelectionController extends GetxController {
     if (selectedIndices.contains(index)) {
       selectedIndices.remove(index);
     } else {
-      if (selectedIndices.length < 2) {
+      if (selectedIndices.length < 1) {
         selectedIndices.add(index);
       } else {
         // Show a stylish toast message
         Fluttertoast.showToast(
-          msg: "You can only select up to 2 dice.",
+          msg: "You can only select up to 1 dice.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,

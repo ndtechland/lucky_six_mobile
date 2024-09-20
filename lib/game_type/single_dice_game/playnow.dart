@@ -287,7 +287,12 @@ class _Play_NowState extends State<Play_Now> {
                         // color:
                         //     Color(0xffc03129), // Background color to fill corners
                         ),
-                    child: Dice3DAnimation(), // Your dice animation widget
+                    child: Dice3DAnimation(
+                        //selectedId: ScrollDirection.leftScroll
+                        ),
+
+                    ///Get.to(Dice3DAnimation(selectedId: ScrollDirection.leftScroll));
+// Your dice animation widget
                   ),
                 ),
 

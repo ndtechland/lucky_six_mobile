@@ -139,10 +139,13 @@ class WalletCredentials extends StatelessWidget {
                 vertical: size.height * 0.01,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  buildText('Available Coins:', size),
+                  buildText(' Available  ', size),
+                  buildText2(' Coins :', size),
+                  Spacer(),
                   buildCoinDisplay(size),
+                  //Spacer(),
                 ],
               ),
             ),
@@ -162,10 +165,27 @@ class WalletCredentials extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: GoogleFonts.poppins(
           fontWeight: FontWeight.w600,
-          color: Colors.blue,
+          // backgroundColor: Colors.black45,
+          color: Colors.black,
           fontSize: size.width < size.height
-              ? size.height * 0.03 // Portrait mode
-              : size.width * 0.03 // Landscape mode
+              ? size.height * 0.025 // Portrait mode
+              : size.width * 0.025 // Landscape mode
+          ),
+    );
+  }
+
+  Widget buildText2(String text, Size size) {
+    return Text(
+      text,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: GoogleFonts.poppins(
+          //backgroundColor: Colors.black45,
+          fontWeight: FontWeight.w600,
+          color: Colors.indigo,
+          fontSize: size.width < size.height
+              ? size.height * 0.025 // Portrait mode
+              : size.width * 0.025 // Landscape mode
           ),
     );
   }
@@ -201,7 +221,10 @@ class WalletCredentials extends StatelessWidget {
           shape: BoxShape.circle,
           // color: Colors.black,
           image: DecorationImage(
-            image: AssetImage("assets/images/svg_images/rupiesbackground.png"
+            image: AssetImage(
+                "assets/images/svg_images/coin_pricelistbackground.png"
+
+                //"assets/images/svg_images/rupiesbackground.png"
                 //  "https://images.unsplash.com/photo-1681040488449-5a445633bb7e?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 //"assets/images/svg_images/backgroundddice.jpeg"
                 // "assets/images/backgroundhome2.jpg"
@@ -215,12 +238,12 @@ class WalletCredentials extends StatelessWidget {
           () => (wallet2Controller.isLoading.value)
               ? Center(child: CircularProgressIndicator())
               : Text(
-                  "${wallet2Controller.getWallettModel?.getWallet?.walletAmount}",
-                  style: GoogleFonts.alata(
-                    fontSize: 15,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white,
+                  "${wallet2Controller.getWallettModel?.getWallet?.walletAmount?.toStringAsFixed(0) ?? '0'}",
+                  style: GoogleFonts.roboto(
+                    fontSize: 17,
+                    //fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
                   ),
                 ),
         )));
@@ -438,7 +461,7 @@ class WalletCredentials extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 BoxShadow(
-                  offset: const Offset(-1, -1),
+                  offset: Offset(-1, -1),
                   spreadRadius: 1,
                   blurRadius: 1,
                   color: Colors.black12,

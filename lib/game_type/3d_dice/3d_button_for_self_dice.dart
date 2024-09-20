@@ -5,19 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../game_speed_list/self_game/self_dice_face_selection.dart';
 import '../../price_listts/price_listtss.dart';
 import 'double_dice_3d.dart';
 
-class PlayAgainIconButton2 extends StatefulWidget {
+class PlayAgainIconButton3 extends StatefulWidget {
   //final VoidCallback onPressed;
 
-  const PlayAgainIconButton2({Key? key}) : super(key: key);
+  const PlayAgainIconButton3({Key? key}) : super(key: key);
 
   @override
-  _PlayAgainIconButton2State createState() => _PlayAgainIconButton2State();
+  _PlayAgainIconButton3State createState() => _PlayAgainIconButton3State();
 }
 
-class _PlayAgainIconButton2State extends State<PlayAgainIconButton2> {
+class _PlayAgainIconButton3State extends State<PlayAgainIconButton3> {
   bool _isVisible = false;
 
   @override
@@ -42,15 +43,15 @@ class _PlayAgainIconButton2State extends State<PlayAgainIconButton2> {
       child: _isVisible
           ? GestureDetector(
               onTap: () {
-                //Get.to(SelfDiceRollFaceSelection());
+                Get.to(SelfDiceRollFaceSelection());
 
-                _showResultDialog();
+                // _showResultDialog();
               },
               child: Container(
                 width: screenWidth * 0.08,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.red, Colors.red],
+                    colors: [Colors.yellow, Colors.orange],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -74,7 +75,7 @@ class _PlayAgainIconButton2State extends State<PlayAgainIconButton2> {
                 ),
                 child: Center(
                   child: Icon(
-                    Icons.refresh,
+                    Icons.speed_outlined,
                     color: Colors.white,
                     size: 30,
                     shadows: [

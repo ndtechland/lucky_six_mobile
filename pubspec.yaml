@@ -59,11 +59,24 @@ dependencies:
   just_audio: ^0.9.31
   file_picker: ^5.2.4
   permission_handler:
-  showcaseview: ^2.0.0
+  #showcaseview: ^2.0.0
+  table_calendar: ^3.0.0
+  # for calendar view...todo:new app
+  open_file:
+  sqflite: ^2.0.0+3
+  pdf: ^3.8.0
+  path_provider:
+
+
+
+
+  #flutter_inappwebview:
 
 
 
   #flutter_cube: ^0.1.1
+  #vector_math:
+  #flutter_cube:
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +104,7 @@ flutter:
     - assets/images/svg_images/
     - assets/audios/
     - assets/audios/diceroolingggg.mp3
+
 
 
 

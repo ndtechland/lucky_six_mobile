@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../1_models/price_list_model.dart';
 import '../2_servicea_apis/api_services.dart';
-import '../game_type/self_dice_game/play_now_self_game.dart';
+import '../game_speed_list/self_game/self_dice_face_selection.dart';
 
 class GetGamePriceListSelfController extends GetxController {
   RxBool isLoading = true.obs;
@@ -18,7 +18,9 @@ class GetGamePriceListSelfController extends GetxController {
       // Get.to(() => PriceListssfortwodice());
       //await Get.to(PriceListssfortwodice());
       // await Get.to(Play_Now_self_game());
-      Get.to(() => Play_Now_self_game());
+      ///Get.to(() => Play_Now_self_game());
+      ///SelfDiceRollFaceSelection
+      Get.to(() => SelfDiceRollFaceSelection());
 
       //        await Get.to(PriceListss());
       isLoading(false);
