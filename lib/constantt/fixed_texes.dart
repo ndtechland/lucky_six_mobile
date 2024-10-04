@@ -6,6 +6,9 @@ class FixedText {
   //static const String imgurl = "https://admin.hirejobindia.com";
   static const String imgurltestimonial =
       "https://admin.hirejobindia.com/TestimonalsImages/";
+  static const String imgbaselucysix = "https://api.luckysix.in/Images/";
+
+  //https://api.luckysix.in/Images/
 
   static const String offaptpdfurl = "https://admin.hirejobindia.com/";
 

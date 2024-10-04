@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../constantt/responsive_container_text.dart';
+import '../controllers_all/win_loss_list_controller.dart';
 
 class EarnMoney extends StatelessWidget {
   EarnMoney({Key? key}) : super(key: key);
+
+  GetWinLossListController _getWinLossListController =
+      Get.put(GetWinLossListController());
 
   final List<String> items = [
     '22-06-2023',
@@ -49,109 +56,156 @@ class EarnMoney extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Image.asset(
-                "assets/images/svg_images/ludobackwhite.png",
-                fit: BoxFit.cover,
-              ),
-            ),
-            OrientationBuilder(
-              builder: (context, orientation) {
-                return LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Column(
-                      children: [
-                        _buildHeader(context),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: items.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 0),
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 0, horizontal: 3),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 20.0,
-                                      ),
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(6.0)),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      responsiveContainer3(
-                                        heightPortrait:
-                                            MediaQuery.of(context).size.height *
-                                                0.080,
-                                        widthPortrait:
-                                            MediaQuery.of(context).size.width,
-                                        heightLandscape:
-                                            MediaQuery.of(context).size.height *
-                                                0.16,
-                                        widthLandscape:
-                                            MediaQuery.of(context).size.width,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
+      body: Obx(
+        () => _getWinLossListController.isLoading.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SafeArea(
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.asset(
+                        "assets/images/svg_images/ludobackwhite.png",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    OrientationBuilder(
+                      builder: (context, orientation) {
+                        return LayoutBuilder(
+                          builder: (context, constraints) {
+                            return Column(
+                              children: [
+                                _buildHeader(context),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: _getWinLossListController
+                                        .winlosslistModel
+                                        ?.response
+                                        ?.data
+                                        ?.length,
+                                    // items.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 4),
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 0, horizontal: 0),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 0, horizontal: 3),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black12,
+                                                blurRadius: 20.0,
+                                              ),
+                                            ],
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(6.0)),
+                                          ),
+                                          child: Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                items[index],
-                                                style: GoogleFonts.roboto(
-                                                  fontSize: 14,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500,
+                                              responsiveContainer3(
+                                                heightPortrait:
+                                                    MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.080,
+                                                widthPortrait:
+                                                    MediaQuery.of(context)
+                                                        .size
+                                                        .width,
+                                                heightLandscape:
+                                                    MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.16,
+                                                widthLandscape:
+                                                    MediaQuery.of(context)
+                                                        .size
+                                                        .width,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      // String formattedDate = DateFormat('yyyy-MM-dd').format(createDate!);
+
+                                                      Text(
+                                                        DateFormat('yyyy-MM-dd')
+                                                            .format(DateTime.parse(
+                                                                _getWinLossListController
+                                                                    .winlosslistModel!
+                                                                    .response!
+                                                                    .data![
+                                                                        index]
+                                                                    .createDate!
+                                                                    .toString())),
+                                                        // "${_getWinLossListController.winlosslistModel?.response?.data?[index].createDate}",
+                                                        //_getWinLossListController.
+                                                        // items[index],
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                          fontSize: 14,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${_getWinLossListController.winlosslistModel?.response?.data?[index].gameStatus.toString()}",
+
+                                                        //  items2[index],
+                                                        style:
+                                                            GoogleFonts.alata(
+                                                          fontSize: 14,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${_getWinLossListController.winlosslistModel?.response?.data?[index].amount.toString()}",
+
+                                                        //
+                                                        //items3[index],
+                                                        style:
+                                                            GoogleFonts.alata(
+                                                          fontSize: 14,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                items2[index],
-                                                style: GoogleFonts.alata(
-                                                  fontSize: 14,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Text(
-                                                items3[index],
-                                                style: GoogleFonts.alata(
-                                                  fontSize: 14,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                                context: context,
                                               ),
                                             ],
                                           ),
                                         ),
-                                        context: context,
-                                      ),
-                                    ],
+                                      );
+                                    },
                                   ),
                                 ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }
@@ -238,7 +292,8 @@ class EarnMoney extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              ' 3800',
+                              "${_getWinLossListController.winlosslistModel?.totalErning.toString()}",
+                              // ' 3800',
                               style: GoogleFonts.abyssinicaSil(
                                 color: Colors.yellow.shade500,
                                 fontWeight: FontWeight.w600,

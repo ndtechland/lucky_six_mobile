@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../1_models/dice_list_model_bygameid.dart';
 import '../2_servicea_apis/api_services.dart';
 
-class GetTwoDiceList1Controller extends GetxController {
+class DoublediceSelection2Controller extends GetxController {
   RxBool isLoading = true.obs;
   GetDiceListModel? _getDiceListnumberModel;
 
@@ -19,12 +19,11 @@ class GetTwoDiceList1Controller extends GetxController {
 
       if (_getDiceListnumberModel?.diceNumvers != null &&
           _getDiceListnumberModel!.diceNumvers!.isNotEmpty) {
-        // Navigate to the next screen or handle dice number selection
+        //Get.to(() => NumberSelection());
         print("Dice number ID: ${_getDiceListnumberModel!.diceNumvers![0].id}");
       }
-    } catch (e, stackTrace) {
+    } catch (e) {
       print("Error fetching dice list: $e");
-      print("Stacktrace: $stackTrace");
       Get.snackbar(
         "Error",
         "Failed to fetch dice list. Please try again later.",
@@ -38,12 +37,12 @@ class GetTwoDiceList1Controller extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    gameDiceList2Api(); // Consider passing gameTypeId3 as a parameter when needed
+    gameDiceList2Api();
   }
 
   @override
-  void onClose() {
-    // No need to manually delete the controller; GetX will handle this.
-    super.onClose();
+  void dispose() {
+    Get.delete<DoublediceSelection2Controller>();
+    super.dispose();
   }
 }

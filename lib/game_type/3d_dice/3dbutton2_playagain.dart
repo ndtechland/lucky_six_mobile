@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../controllers_all/play_again_controller.dart';
 import '../../price_listts/price_listtss.dart';
 import 'double_dice_3d.dart';
 
@@ -16,6 +17,9 @@ class PlayAgainIconButton2 extends StatefulWidget {
   @override
   _PlayAgainIconButton2State createState() => _PlayAgainIconButton2State();
 }
+
+PlayAgainSingleController _playAgainSingleController =
+    Get.put(PlayAgainSingleController());
 
 class _PlayAgainIconButton2State extends State<PlayAgainIconButton2> {
   bool _isVisible = false;
@@ -160,9 +164,11 @@ class _PlayAgainIconButton2State extends State<PlayAgainIconButton2> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        await _playAgainSingleController.playAgainSingleApi();
+
                         print("play again button pressed"); // Debugging
-                        Get.to(PriceListss());
+                        await Get.off(PriceListss());
                       },
                     ),
                     SizedBox(width: 4),

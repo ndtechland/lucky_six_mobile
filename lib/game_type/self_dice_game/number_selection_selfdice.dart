@@ -127,7 +127,7 @@ class NumberSelectionSelfDice extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Play_Now_self_game()),
+                                builder: (context) => PlayNowSelfGame()),
                           );
 
                           /// _rozarpayamountController.openCheckout();

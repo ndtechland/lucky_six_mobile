@@ -9,7 +9,7 @@ String getDiceListModelToJson(GetDiceListModel data) =>
     json.encode(data.toJson());
 
 class GetDiceListModel {
-  int? status;
+  num? status;
   String? message;
   List<DiceNumver>? diceNumvers;
   GetDiceListModel({

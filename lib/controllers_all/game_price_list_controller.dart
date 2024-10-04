@@ -2,9 +2,11 @@ import 'package:get/get.dart';
 
 import '../1_models/price_list_model.dart';
 import '../2_servicea_apis/api_services.dart';
-import '../game_speed_list/single_game/dice_face_selection.dart';
+import 'game_type_wht_rd_controller.dart';
 
 class GetGamePriceListController extends GetxController {
+  GetDiceColorController _getDiceColorColorController =
+      Get.put(GetDiceColorController());
   RxBool isLoading = true.obs;
   GamePriceListModel? getpricelistModel;
 
@@ -16,7 +18,8 @@ class GetGamePriceListController extends GetxController {
 
     if (getpricelistModel?.getGameAmount != null) {
       //DiceRollFaceSelection
-      Get.to(() => DiceRollFaceSelection());
+      // _getDiceColorColorController.diceList!.data[index].id.toString();
+      /// Get.to(() => DiceRollFaceSelection());
       //        await Get.to(PriceListss());
       isLoading(false);
     } else {

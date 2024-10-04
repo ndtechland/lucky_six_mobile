@@ -92,8 +92,8 @@ class _ExitIconButtonSelfState extends State<ExitIconButtonSelf> {
       context: context,
       builder: (BuildContext context) {
         final double dialogSize = min(
-          MediaQuery.of(context).size.width * 0.5,
-          MediaQuery.of(context).size.height * 0.5,
+          MediaQuery.of(context).size.width * 0.4,
+          MediaQuery.of(context).size.height * 0.4,
         );
 
         return Dialog(

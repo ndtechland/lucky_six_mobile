@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,11 +54,6 @@ class _DiceRollFaceSelectionState extends State<DiceRollFaceSelection> {
                   ? null
                   : () async {
                       if (selectedIndex == 0) {
-                        SharedPreferences sharedPrefs =
-                            await SharedPreferences.getInstance();
-
-                        ///todo: Save the game type ID in grid view
-
                         // var gameTypeId2 = sharedPrefs.getString(
                         //   'gameTypeId_${_getDiceColorColorController.diceList?.data?.id}',
                         // );
@@ -163,24 +159,57 @@ class _DiceRollFaceSelectionState extends State<DiceRollFaceSelection> {
                                               selectedIndex == index;
                                           return GestureDetector(
                                             onTap: () async {
+                                              // SharedPreferences sharedPrefs =
+                                              //     await SharedPreferences
+                                              //         .getInstance();
+                                              //
+                                              // ///todo: Save the game color ID
+                                              // // await sharedPrefs.setString(
+                                              // //   'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
+                                              // //   "${_gameTypeController.gametypeModel?.getGames?[index].id}",
+                                              // // );
+                                              //
+                                              // // Retrieve the game type ID
+                                              // var gameColorID =
+                                              //     sharedPrefs.getString(
+                                              //   'gameColorId_${_getDiceColorColorController.diceList?.data![index].id}',
+                                              // );
+                                              //
+                                              // print(
+                                              //     'game color Id: $gameColorID');
+                                              //
+                                              // ///todo: Save the game color ID
+                                              // // await sharedPrefs.setString(
+                                              // //   'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
+                                              // //   "${_gameTypeController.gametypeModel?.getGames?[index].id}",
+                                              // // );
+                                              //
+                                              // // Retrieve the game type ID
+                                              //
+                                              // print(
+                                              //     'game color Id: $gameColorID');
+
                                               SharedPreferences sharedPrefs =
                                                   await SharedPreferences
                                                       .getInstance();
+                                              final box =
+                                                  GetStorage(); // GetStorage instance
 
-                                              ///todo: Save the game color ID
-                                              // await sharedPrefs.setString(
-                                              //   'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
-                                              //   "${_gameTypeController.gametypeModel?.getGames?[index].id}",
-                                              // );
+                                              String? gameColorID =
+                                                  _getDiceColorColorController
+                                                      .diceList?.data![index].id
+                                                      .toString();
 
-                                              // Retrieve the game type ID
-                                              var gameColorID =
-                                                  sharedPrefs.getString(
-                                                'gameColorId_${_getDiceColorColorController.diceList?.data![index].id}',
-                                              );
+                                              // Save the game color ID in SharedPreferences
+                                              await sharedPrefs.setString(
+                                                  'gameColorID', gameColorID!);
+
+                                              // Save the game color ID in GetStorage
+                                              box.write(
+                                                  'gameColorID21', gameColorID);
 
                                               print(
-                                                  'game color Id: $gameColorID');
+                                                  'Game color ID saved2: $gameColorID');
                                               setState(() {
                                                 selectedIndex =
                                                     isSelected ? null : index;
@@ -258,26 +287,46 @@ class _DiceRollFaceSelectionState extends State<DiceRollFaceSelection> {
                                             selectedIndex == index;
                                         return GestureDetector(
                                           onTap: () async {
+                                            // SharedPreferences sharedPrefs =
+                                            //     await SharedPreferences
+                                            //         .getInstance();
+                                            //
+                                            // ///todo: Save the game color ID
+                                            // // await sharedPrefs.setString(
+                                            // //   'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
+                                            // //   "${_gameTypeController.gametypeModel?.getGames?[index].id}",
+                                            // // );
+                                            //
+                                            // // Retrieve the game type ID
+                                            // var gameColorID =
+                                            //     sharedPrefs.getString(
+                                            //   'gameColorId_${_getDiceColorColorController.diceList?.data![index].id}',
+                                            // );
+
+                                            // print(
+                                            //'game color Id: $gameColorID');
+
                                             SharedPreferences sharedPrefs =
                                                 await SharedPreferences
                                                     .getInstance();
+                                            final box =
+                                                GetStorage(); // GetStorage instance
 
-                                            ///todo: Save the game color ID
-                                            // await sharedPrefs.setString(
-                                            //   'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}',
-                                            //   "${_gameTypeController.gametypeModel?.getGames?[index].id}",
-                                            // );
+                                            String? gameColorID =
+                                                _getDiceColorColorController
+                                                    .diceList?.data![index].id
+                                                    .toString();
 
-                                            // Retrieve the game type ID
-                                            var gameColorID =
-                                                sharedPrefs.getString(
-                                              'gameColorId_${_getDiceColorColorController.diceList?.data![index].id}',
-                                            );
+                                            // Save the game color ID in SharedPreferences
+                                            await sharedPrefs.setString(
+                                                'gameColorID', gameColorID!);
+
+                                            // Save the game color ID in GetStorage
+                                            box.write(
+                                                'gameColorID21', gameColorID);
 
                                             print(
-                                                'game color Id: $gameColorID');
-
-                                            ///....
+                                                'Game color ID saved2: $gameColorID');
 
                                             setState(() {
                                               selectedIndex =

@@ -8,6 +8,7 @@ import 'package:just_audio/just_audio.dart';
 
 import '../../HomePage/homePage.dart';
 import '../../constantt/responsive_container_text.dart';
+import '../../controllers_all/create_list_single_player_controller.dart';
 
 class PlayerLists extends StatefulWidget {
   PlayerLists({Key? key}) : super(key: key);
@@ -17,19 +18,23 @@ class PlayerLists extends StatefulWidget {
 }
 
 class _PlayerListsState extends State<PlayerLists> {
-  final List<String> items = [
-    'Rakesh',
-    'Vishal',
-    'Kartik',
-    'Shubham',
-    'Akanksha',
-    'Madhu'
-  ];
+  // final List<String> items = [
+  //   'Rakesh',
+  //   'Vishal',
+  //   'Kartik',
+  //   'Shubham',
+  //   'Akanksha',
+  //   'Madhu'
+  // ];
 
-  final List<String> items2 = ['1', '2', '3', '4', '5', '6'];
+//  final List<String> items2 = ['1', '2', '3', '4', '5', '6'];
+
+  GetUserListSingleController _getUserListSingleController =
+      Get.put(GetUserListSingleController());
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  final List<String> _displayedItems = [];
+  // final List<String> _displayedItems = [];
+  List<String> _displayedItems = []; // Change to a growable list
 
   final AudioPlayer _audioPlayer = AudioPlayer(); // Initialize the audio player
 
@@ -37,7 +42,18 @@ class _PlayerListsState extends State<PlayerLists> {
   void initState() {
     super.initState();
     _addItemsOneByOne();
-    _playBackgroundMusic(); // Play the background music
+    _playBackgroundMusic();
+    _initializeDisplayedItems();
+    // Play the background music
+  }
+
+  void _initializeDisplayedItems() {
+    _displayedItems = [];
+
+    // _displayedItems = List<String>.filled(
+    //   _getUserListController.getuserlistModel!.data!.length,
+    //   '', // Default value for each item, can be changed as needed
+    // );
   }
 
   Future<void> _playBackgroundMusic() async {
@@ -50,11 +66,28 @@ class _PlayerListsState extends State<PlayerLists> {
     });
   }
 
+  // Future<void> _addItemsOneByOne() async {
+  //   for (int i = 0; i < items.length; i++) {
+  //     await Future.delayed(Duration(milliseconds: 500));
+  //     _listKey.currentState?.insertItem(i);
+  //     _displayedItems.add(items[i]);
+  //   }
+  // }
+
   Future<void> _addItemsOneByOne() async {
-    for (int i = 0; i < items.length; i++) {
-      await Future.delayed(Duration(milliseconds: 500));
-      _listKey.currentState?.insertItem(i);
-      _displayedItems.add(items[i]);
+    if (_getUserListSingleController.getuserlistModel?.data != null &&
+        _getUserListSingleController.getuserlistModel!.data!.isNotEmpty) {
+      for (int i = 0;
+          i < _getUserListSingleController.getuserlistModel!.data!.length;
+          i++) {
+        await Future.delayed(Duration(milliseconds: 500));
+        _listKey.currentState?.insertItem(i);
+        _displayedItems.add(
+            "${_getUserListSingleController.getuserlistModel!.data![i].fullName}");
+      }
+    } else {
+      // Handle the case where the list is null or empty
+      print("The list is empty or null.");
     }
   }
 
@@ -68,143 +101,188 @@ class _PlayerListsState extends State<PlayerLists> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            // Background Image
-            Positioned.fill(
-              child: Image.asset(
-                "assets/images/svg_images/ludobackwhite.png",
-                fit: BoxFit.cover,
-              ),
-            ),
-            OrientationBuilder(
-              builder: (context, orientation) {
-                return LayoutBuilder(
-                  builder: (context, constraints) {
-                    var screenWidth = constraints.maxWidth;
-                    var screenHeight = constraints.maxHeight;
+      body: Obx(
+        () => _getUserListSingleController.isLoading.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SafeArea(
+                child: Stack(
+                  children: [
+                    // Background Image
+                    Positioned.fill(
+                      child: Image.asset(
+                        "assets/images/svg_images/ludobackwhite.png",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    OrientationBuilder(
+                      builder: (context, orientation) {
+                        return LayoutBuilder(
+                          builder: (context, constraints) {
+                            var screenWidth = constraints.maxWidth;
+                            var screenHeight = constraints.maxHeight;
 
-                    var imageWidth = orientation == Orientation.portrait
-                        ? screenWidth * 0.55
-                        : screenWidth * 0.3;
+                            var imageWidth = orientation == Orientation.portrait
+                                ? screenWidth * 0.55
+                                : screenWidth * 0.3;
 
-                    var imageHeight = orientation == Orientation.portrait
-                        ? screenHeight * 0.2
-                        : screenHeight * 0.4;
+                            var imageHeight =
+                                orientation == Orientation.portrait
+                                    ? screenHeight * 0.2
+                                    : screenHeight * 0.4;
 
-                    var categoryWidth = orientation == Orientation.portrait
-                        ? screenWidth * 0.5
-                        : screenWidth * 0.4;
-                    var categoryHeight = orientation == Orientation.portrait
-                        ? screenHeight * 0.12
-                        : screenHeight * 0.45;
+                            var categoryWidth =
+                                orientation == Orientation.portrait
+                                    ? screenWidth * 0.5
+                                    : screenWidth * 0.4;
+                            var categoryHeight =
+                                orientation == Orientation.portrait
+                                    ? screenHeight * 0.12
+                                    : screenHeight * 0.45;
 
-                    var textfieldWidth2 = orientation == Orientation.portrait
-                        ? screenWidth * 0.84
-                        : screenWidth * 0.87;
-                    var textfieldHeight2 = orientation == Orientation.portrait
-                        ? screenHeight * 0.15
-                        : screenHeight * 0.03;
+                            var textfieldWidth2 =
+                                orientation == Orientation.portrait
+                                    ? screenWidth * 0.84
+                                    : screenWidth * 0.87;
+                            var textfieldHeight2 =
+                                orientation == Orientation.portrait
+                                    ? screenHeight * 0.15
+                                    : screenHeight * 0.03;
 
-                    var textsize = orientation == Orientation.portrait
-                        ? screenHeight * 0.022
-                        : screenHeight * 0.05;
-                    var textsize2 = orientation == Orientation.portrait
-                        ? screenHeight * 0.033
-                        : screenHeight * 0.05;
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: 0,
-                        ),
-                        _buildHeader(context),
-                        Container(
-                          height: imageHeight * 0.3,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.black87,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 2),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            var textsize = orientation == Orientation.portrait
+                                ? screenHeight * 0.022
+                                : screenHeight * 0.05;
+                            var textsize2 = orientation == Orientation.portrait
+                                ? screenHeight * 0.033
+                                : screenHeight * 0.05;
+                            return Column(
                               children: [
-                                Expanded(
-                                  child: Text(
-                                    "Player's List",
-                                    style: GoogleFonts.abyssinicaSil(
-                                      fontSize: textsize2 * 0.8,
-                                      color: Colors.red.shade500,
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
+                                SizedBox(
+                                  height: 0,
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Avl Coins:",
-                                      style: GoogleFonts.abyssinicaSil(
-                                        fontSize: textsize2 * 0.6,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Material(
-                                        elevation: 5,
-                                        borderRadius: BorderRadius.circular(10),
-                                        shadowColor: Colors.white,
-                                        color: Colors.white,
-                                        child: Container(
-                                          height: imageHeight * 0.2,
-                                          width: imageWidth * 0.3,
-                                          decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "500",
-                                              style: GoogleFonts.abyssinicaSil(
-                                                fontSize: textsize2 * 0.75,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                _buildHeader(context),
+                                Container(
+                                  height: imageHeight * 0.3,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black87,
+                                  ),
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 2),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            "Player's List",
+                                            style: GoogleFonts.abyssinicaSil(
+                                              fontSize: textsize2 * 0.8,
+                                              color: Colors.red.shade500,
+                                              fontWeight: FontWeight.w900,
                                             ),
                                           ),
                                         ),
-                                      ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Avl Coins:",
+                                              style: GoogleFonts.abyssinicaSil(
+                                                fontSize: textsize2 * 0.6,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Material(
+                                                elevation: 5,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                shadowColor: Colors.white,
+                                                color: Colors.white,
+                                                child: Container(
+                                                  height: imageHeight * 0.2,
+                                                  width: imageWidth * 0.3,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.red,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      "500",
+                                                      style: GoogleFonts
+                                                          .abyssinicaSil(
+                                                        fontSize:
+                                                            textsize2 * 0.75,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: textfieldHeight2 * 0.1,
+                                ),
+                                Expanded(
+                                  child: AnimatedList(
+                                    key: _listKey,
+                                    initialItemCount:
+                                        _getUserListSingleController
+                                                .getuserlistModel
+                                                ?.data
+                                                ?.length ??
+                                            0
+                                    //_displayedItems.length,
+                                    ,
+                                    itemBuilder: (context, index, animation) {
+                                      if (_getUserListSingleController
+                                                  .getuserlistModel?.data ==
+                                              null ||
+                                          _getUserListSingleController
+                                              .getuserlistModel!
+                                              .data!
+                                              .isEmpty) {
+                                        return Center(
+                                            child:
+                                                Text("No players available"));
+                                      }
+                                      return _buildItem(
+                                        _getUserListSingleController
+                                            .getuserlistModel!
+                                            .data![index]
+                                            .fullName
+                                            .toString(),
+                                        "${index + 1}", // Replace length with index + 1 for incremental numbers
+
+                                        //"${_getUserListController.getuserlistModel!.data!.length}",
+                                        animation,
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: textfieldHeight2 * 0.1,
-                        ),
-                        Expanded(
-                          child: AnimatedList(
-                            key: _listKey,
-                            initialItemCount: _displayedItems.length,
-                            itemBuilder: (context, index, animation) {
-                              return _buildItem(_displayedItems[index],
-                                  items2[index], animation);
-                            },
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }
@@ -269,6 +347,7 @@ class _PlayerListsState extends State<PlayerLists> {
     );
   }
 
+  ///
   // Widget _buildHeader(BuildContext context) {
   //   var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
   //   var width = isPortrait
@@ -308,7 +387,7 @@ class _PlayerListsState extends State<PlayerLists> {
   //     ),
   //   );
   // }
-
+  ///
   ///
   Widget _buildHeader(BuildContext context) {
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
@@ -391,9 +470,7 @@ class _PlayerListsState extends State<PlayerLists> {
                     CupertinoDialogAction(
                       onPressed: () {
                         _audioPlayer.stop(); // Stop the audio when navigating
-
                         Get.back();
-
                         Get.offAll(Home_Page());
 
                         // Navigate to a new screen when the OK button is pressed
@@ -432,10 +509,13 @@ class _PlayerListsState extends State<PlayerLists> {
               ///Icon(Icons.arrow_back, color: Colors.white)
             ),
           ),
+
+          ///
           //Spacer(),
           // SizedBox(
           //   width: 19,
           // ),
+          ///
           ClipOval(
             child: responsiveContainer(
               heightPortrait: MediaQuery.of(context).size.height * 0.11,

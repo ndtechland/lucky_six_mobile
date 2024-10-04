@@ -13,13 +13,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../1_models/dice_list_model_bygameid.dart';
 import '../1_models/dice_popup_avlbalance_bidbalancemodel.dart';
+import '../1_models/dice_result_popup_model.dart';
 import '../1_models/dice_selection_red_white_model.dart';
 import '../1_models/game_type_model.dart';
 import '../1_models/get_bank_model.dart';
+import '../1_models/get_user_list_model.dart';
 import '../1_models/get_wallet_model.dart';
 import '../1_models/price_list_model.dart';
 import '../1_models/profile_model.dart';
 import '../1_models/profiles.dart';
+import '../1_models/table_details.dart';
+import '../1_models/win_loss_model.dart';
 import '../1_models/wining_amount_model_percentage.dart';
 import '../constantt/fixed_texes.dart';
 
@@ -31,6 +35,7 @@ class ApiProvider {
   /// "https://api.hirejobindia.com/api/";
 
   static var baseUrl = FixedText.apiurl;
+  static var imgbaseurl = FixedText.imgbaselucysix;
 
   //'https://api.hirejobindia.com/api/';
 
@@ -93,7 +98,7 @@ class ApiProvider {
 
   ///todo: UserSignUpApi....game...1
   static Future<http.Response> UserSignUpApi(
-    String name,
+    String fullName,
     String phonenumber,
     String email,
     String password,
@@ -103,7 +108,7 @@ class ApiProvider {
 
     // Encode the body as JSON
     var body = jsonEncode({
-      "name": name,
+      "fullName": fullName,
       "phonenumber": phonenumber,
       "email": email,
       "password": password,
@@ -494,19 +499,16 @@ class ApiProvider {
     print('Token3: $token');
 
     SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-
     // Retrieve the saved user ID and token
     var userId2 = sharedPrefs.getString("Id");
     var token2 = sharedPrefs.getString("Token");
     print('User ID3: $userId2');
     print('Token3: $token2');
-
     if (userId == null || token == null) {
       print('User ID or Token is null');
       return null;
     }
     //https://api.luckysix.in/api/Home/GamePriceByGameId?GameId=1
-
     var url = '${baseUrl}Home/GamePriceByGameId?GameId=$gameTypeId';
 
     try {
@@ -536,6 +538,168 @@ class ApiProvider {
       }
     } catch (error) {
       print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  static GameWinLoassApi() async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID3: $userId');
+    print('Token3: $token');
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    ///Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID3: $userId2');
+    print('Token3: $token2');
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+    //https://api.luckysix.in/api/Home/BiddingHistory?UserId=b3d5e5e9-5b88-4b80-a5b7-8e5b6d8ad6b2
+    //https://api.luckysix.in/api/Home/GamePriceByGameId?GameId=1
+    var url = '${baseUrl}Home/BiddingHistory?UserId=$userId2';
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URLpricelist: $url");
+
+      if (r.statusCode == 200) {
+        print("Request URL game : $url");
+        print("Response win loss: ${r.body}");
+
+        // Parse the response body
+        WinLossListModel? gamewinlossmodel = winLossListModelFromJson(r.body);
+        print("Game List ID: ${gamewinlossmodel.response?.data?[0].id}");
+        return gamewinlossmodel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo: get table details api....game ..009
+  static TableDetailsApi() async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID2: $userId');
+    print('Token2: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID2: $userId2');
+    print('Token2: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+
+    var url =
+        'https://api.luckysix.in/api/Home/GetGameDetal/BAFA5196-99B8-468E-8286-F88B68179A8D/32ef4a35-4874-4a31-a47b-f81a749c8141';
+    //'https://api.luckysix.in/api/Home/GetGameDetal/10C3AABA-80E2-4D61-9AEF-747CACA6AAA1';
+    // 'https://api.luckysix.in/api/Home/GetGameDetal/2ACA5738-11B7-41AA-B53F-733404F9DC97';
+    //'${baseUrl}Account/GetProfileDetail/$userId';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (r.statusCode == 200) {
+        print("Request URL: $url");
+        print("Response Body: ${r.body}");
+
+        // Parse the response body
+        TableDetailsModel? gettablemodel = tableDetailsModelFromJson(r.body);
+        print("table user id: ${gettablemodel.data?.userId0}");
+        return gettablemodel;
+      } else {
+        print("Failed to fetch profile. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching profile details: $error');
+    }
+    return null;
+  }
+
+  ///todo: get table details api....game ..009
+  static DiceResultApi() async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID and token
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID2: $userId');
+    print('Token2: $token');
+
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+
+    // Retrieve the saved user ID and token
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    print('User ID2: $userId2');
+    print('Token2: $token2');
+
+    if (userId == null || token == null) {
+      print('User ID or Token is null');
+      return null;
+    }
+
+    var url = "https://api.luckysix.in/api/Home/RollDice/1";
+    // 'https://api.luckysix.in/api/Home/GetGameDetal/10C3AABA-80E2-4D61-9AEF-747CACA6AAA1';
+    // 'https://api.luckysix.in/api/Home/GetGameDetal/2ACA5738-11B7-41AA-B53F-733404F9DC97';
+    //'${baseUrl}Account/GetProfileDetail/$userId';
+
+    try {
+      // Send the HTTP GET request with authorization header
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // "Authorization":
+          //     "Bearer $token", // Include the token in the authorization header
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (r.statusCode == 200) {
+        print("Request URL: $url");
+        print("Response Body: ${r.body}");
+
+        // Parse the response body
+        DiceResultModel? getmodelresult = diceResultModelFromJson(r.body);
+        print("dice user id: ${getmodelresult.data?.die1}");
+        return getmodelresult;
+      } else {
+        print("Failed to fetch . Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching profile details: $error');
     }
     return null;
   }
@@ -1108,7 +1272,8 @@ class ApiProvider {
   ///todo: get game dice color list api....game ..10......static.....
   static diceAvlBalPopupApi() async {
     var prefs = GetStorage();
-    // Retrieve the saved user ID and token
+
+    /// Retrieve the saved user ID and token
     var userId = prefs.read("Id").toString();
     var token = prefs.read("Token").toString();
     print('User ID3: $userId');
@@ -1181,6 +1346,412 @@ class ApiProvider {
       print('Error fetching Game details: $error');
     }
     return null;
+  }
+
+  ///todo:create.....
+  //todo: ceate room .double....game...12
+  static Future<http.Response> UserCreateRoomDoubleApi() async {
+    var url = "${baseUrl}Home/CreateRoom";
+
+    // Save the id and token for future use
+    var prefs = GetStorage();
+    //prefs.write("Id", responseBody['model']['id']);
+    //prefs.write("Token", responseBody['token']);
+
+    // Save the id and token using SharedPreferences
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    // await sharedPrefs.setString("Id", responseBody['model']['id']);
+    // await sharedPrefs.setString("Token", responseBody['token']);
+
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID: $userId');
+    print('Token: $token');
+    //gamePriceTypeId for double
+    //gamePriceTypeIdType2 for single
+
+    // Retrieve the saved game type ID with the same key used for saving
+    var gameTypeIdType2 = sharedPrefs.getString('gameTypeId_');
+    // var gameColorID = sharedPrefs.getString('gameColorId_');
+    // sharedPrefs.getString(
+    //     'gameColorId_${_getDiceColorColorController.diceList?.data![index].id}',
+
+    var gameColorID = sharedPrefs.getString('gameColorID');
+
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    ///var gameColorID = prefs.getString('gameColorID');
+    print('Retrieved game color ID: $gameColorID');
+
+    final box = GetStorage();
+    String? gameColorID2 = box.read('gameColorID');
+    print('Retrieved game color ID from GetStorage: $gameColorID');
+
+    if (gameTypeIdType2 == null) {
+      print("Game Type ID is null, cannot proceed with API call.");
+    }
+
+    print("Retrieved Game Type ID: $gameTypeIdType2");
+    // Retrieve the saved game price type ID with the same key used for saving
+    var gamePriceTypeId = sharedPrefs.getString('gamePriceTypeId_');
+
+    if (gamePriceTypeId == null) {
+      print("Game double Price Type ID is null, cannot proceed with API call.");
+    }
+
+    print("Retrieved double Game price Type ID: $gamePriceTypeId");
+//dice id 1
+    var dicedelection1Id = sharedPrefs.getString('diceselection1Id_');
+    //dice id 2
+    var dicedelection2Id = sharedPrefs.getString('diceselection2Id_');
+
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    ///var gameColorID = prefs.getString('gameColorID');
+    print('Retrieved game color ID: $gameColorID');
+    print('Retrieved game dice1 ID: $dicedelection1Id');
+    print('Retrieved game dice2 ID: $dicedelection2Id');
+
+    // Encode the body as JSON
+    var body = jsonEncode({
+      "userId": userId,
+      //"32ef4a35-4874-4a31-a47b-f81a749c8141",
+      "gameId": gameTypeIdType2,
+      "diceTypeId": gameColorID,
+      "gameAmountID": gamePriceTypeId,
+      "firstDiceNumberId": dicedelection1Id,
+      "secondDiceNumberId": 11,
+      //dicedelection2Id,
+    });
+
+    print("Request Body room: $body");
+    print("Request URL room: $url");
+
+    // Send the HTTP POST request with JSON body and appropriate headers
+    http.Response r = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json", // Set content-type to JSON
+      },
+      body: body,
+    );
+
+    if (r.statusCode == 200) {
+      print("Success Response: ${r.body}");
+      var responseBody = jsonDecode(r.body);
+
+      //check if the response was sucessful
+      if (responseBody['succeeded'] == true && responseBody['data'] != null) {
+        var data = responseBody['data'][0];
+
+        //Extract roomId and uniqueId from get storage...
+        String roomId = data['RoomId'];
+        String uniqueGameID = data['UniqueGameID'];
+
+        // Save RoomId and UniqueGameID using GetStorage
+        prefs.write("RoomId", roomId);
+        prefs.write("UniqueGameID", uniqueGameID);
+
+        // Save RoomId and UniqueGameID using SharedPreferences
+        await sharedPrefs.setString("RoomId", roomId);
+        await sharedPrefs.setString("UniqueGameID", uniqueGameID);
+
+        print('Room ID: $roomId');
+        print('Unique Game ID: $uniqueGameID');
+      }
+
+      // Save the id and token for future use
+      // var prefs = GetStorage();
+
+      var userId = prefs.read("Id").toString();
+      var token = prefs.read("Token").toString();
+      print('User ID: $userId');
+      print('Token: $token');
+
+      //var responseBody = jsonDecode(r.body);
+
+      Fluttertoast.showToast(
+          msg: "Room Created Successfully",
+          // "${r.body}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.green,
+          textColor: Colors.white);
+    } else if (r.statusCode == 401) {
+      Get.snackbar(
+        "Unauthorized",
+        "Incorrect username or password",
+        duration: Duration(seconds: 2),
+      );
+    } else {
+      print("Error Response: ${r.body}");
+      Get.snackbar(
+        "Error",
+        "Something went wrong. Please try again.",
+        duration: Duration(seconds: 2),
+      );
+    }
+
+    // Ensure a response is always returned
+    return r;
+  }
+
+  //todo: ceate room .....game...13
+  static Future<http.Response> UserCreateRoomSingleApi() async {
+    var url = "${baseUrl}Home/CreateRoom";
+    var prefs = GetStorage();
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    var gameColorID = sharedPrefs.getString('gameColorID');
+
+    // Retrieve saved dice ID
+    int? savedDiceId =
+        sharedPrefs.getInt('selected_dice_id'); // Get saved dice ID
+
+    print('Retrieved game color ID: $gameColorID');
+    final box = GetStorage();
+    String? gameColorID2 = box.read('gameColorID');
+    print('Retrieved game color ID from GetStorage: $gameColorID');
+
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID: $userId');
+    print('Token: $token');
+    print('color id: $gameColorID');
+
+    var gameTypeIdType = sharedPrefs.getString('gameTypeId_');
+
+    if (gameTypeIdType == null) {
+      print("Game Type ID is null, cannot proceed with API call.");
+      return Future.error("Game Type ID is null");
+    }
+
+    print("Retrieved Game Type ID: $gameTypeIdType");
+    var gamePriceTypeId2 = sharedPrefs.getString('gamePriceTypeId_');
+
+    if (gamePriceTypeId2 == null) {
+      print("Game Price Type ID is null, cannot proceed with API call.");
+      return Future.error("Game Price Type ID is null");
+    }
+
+    print("Retrieved Game Price Type ID: $gamePriceTypeId2");
+
+    // Encode the body as JSON, including the saved dice ID
+    var body = jsonEncode({
+      "userId": userId,
+      "gameId": gameTypeIdType,
+      "diceTypeId":
+          gameColorID, // This can be kept or replaced with savedDiceId
+      "gameAmountID": gamePriceTypeId2,
+      "firstDiceNumberId": savedDiceId,
+      //?? 1, // Use saved dice ID here
+      "secondDiceNumberId": 0,
+    });
+
+    print("Request Body room single: $body");
+    print("Request URL room: $url");
+
+    // Send the HTTP POST request with JSON body and appropriate headers
+    http.Response r = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json", // Set content-type to JSON
+      },
+      body: body,
+    );
+
+    if (r.statusCode == 200) {
+      print("Success Response single: ${r.body}");
+      var responseBody = jsonDecode(r.body);
+
+      // Check if the response was successful
+      if (responseBody['succeeded'] == true && responseBody['data'] != null) {
+        var data = responseBody['data'][0];
+
+        // Extract roomId and uniqueId from the response
+        String roomId = data['RoomId'];
+        String uniqueGameID = data['UniqueGameID'];
+
+        // Save RoomId and UniqueGameID using GetStorage
+        prefs.write("RoomId", roomId);
+        prefs.write("UniqueGameID", uniqueGameID);
+
+        // Save RoomId and UniqueGameID using SharedPreferences
+        await sharedPrefs.setString("RoomId", roomId);
+        await sharedPrefs.setString("UniqueGameID", uniqueGameID);
+
+        print('Room ID: $roomId');
+        print('Unique Game ID: $uniqueGameID');
+      }
+
+      Fluttertoast.showToast(
+          msg: "Room Created Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.green,
+          textColor: Colors.white);
+    } else if (r.statusCode == 401) {
+      Get.snackbar(
+        "Unauthorized",
+        "Incorrect username or password",
+        duration: Duration(seconds: 2),
+      );
+    } else {
+      print("Error Response: ${r.body}");
+      Get.snackbar(
+        "Error",
+        "Something went wrong. Please try again.",
+        duration: Duration(seconds: 2),
+      );
+    }
+
+    // Ensure a response is always returned
+    return r;
+  }
+
+  ///todo: list of user...of room create..............
+  static diceRoomListApi() async {
+    var prefs = GetStorage();
+
+    // Retrieve the saved user ID, token, RoomId, and UniqueGameID
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    var roomId = prefs.read("RoomId").toString();
+    var uniqueGameId = prefs.read("UniqueGameID").toString();
+
+    print('User ID: $userId');
+    print('Token: $token');
+    print('Room ID: $roomId');
+    print('UniqueGame ID: $uniqueGameId');
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    // Retrieve the saved user ID, token, RoomId, and UniqueGameID from SharedPreferences
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    var roomId2 = sharedPrefs.getString("RoomId");
+    var uniqueGameId2 = sharedPrefs.getString("UniqueGameID");
+
+    print('SharedPrefs User ID: $userId2');
+    print('SharedPrefs Token: $token2');
+    print('SharedPrefs Room ID: $roomId2');
+    print('SharedPrefs UniqueGame ID: $uniqueGameId2');
+
+    // Validate the retrieved values
+    if (userId == null ||
+        token == null ||
+        roomId == null ||
+        uniqueGameId == null) {
+      print('User ID, Token, Room ID, or UniqueGame ID is null');
+      return null;
+    }
+//Home/GetUsersInRoom/663C2574-0D1F-4F40-849F-C7A98332BF6A
+    var url = '${baseUrl}Home/GetUsersInRoom/$roomId';
+
+    try {
+      // Send the HTTP GET request with authorization header (if needed)
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // Include the token if necessary
+          // "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URL: $url");
+
+      if (r.statusCode == 200) {
+        print("Response body: ${r.body}");
+
+        // Parse the response body
+        UserListModel? getGameUserlistModel = userListModelFromJson(r.body);
+        print("Game user List ID: ${getGameUserlistModel.data?[0].userId}");
+
+        return getGameUserlistModel;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
+
+  ///todo:playagain....single..
+  ///
+  static Future<http.Response> PlayAgainSingleApi() async {
+    var url = "${baseUrl}Home/Bidding";
+    var prefs = GetStorage();
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    var gameColorID = sharedPrefs.getString('gameColorID');
+
+    // Retrieve saved dice ID
+    int? savedDiceId =
+        sharedPrefs.getInt('selected_dice_id'); // Get saved dice ID
+
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    print('User ID: $userId');
+    print('Token: $token');
+
+    // Retrieve the saved user ID, token, RoomId, and UniqueGameID from SharedPreferences
+    var roomId2 = sharedPrefs.getString("RoomId");
+    var uniqueGameId2 = sharedPrefs.getString("UniqueGameID");
+
+    print('SharedPrefs Room ID: $roomId2');
+    print('SharedPrefs UniqueGame ID: $uniqueGameId2');
+
+    // Encode the body as JSON, including the saved dice ID
+    var body = jsonEncode({
+      "userid": userId,
+      "roomID": roomId2,
+      "uniqueGameID": uniqueGameId2,
+      "rollingDiceOneNo": savedDiceId,
+      //?? 1, // Use saved dice ID here
+      "rollingDiceTwoNo": 0,
+    });
+
+    print("Request Body play again single : $body");
+    print("Request URL room: $url");
+
+    // Send the HTTP POST request with JSON body and appropriate headers
+    http.Response r = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json", // Set content-type to JSON
+      },
+      body: body,
+    );
+
+    if (r.statusCode == 200) {
+      print("Success Response single: ${r.body}");
+      var responseBody = jsonDecode(r.body);
+
+      // Check if the response was successful
+      if (responseBody['succeeded'] == true) {}
+
+      Fluttertoast.showToast(
+          msg: "Play again Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.green,
+          textColor: Colors.white);
+    } else if (r.statusCode == 401) {
+      Get.snackbar(
+        "Unauthorized",
+        "Incorrect username or password",
+        duration: Duration(seconds: 2),
+      );
+    } else {
+      print("Error Response: ${r.body}");
+      Get.snackbar(
+        "Error",
+        "Something went wrong. Please try again.",
+        duration: Duration(seconds: 2),
+      );
+    }
+
+    // Ensure a response is always returned
+    return r;
   }
 
   ///todo: Update bank profile....game....app...

@@ -3,15 +3,20 @@ import 'dart:async';
 //import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:game_app/2_servicea_apis/api_services.dart';
 import 'package:game_app/game_type/3d_dice/3dbutton2_playagain.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../controllers_all/play_again_controller.dart';
+import '../../controllers_all/table_details_controller.dart';
 import '../3d_dice/3d_button_exit.dart';
 import '../3d_dice/3d_dicd_game.dart';
 import '../animation/time_animation_common.dart';
 
 class Play_Now extends StatefulWidget {
-  const Play_Now({Key? key}) : super(key: key);
+  Play_Now({Key? key}) : super(key: key);
 
   @override
   State<Play_Now> createState() => _Play_NowState();
@@ -21,6 +26,14 @@ class _Play_NowState extends State<Play_Now> {
   //late AudioPlayer _audioPlayer;
   Timer? _startTimer;
   Timer? _stopTimer;
+  //    var url = '${baseUrl}Wallet/GetWalletAmount?UserId=$userId';
+  //  static var imgbaseurl = FixedText.imgbaselucysix;
+
+  TableDetailsController _tableDetailsController =
+      Get.put(TableDetailsController());
+
+  PlayAgainSingleController _playAgainSingleController =
+      Get.put(PlayAgainSingleController());
 
   ///todo:................
   // String nextposition = '';
@@ -30,13 +43,11 @@ class _Play_NowState extends State<Play_Now> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
     // Table dimensions and position
     final tableHeight = screenHeight * 0.88;
     final tableWidth = screenWidth * 0.7;
     final tableTop = screenHeight * 0.11;
     final tableLeft = screenWidth * 0.05;
-
     return Scaffold(
       backgroundColor: Colors.black54,
       body: Stack(
@@ -230,6 +241,8 @@ class _Play_NowState extends State<Play_Now> {
                   child: Container(
                     height: screenHeight * 0.34,
                     width: screenWidth * 0.404,
+
+                    ///
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
@@ -267,8 +280,7 @@ class _Play_NowState extends State<Play_Now> {
                 //     // Your dice animation widget
                 //   ),
                 // ),
-
-                ///todo: animation...dice..
+                ///todo: animation...dice.................
                 Positioned(
                   top: tableTop +
                       (tableHeight / 2.06) -
@@ -276,6 +288,8 @@ class _Play_NowState extends State<Play_Now> {
                   left: tableLeft +
                       (tableWidth / 2) -
                       (screenWidth * 0.11 / 2.06),
+
+                  ///
                   child: Container(
                     height: screenHeight * 0.21,
                     width: screenWidth * 0.30,
@@ -297,6 +311,7 @@ class _Play_NowState extends State<Play_Now> {
                 ),
 
                 ///todo: host..
+                //
                 // Positioned(
                 //   // top: MediaQuery.of(context).size.height * 0.065,
                 //   //40
@@ -340,18 +355,46 @@ class _Play_NowState extends State<Play_Now> {
                     child: Center(
                       child: Row(
                         children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.21,
-                            width: MediaQuery.of(context).size.width * 0.07,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://cdn.pixabay.com/photo/2015/05/22/18/10/child-779434_1280.jpg"
-                                      // "assets/images/person1.png"
+                          Obx(
+                            () => _tableDetailsController.isLoading.value
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.21,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.07, // Make width and height the same for circular shape
+                                    padding: EdgeInsets.all(
+                                        5.0), // Optional: Adds padding for better look
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.grey
+                                            .shade300, // Optional: Adds a subtle border for a clean look
+                                        width: 0.5,
                                       ),
-                                  fit: BoxFit.cover,
-                                )),
+                                      image: DecorationImage(
+                                        image: _tableDetailsController
+                                                        .tabledetailsModel
+                                                        ?.data
+                                                        ?.profilePicture0 !=
+                                                    null &&
+                                                _tableDetailsController
+                                                    .tabledetailsModel!
+                                                    .data!
+                                                    .profilePicture0!
+                                                    .isNotEmpty
+                                            ? NetworkImage(
+                                                "${ApiProvider.imgbaseurl}${_tableDetailsController.tabledetailsModel!.data!.profilePicture0}")
+                                            : AssetImage(
+                                                    "assets/images/svg_images/noimage.png")
+                                                as ImageProvider, // Fallback image
+                                        fit: BoxFit
+                                            .cover, // Ensures the image fills the container properly
+                                      ),
+                                    ),
+                                  ),
                           ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.043,
@@ -359,12 +402,25 @@ class _Play_NowState extends State<Play_Now> {
                             child: Center(
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Text(
-                                  'Kartik',
-                                  style: GoogleFonts.akshar(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11),
+                                child: Obx(
+                                  () => _tableDetailsController.isLoading.value
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : Text(
+                                          _tableDetailsController
+                                                  .tabledetailsModel
+                                                  ?.data
+                                                  ?.fullName0
+                                                  ?.toString() ??
+                                              "Not Avl",
+
+                                          //'Kartik',
+                                          style: GoogleFonts.akshar(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 11),
+                                        ),
                                 ),
                               ),
                             ),
@@ -375,7 +431,7 @@ class _Play_NowState extends State<Play_Now> {
                   ),
                 ),
 
-                /// 6 no user....
+                /// 6 no user...............
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.0833,
                   right: MediaQuery.of(context).size.width * 0.2765,
@@ -390,28 +446,69 @@ class _Play_NowState extends State<Play_Now> {
                           child: Center(
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text(
-                                'Shubham',
-                                style: GoogleFonts.akshar(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 11),
+                              child: Obx(
+                                () => _tableDetailsController.isLoading.value
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Text(
+                                        _tableDetailsController
+                                                .tabledetailsModel
+                                                ?.data
+                                                ?.fullName6
+                                                ?.toString() ??
+                                            "Not Avl",
+
+                                        //'Kartik',
+                                        style: GoogleFonts.akshar(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 11),
+                                      ),
                               ),
                             ),
                           ),
                         ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.21,
-                          width: MediaQuery.of(context).size.width * 0.07,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
-                                    // "assets/images/person1.png"
+                        Obx(
+                          () => _tableDetailsController.isLoading.value
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.21,
+                                  width: MediaQuery.of(context).size.width *
+                                      0.07, // Make width and height the same for circular shape
+                                  padding: EdgeInsets.all(
+                                      5.0), // Optional: Adds padding for better look
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.grey
+                                          .shade300, // Optional: Adds a subtle border for a clean look
+                                      width: 0.5,
                                     ),
-                                fit: BoxFit.cover,
-                              )),
+                                    image: DecorationImage(
+                                      image: _tableDetailsController
+                                                      .tabledetailsModel
+                                                      ?.data
+                                                      ?.profilePicture6 !=
+                                                  null &&
+                                              _tableDetailsController
+                                                  .tabledetailsModel!
+                                                  .data!
+                                                  .profilePicture6!
+                                                  .isNotEmpty
+                                          ? NetworkImage(
+                                              "${ApiProvider.imgbaseurl}${_tableDetailsController.tabledetailsModel!.data!.profilePicture6}")
+                                          : AssetImage(
+                                                  "assets/images/svg_images/noimage.png")
+                                              as ImageProvider, // Fallback image
+                                      fit: BoxFit
+                                          .cover, // Ensures the image fills the container properly
+                                    ),
+                                  ),
+                                ),
                         ),
                       ],
                     ),
@@ -431,18 +528,46 @@ class _Play_NowState extends State<Play_Now> {
                     child: Center(
                       child: Row(
                         children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.21,
-                            width: MediaQuery.of(context).size.width * 0.07,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://cdn.pixabay.com/photo/2019/09/03/01/51/child-4448370_1280.jpg"
-                                      // "assets/images/person1.png"
+                          Obx(
+                            () => _tableDetailsController.isLoading.value
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.21,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.07, // Make width and height the same for circular shape
+                                    padding: EdgeInsets.all(
+                                        5.0), // Optional: Adds padding for better look
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.grey
+                                            .shade300, // Optional: Adds a subtle border for a clean look
+                                        width: 0.5,
                                       ),
-                                  fit: BoxFit.cover,
-                                )),
+                                      image: DecorationImage(
+                                        image: _tableDetailsController
+                                                        .tabledetailsModel
+                                                        ?.data
+                                                        ?.profilePicture1 !=
+                                                    null &&
+                                                _tableDetailsController
+                                                    .tabledetailsModel!
+                                                    .data!
+                                                    .profilePicture1!
+                                                    .isNotEmpty
+                                            ? NetworkImage(
+                                                "${ApiProvider.imgbaseurl}${_tableDetailsController.tabledetailsModel!.data!.profilePicture1}")
+                                            : AssetImage(
+                                                    "assets/images/svg_images/noimage.png")
+                                                as ImageProvider, // Fallback image
+                                        fit: BoxFit
+                                            .cover, // Ensures the image fills the container properly
+                                      ),
+                                    ),
+                                  ),
                           ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.043,
@@ -450,12 +575,25 @@ class _Play_NowState extends State<Play_Now> {
                             child: Center(
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Text(
-                                  'Rakesh',
-                                  style: GoogleFonts.akshar(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11),
+                                child: Obx(
+                                  () => _tableDetailsController.isLoading.value
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : Text(
+                                          _tableDetailsController
+                                                  .tabledetailsModel
+                                                  ?.data
+                                                  ?.fullName1
+                                                  ?.toString() ??
+                                              "Not Avl",
+
+                                          //'Kartik',
+                                          style: GoogleFonts.akshar(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 11),
+                                        ),
                                 ),
                               ),
                             ),
@@ -481,30 +619,69 @@ class _Play_NowState extends State<Play_Now> {
                           child: Center(
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text(
-                                'Vishal',
-                                style: GoogleFonts.akshar(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 11),
+                              child: Obx(
+                                () => _tableDetailsController.isLoading.value
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Text(
+                                        _tableDetailsController
+                                                .tabledetailsModel
+                                                ?.data
+                                                ?.fullName4
+                                                ?.toString() ??
+                                            "Not Avl",
+
+                                        //'Kartik',
+                                        style: GoogleFonts.akshar(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 11),
+                                      ),
                               ),
                             ),
                           ),
                         ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.21,
-                          width: MediaQuery.of(context).size.width * 0.07,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
-
-                                    // "https://cdn.pixabay.com/photo/2016/07/10/17/54/kid-1508121_1280.jpg"
-                                    // "assets/images/person1.png"
+                        Obx(
+                          () => _tableDetailsController.isLoading.value
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.21,
+                                  width: MediaQuery.of(context).size.width *
+                                      0.07, // Make width and height the same for circular shape
+                                  padding: EdgeInsets.all(
+                                      5.0), // Optional: Adds padding for better look
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.grey
+                                          .shade300, // Optional: Adds a subtle border for a clean look
+                                      width: 0.5,
                                     ),
-                                fit: BoxFit.cover,
-                              )),
+                                    image: DecorationImage(
+                                      image: _tableDetailsController
+                                                      .tabledetailsModel
+                                                      ?.data
+                                                      ?.profilePicture4 !=
+                                                  null &&
+                                              _tableDetailsController
+                                                  .tabledetailsModel!
+                                                  .data!
+                                                  .profilePicture4!
+                                                  .isNotEmpty
+                                          ? NetworkImage(
+                                              "${ApiProvider.imgbaseurl}${_tableDetailsController.tabledetailsModel!.data!.profilePicture4}")
+                                          : AssetImage(
+                                                  "assets/images/svg_images/noimage.png")
+                                              as ImageProvider, // Fallback image
+                                      fit: BoxFit
+                                          .cover, // Ensures the image fills the container properly
+                                    ),
+                                  ),
+                                ),
                         ),
                       ],
                     ),
@@ -526,18 +703,46 @@ class _Play_NowState extends State<Play_Now> {
                     child: Center(
                       child: Row(
                         children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.21,
-                            width: MediaQuery.of(context).size.width * 0.07,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://cdn.pixabay.com/photo/2017/11/06/13/45/cap-2923682_1280.jpg"
-                                      // "assets/images/person1.png"
+                          Obx(
+                            () => _tableDetailsController.isLoading.value
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.21,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.07, // Make width and height the same for circular shape
+                                    padding: EdgeInsets.all(
+                                        5.0), // Optional: Adds padding for better look
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.grey
+                                            .shade300, // Optional: Adds a subtle border for a clean look
+                                        width: 0.5,
                                       ),
-                                  fit: BoxFit.cover,
-                                )),
+                                      image: DecorationImage(
+                                        image: _tableDetailsController
+                                                        .tabledetailsModel
+                                                        ?.data
+                                                        ?.profilePicture2 !=
+                                                    null &&
+                                                _tableDetailsController
+                                                    .tabledetailsModel!
+                                                    .data!
+                                                    .profilePicture2!
+                                                    .isNotEmpty
+                                            ? NetworkImage(
+                                                "${ApiProvider.imgbaseurl}${_tableDetailsController.tabledetailsModel!.data!.profilePicture2}")
+                                            : AssetImage(
+                                                    "assets/images/svg_images/noimage.png")
+                                                as ImageProvider, // Fallback image
+                                        fit: BoxFit
+                                            .cover, // Ensures the image fills the container properly
+                                      ),
+                                    ),
+                                  ),
                           ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.043,
@@ -545,12 +750,25 @@ class _Play_NowState extends State<Play_Now> {
                             child: Center(
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Text(
-                                  'Madhu',
-                                  style: GoogleFonts.akshar(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11),
+                                child: Obx(
+                                  () => _tableDetailsController.isLoading.value
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : Text(
+                                          _tableDetailsController
+                                                  .tabledetailsModel
+                                                  ?.data
+                                                  ?.fullName2
+                                                  ?.toString() ??
+                                              "Not Avl",
+
+                                          //'Kartik',
+                                          style: GoogleFonts.akshar(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 11),
+                                        ),
                                 ),
                               ),
                             ),
@@ -570,34 +788,95 @@ class _Play_NowState extends State<Play_Now> {
                     height: MediaQuery.of(context).size.height * 0.24,
                     child: Row(
                       children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.043,
-                          width: MediaQuery.of(context).size.width * 0.060,
-                          child: Center(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Akanksha',
-                                style: GoogleFonts.akshar(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 11),
-                              ),
+                        Positioned(
+                          top: MediaQuery.of(context).size.height * 0.408,
+                          right: MediaQuery.of(context).size.width * 0.1446,
+                          //  left: MediaQuery.of(context).size.width * 0.333,
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.24,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.043,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.060,
+                                  child: Center(
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Obx(
+                                        () => _tableDetailsController
+                                                .isLoading.value
+                                            ? Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              )
+                                            : Text(
+                                                _tableDetailsController
+                                                        .tabledetailsModel
+                                                        ?.data
+                                                        ?.fullName3
+                                                        ?.toString() ??
+                                                    "Not Avl",
+
+                                                //'Kartik',
+                                                style: GoogleFonts.akshar(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 11),
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Obx(
+                                  () => _tableDetailsController.isLoading.value
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.21,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.07, // Make width and height the same for circular shape
+                                          padding: EdgeInsets.all(
+                                              5.0), // Optional: Adds padding for better look
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Colors.grey
+                                                  .shade300, // Optional: Adds a subtle border for a clean look
+                                              width: 0.5,
+                                            ),
+                                            image: DecorationImage(
+                                              image: _tableDetailsController
+                                                              .tabledetailsModel
+                                                              ?.data
+                                                              ?.profilePicture3 !=
+                                                          null &&
+                                                      _tableDetailsController
+                                                          .tabledetailsModel!
+                                                          .data!
+                                                          .profilePicture3!
+                                                          .isNotEmpty
+                                                  ? NetworkImage(
+                                                      "${ApiProvider.imgbaseurl}${_tableDetailsController.tabledetailsModel!.data!.profilePicture4}")
+                                                  : AssetImage(
+                                                          "assets/images/svg_images/noimage.png")
+                                                      as ImageProvider, // Fallback image
+                                              fit: BoxFit
+                                                  .cover, // Ensures the image fills the container properly
+                                            ),
+                                          ),
+                                        ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.21,
-                          width: MediaQuery.of(context).size.width * 0.07,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://cdn.pixabay.com/photo/2016/10/14/22/31/cute-1741376_1280.jpg"
-                                    // "assets/images/person1.png"
-                                    ),
-                                fit: BoxFit.cover,
-                              )),
                         ),
                       ],
                     ),
@@ -689,7 +968,6 @@ class _Play_NowState extends State<Play_Now> {
                 ),
 
                 ///todo:selected  dice number...
-
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.5,
                   right: MediaQuery.of(context).size.width * 0,
@@ -845,8 +1123,10 @@ class _Play_NowState extends State<Play_Now> {
                     ],
                   ),
                 ),
+
+                ///
                 //assets/images/svg_images/crownwin.png
-                ///todo:crown win...
+                ///todo:crown win...................
                 Positioned(
                   bottom: MediaQuery.of(context).size.height * 0.02,
                   left: MediaQuery.of(context).size.width * 0.02,
@@ -867,16 +1147,19 @@ class _Play_NowState extends State<Play_Now> {
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width * 0.1,
                     decoration: BoxDecoration(
-                        // color: Colors.white,
-                        // shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: AssetImage(
-                                "assets/images/svg_images/crownwin.png"),
-                            fit: BoxFit.fill)),
+                      // color: Colors.white,
+                      // shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: AssetImage(
+                              "assets/images/svg_images/crownwin.png"),
+                          fit: BoxFit.fill),
+                    ),
+
+                    ///
                   ),
                 ),
 
-                ///todo: winning amt...
+                ///todo: winning amt............................
                 Positioned(
                   bottom: MediaQuery.of(context).size.height * 0.07,
                   //left: MediaQuery.of(context).size.width * -0.005,
@@ -968,6 +1251,7 @@ class _Play_NowState extends State<Play_Now> {
                       color: Colors.transparent,
                     ),
                     child: ExitIconButton(
+                        //
                         // onPressed: () {
                         //   print("object");
                         // },
@@ -988,6 +1272,7 @@ class _Play_NowState extends State<Play_Now> {
   @override
   void initState() {
     // TODO: implement initState
+    _tableDetailsController.TableDetailsApi();
     super.initState();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,

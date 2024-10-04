@@ -2,21 +2,36 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Controllersss/rezaypay_controller/pay_twicw_amount_controller.dart';
+import '../../controllers_all/create_list_players.dart';
+import '../../controllers_all/create_room_double_controller.dart';
 import '../../controllers_all/dice_popup_avlbal_controller.dart';
-import '../../controllers_all/dicelist_for_double_dice_controller.dart';
-import '../../controllers_all/double_dice_selection_controller.dart';
+import '../../controllers_all/double_dice_selection2index_controller.dart';
+import '../../controllers_all/doubledice_selection2_controller.dart';
+import '../../controllers_all/game_price_list_double_controller.dart';
 import '../../game_type/double_gamee/player_list_for2dice.dart';
 
 class TwiceNumberSelection2 extends StatelessWidget {
+  GetUserListController _getUserListController =
+      Get.put(GetUserListController());
+
+  DoublediceSelection22Controller _doublediceSelection22Controller =
+      Get.put(DoublediceSelection22Controller());
+
+  GetGamePriceListDoubleController _gamePriceListDouble2Controller =
+      Get.put(GetGamePriceListDoubleController());
   // static const String id = 'Company';
 
-  final DoublediceSelectionController _doublediceController =
-      Get.put(DoublediceSelectionController());
+  final DoublediceSelection2Controller _doublediceController =
+      Get.put(DoublediceSelection2Controller());
 
-  GetTwoDiceListController _getTwoDiceListController =
-      Get.put(GetTwoDiceListController());
+  CreateRoomDoubleController _createRoomDoubleController =
+      Get.put(CreateRoomDoubleController());
+
+  DoublediceSelection2Controller _getTwoDiceList2Controller =
+      Get.put(DoublediceSelection2Controller());
 
   final RozarpaytwiceamountController _rozarpayamountController =
       Get.put(RozarpaytwiceamountController());
@@ -110,7 +125,7 @@ class TwiceNumberSelection2 extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "Your Selected dice is  1-2,3-4,4-1 \n You have to pay your payable Amount for start your game and your payable Amount is:-",
+                              "Your Selected dice is  1-2 \n You have to pay your payable Amount for start your game and your payable Amount is:-",
                               style: GoogleFonts.poppins(
                                 fontSize: 13,
                                 color: Colors.black,
@@ -149,11 +164,23 @@ class TwiceNumberSelection2 extends StatelessWidget {
                         ),
                       ),
                       CupertinoDialogAction(
-                        onPressed: () {
+                        onPressed: () async {
                           Get.back();
 
+                          // Get.back();
+
+                          await _createRoomDoubleController.createRoomApi();
+                          await _getUserListController.gameUserListApi();
+
+                          // await _getDiceListController.saveSelectedDiceId();
+
+                          print(
+                              "okgameid3${_gamePriceListDouble2Controller.getpricelistModel?.gameid.toString()}");
+
+                          ///todo: upper calling create room api post api.....
+
                           /// _rozarpayamountController.openCheckout();
-                          Get.to(
+                          await Get.to(
                               // DoubleDiceRollFaceSelection());
                               PlayerLists2dice());
                         },
@@ -234,12 +261,29 @@ class TwiceNumberSelection2 extends StatelessWidget {
         itemCount: _diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
-            bool isSelected =
-                _doublediceController.selectedIndices.contains(index);
+            bool isSelected = _doublediceSelection22Controller.selectedIndices2
+                .contains(index);
 
             return InkWell(
-              onTap: () {
-                _doublediceController.toggleSelection(index);
+              onTap: () async {
+                SharedPreferences sharedPrefs =
+                    await SharedPreferences.getInstance();
+
+                String? dicedelection2Id = _getTwoDiceList2Controller
+                    .diceList?.diceNumvers?[index].id
+                    .toString();
+                print(
+                    "oklrrrr${dicedelection2Id = _getTwoDiceList2Controller.diceList?.diceNumvers?[index].id.toString()}");
+
+                if (dicedelection2Id != null) {
+                  await sharedPrefs.setString(
+                      'diceselection2Id_', dicedelection2Id);
+
+                  print("Game dice selection 2 ID saved: $dicedelection2Id");
+                } else {
+                  print("Dice selection2 ID is null, not saving.");
+                }
+                _doublediceSelection22Controller.toggleSelection(index);
               },
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 300),
@@ -357,11 +401,26 @@ class TwiceNumberSelection2 extends StatelessWidget {
         itemCount: _diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
-            bool isSelected =
-                _doublediceController.selectedIndices.contains(index);
+            bool isSelected = _doublediceSelection22Controller.selectedIndices2
+                .contains(index);
             return InkWell(
-              onTap: () {
-                _doublediceController.toggleSelection(index);
+              onTap: () async {
+                SharedPreferences sharedPrefs =
+                    await SharedPreferences.getInstance();
+
+                String? dicedelection2Id = _getTwoDiceList2Controller
+                    .diceList?.diceNumvers?[index].id
+                    .toString();
+
+                if (dicedelection2Id != null) {
+                  await sharedPrefs.setString(
+                      'diceselection2Id_', dicedelection2Id);
+
+                  print("Game dice selection 2 ID saved: $dicedelection2Id");
+                } else {
+                  print("Dice selection2 ID is null, not saving.");
+                }
+                _doublediceSelection22Controller.toggleSelection(index);
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 13),

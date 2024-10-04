@@ -9,20 +9,22 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constantt/circular_loader/circular_loaderr.dart';
 import '../../controllers_all/game_price_list_self_controller.dart';
 import '../../controllers_all/get_dice_list_self_controller.dart';
+import '../3d_dice/3d_button_for_self_dice.dart';
 import '3D_animated_dice_self.dart';
 import 'controller_selecteddice_number.dart';
 import 'exit_buttom_selfdice.dart';
 
-class Play_Now_self_game extends StatefulWidget {
-  const Play_Now_self_game({Key? key}) : super(key: key);
+class PlayNowSelfGame extends StatefulWidget {
+  const PlayNowSelfGame({Key? key}) : super(key: key);
 
   @override
-  State<Play_Now_self_game> createState() => _Play_Now_self_gameState();
+  State<PlayNowSelfGame> createState() => _PlayNowSelfGameState();
 }
 
-class _Play_Now_self_gameState extends State<Play_Now_self_game> {
+class _PlayNowSelfGameState extends State<PlayNowSelfGame> {
   int _selectedIndex = -1;
   final SelectedDiceController controller = Get.put(SelectedDiceController());
   GetGamePriceListSelfController _getGamePriceListSelfController =
@@ -55,6 +57,8 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
     final tableHeight = screenHeight * 0.88;
     final tableWidth = screenWidth * 0.7;
     final tableTop = screenHeight * 0.11;
+    final tableBotom = screenHeight * 0.11;
+
     final tableLeft = screenWidth * 0.05;
 
     return Scaffold(
@@ -268,24 +272,40 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                 ),
 
                 ///todo:play_again button...7 sep 2024..
-                // Positioned(
-                //   top: tableTop + (tableHeight / 6) - (screenHeight * 0.3 / 1),
-                //   left:
-                //       tableLeft + (tableWidth / 4.0) - (screenWidth * 0.21 / 5),
-                //   // left: 550,
-                //   // right: 42,
-                //   child: Container(
-                //     height: MediaQuery.of(context).size.height * 0.40,
-                //     width: MediaQuery.of(context).size.height * 0.09,
-                //     decoration: BoxDecoration(
-                //       shape: BoxShape.rectangle,
-                //       color: Colors.transparent,
-                //     ),
-                //     child: PlayAgainIconButton3(
-                //         // onPressed: () {},
-                //         ),
-                //   ),
-                // ),
+                Positioned(
+                  top: tableTop +
+                      (tableHeight / 5.6) -
+                      (screenHeight * 0.3 / 1.8),
+                  //left: MediaQuery.of(context).size.width * 0.73,
+                  right: MediaQuery.of(context).size.width * 0.11,
+
+                  ///right: MediaQuery.of(context).size.width * 0.19,
+                  // top: tableTop +
+                  //     (tableHeight / 1.02) -
+                  //     (screenHeight * 0.3 / 1),
+                  // left: tableLeft +
+                  //     (tableWidth / 5.3) -
+                  //     (screenWidth * 0.21 / 1.2),
+
+                  /// bottom: MediaQuery.of(context).size.width * 0.405,
+                  // tableBotom +
+                  //     (tableHeight / 3) -
+                  //     (screenHeight * 0.21 / 11),
+                  // left: 550,
+                  // right: 42,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    width: MediaQuery.of(context).size.height * 0.17,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.transparent,
+                      //borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: PlayAgainIconButton3(
+                        // onPressed: () {},
+                        ),
+                  ),
+                ),
 
                 ///background rupies image...white...
                 Positioned(
@@ -435,7 +455,7 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                 //   ),
                 // ),
 
-                ///todo:available coins...
+                ///todo:available.......coins............
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.1,
                   right: MediaQuery.of(context).size.width * 0,
@@ -567,11 +587,14 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                 Positioned(
                   top: tableTop +
                       (tableHeight / 5.5) -
-                      (screenHeight * 0.3 / 1.8),
-                  right: tableLeft +
-                      (tableWidth / 10.5) -
-                      (screenWidth * 0.21 / 86),
-                  // left: 550,
+                      (screenHeight * 0.3 / 1.9),
+                  // bottom: tableTop +
+                  //     (tableHeight / 7.5) -
+                  //     (screenHeight * 0.3 / 1.9),
+                  // right: tableLeft +
+                  //     (tableWidth / 30.5) -
+                  //     (screenWidth * 0.21 / 16),
+                  left: MediaQuery.of(context).size.width * 0.17,
                   // right: 42,
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.085,
@@ -639,6 +662,17 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                                         )
                                       : GestureDetector(
                                           onTap: () async {
+                                            CallLoader.loader();
+                                            await Future.delayed(
+                                                Duration(seconds: 1));
+                                            CallLoader.hideLoader();
+                                            await _getGamePriceListSelfController
+                                                .gamePriceListSelfApi();
+                                            _getGamePriceListSelfController
+                                                .update();
+                                            //_getGamePriceListSelfController.onInit();
+                                            Future.delayed(
+                                                Duration(seconds: 1));
                                             SharedPreferences sharedPrefs =
                                                 await SharedPreferences
                                                     .getInstance();
@@ -810,7 +844,7 @@ class _Play_Now_self_gameState extends State<Play_Now_self_game> {
                   ),
                 ),
 
-                ///todo: price_list text..
+                ///todo: price_list text........
 
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.22,

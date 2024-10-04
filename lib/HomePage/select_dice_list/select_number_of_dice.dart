@@ -1,23 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:game_app/HomePage/select_dice/select_22_dice.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Controllersss/rezaypay_controller/pay_amount_controller.dart';
-import '../../controllers_all/dicelist_for_double_dice_controller.dart';
-import '../../controllers_all/double_dice_selection_controller.dart';
+import '../../controllers_all/create_list_players.dart';
+import '../../controllers_all/create_single_room_controller.dart';
+import '../../controllers_all/dice_list_controller_byid.dart';
+import '../../controllers_all/dice_popup_avlbal_controller.dart';
+import '../../game_type/single_dice_game/player_lists.dart';
 
-class TwiceNumberSelection extends StatelessWidget {
+class NumberSelection extends StatelessWidget {
   static const String id = 'Company';
 
-  final DoublediceSelectionController _doublediceController =
-      Get.put(DoublediceSelectionController());
+  DiceAvlBalpopupController _diceAvlBalpopupController =
+      Get.put(DiceAvlBalpopupController());
   final RozarpayamountController _rozarpayamountController =
       Get.put(RozarpayamountController());
+  GetDiceListController _getDiceListController =
+      Get.put(GetDiceListController());
 
-  GetTwoDiceListController _getTwoDiceListController =
-      Get.put(GetTwoDiceListController());
+  CreateRoomSingleController _createRoomSingleController =
+      Get.put(CreateRoomSingleController());
+  GetUserListController _getUserListController =
+      Get.put(GetUserListController());
 
   final List<String> _diceImages2 = [
     'assets/images/dice1.png',
@@ -28,21 +36,155 @@ class TwiceNumberSelection extends StatelessWidget {
     'assets/images/dice6.png',
   ];
 
+  ///todo:........................................
+  ///todo:........................................
+
   @override
   Widget build(BuildContext context) {
+    // DiceAvlBalpopupController _diceAvlBalpopupController = Get.put(DiceAvlBalpopupController());
+
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    var fontheight = isPortrait
+        ? MediaQuery.of(context).size.height * 0.21
+        : MediaQuery.of(context).size.height * 0.5;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.red.shade300,
-        title: const Text('Select Dices 1'),
+        title: const Text('Select Dices'),
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
             child: GestureDetector(
               onTap: () {
-                Get.to(TwiceNumberSelection2());
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => CupertinoAlertDialog(
+                    title: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Obx(
+                                () => _diceAvlBalpopupController.isLoading.value
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Text(
+                                        "Avl Balance: ",
+                                        style: GoogleFonts.abyssinicaSil(
+                                          fontSize: fontheight * 0.12,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                              ),
+                              Obx(
+                                () => Text(
+                                  "${_diceAvlBalpopupController.data2.value?.totalAvlAmt?.toInt()}", // Use .value for RxString
+                                  style: GoogleFonts.abyssinicaSil(
+                                    fontSize: fontheight * 0.13,
+                                    color: Colors.red.shade300,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                    ),
+                    content: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              /// "${_getDiceListController.selectedIndex.value + 1}",
+                              "Your Selected dice is  ${_getDiceListController.selectedIndex.value + 1} \n You have to pay your payable Coins for start your game and your payable Coins is:-",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+
+                                ///todo:.......................
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          Obx(
+                            () => _diceAvlBalpopupController.isLoading.value
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Text(
+                                    "${_diceAvlBalpopupController.data2.value?.bettingAmount.toString()}", // Use .value for RxString
+                                    style: GoogleFonts.poppins(
+                                      fontSize: fontheight * 0.12,
+                                      color: Colors.green.shade900,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      CupertinoDialogAction(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Text(
+                          "Cancel",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      CupertinoDialogAction(
+                        onPressed: () async {
+                          Get.back();
+
+                          await _createRoomSingleController
+                              .createRoomSingleApi();
+                          await _getUserListController.gameUserListApi();
+
+                          await _getDiceListController.saveSelectedDiceId();
+                          // Fetch saved ID for confirmation
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          int? savedDiceId = prefs.getInt('selected_dice_id');
+                          print("Saved Dice ID: $savedDiceId");
+                          // Or from GetStorage
+                          int? storedDiceId =
+                              GetStorage().read('selected_dice_id');
+                          print("Saved Dice ID from GetStorage: $storedDiceId");
+
+                          /// _rozarpayamountController.openCheckout();
+                          await Get.to(PlayerLists());
+                        },
+                        child: Text(
+                          "Pay",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.green.shade700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               },
               child: PhysicalModel(
                 color: Colors.white10,
@@ -95,8 +237,10 @@ class TwiceNumberSelection extends StatelessWidget {
   }
 
   Widget buildGridView(BuildContext context) {
+    GetDiceListController _getDiceListController =
+        Get.put(GetDiceListController());
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0),
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -105,15 +249,19 @@ class TwiceNumberSelection extends StatelessWidget {
           mainAxisSpacing: 18.0,
           childAspectRatio: 1.0,
         ),
-        itemCount: _getTwoDiceListController.diceList!.diceNumvers!.length,
-        //_diceImages2.length,
+        itemCount: 6,
+        //_getDiceListController.diceList?.diceNumvers?.length,
+
+        /// _diceImages2.length,
         itemBuilder: (context, index) {
           return Obx(() {
             bool isSelected =
-                _doublediceController.selectedIndices.contains(index);
+                _getDiceListController.selectedIndex.value == index;
+            // bool isSelected =
+            //     _getDiceListController.selectedIndices.contains(index);
             return InkWell(
               onTap: () {
-                _doublediceController.toggleSelection(index);
+                _getDiceListController.toggleSelection(index);
               },
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 300),
@@ -228,16 +376,16 @@ class TwiceNumberSelection extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 2, vertical: 30),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _getTwoDiceListController.diceList!.diceNumvers!.length,
-
-        //_diceImages2.length,
+        itemCount: _diceImages2.length, // Make sure this is correct
         itemBuilder: (context, index) {
           return Obx(() {
+            // Determine if the current index is selected
             bool isSelected =
-                _doublediceController.selectedIndices.contains(index);
+                _getDiceListController.selectedIndex.value == index;
+
             return InkWell(
               onTap: () {
-                _doublediceController.toggleSelection(index);
+                _getDiceListController.toggleSelection(index);
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 13),
@@ -278,6 +426,7 @@ class TwiceNumberSelection extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
+                          ///
                           image: AssetImage(
                             "assets/images/svg_images/ludobackblack.png",
                           ),

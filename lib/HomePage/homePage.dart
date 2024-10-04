@@ -12,9 +12,11 @@ import '../controllers_all/game_price_list_controller.dart';
 import '../controllers_all/game_price_list_double_controller.dart';
 import '../controllers_all/game_price_list_self_controller.dart';
 import '../controllers_all/game_type_get_controller.dart';
+import '../controllers_all/game_type_wht_rd_controller.dart';
 import '../controllers_all/get_dice_list_self_controller.dart';
 import '../controllers_all/get_profile_controller.dart';
 import '../earn_money/earn_money_page.dart';
+import '../game_speed_list/single_game/dice_face_selection.dart';
 import '../profiles/profile_user.dart';
 import '../settingss/settings_page.dart';
 import '../suggessions_pages/sugession_pagesss.dart';
@@ -22,7 +24,6 @@ import '../wallet_pages/walet_user/wallet_user.dart';
 
 class Home_Page extends StatefulWidget {
   const Home_Page({Key? key}) : super(key: key);
-
   @override
   State<Home_Page> createState() => _Home_PageState();
 }
@@ -36,6 +37,8 @@ class _Home_PageState extends State<Home_Page> {
   GetGamePriceListController _getGamePriceListController =
       Get.put(GetGamePriceListController());
 
+  /// GetGamePriceListSelfController _getGamePriceListSelfController = Get.put(GetGamePriceListSelfController())
+
   GetGamePriceListDoubleController _gamePriceListDoubleController =
       Get.put(GetGamePriceListDoubleController());
 
@@ -43,6 +46,9 @@ class _Home_PageState extends State<Home_Page> {
       Get.put(GetGamePriceListSelfController());
   GetDiceListSelfController _getDiceListSelfController =
       Get.put(GetDiceListSelfController());
+
+  GetDiceColorController _getDiceColorColorController =
+      Get.put(GetDiceColorController());
 
   @override
   void initState() {
@@ -437,18 +443,28 @@ class _Home_PageState extends State<Home_Page> {
                               await Future.delayed(Duration(seconds: 1));
                               CallLoader.hideLoader();
 
-                              _getGamePriceListController.gamePriceListApi(
+                              ///Get.to(() => DiceRollFaceSelection());
+
+                              await _getGamePriceListController
+                                  .gamePriceListApi(
                                 gameTypeId: _gameTypeController
                                     .gametypeModel?.getGames?[index].id
                                     .toString(),
                               );
+                              await _getDiceColorColorController
+                                  .gameDiceColorListApi();
+
+                              await Get.to(DiceRollFaceSelection());
+
+                              _getDiceColorColorController
+                                  .diceList!.data![index].id
+                                  .toString();
 
                               SharedPreferences sharedPrefs =
                                   await SharedPreferences.getInstance();
 
                               ///todo: Save the game type ID
-
-                              // Retrieve the game type ID
+                              /// Retrieve the game type ID
                               var gameTypeIdType2 = sharedPrefs.getString(
                                   'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}');
                               print("game id 3${gameTypeIdType2}");
@@ -456,19 +472,16 @@ class _Home_PageState extends State<Home_Page> {
                               CallLoader.loader();
                               await Future.delayed(Duration(seconds: 1));
                               CallLoader.hideLoader();
-
                               _gamePriceListDoubleController
                                   .gamePriceListDoubleApi(
                                 gameTypeId: _gameTypeController
                                     .gametypeModel?.getGames?[index].id
                                     .toString(),
                               );
-
                               SharedPreferences sharedPrefs =
                                   await SharedPreferences.getInstance();
 
                               ///todo: Save the game type ID
-
                               // Retrieve the game type ID
                               var gameTypeIdType2 = sharedPrefs.getString(
                                   'gameTypeId_${_gameTypeController.gametypeModel?.getGames?[index].id}');
@@ -477,10 +490,15 @@ class _Home_PageState extends State<Home_Page> {
                               CallLoader.loader();
                               await Future.delayed(Duration(seconds: 1));
                               CallLoader.hideLoader();
+                              await _getGamePriceListSelfController
+                                  .gamePriceListSelfApi();
+                              _getGamePriceListSelfController.update();
+                              //_getGamePriceListSelfController.onInit();
+                              Future.delayed(Duration(seconds: 1));
                               SharedPreferences sharedPrefs =
                                   await SharedPreferences.getInstance();
 
-                              ///todo: Save the game type ID
+                              ///todo: Save the game type ID...@#
 
                               // Retrieve the game type ID
                               var gameTypeIdType2 = sharedPrefs.getString(

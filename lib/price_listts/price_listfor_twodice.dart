@@ -6,9 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Controllersss/pricelist_controller.dart';
 import '../HomePage/homePage.dart';
-import '../HomePage/select_dice/select_21_dice.dart';
+import '../HomePage/select_dice_list/select_21_dice.dart';
 import '../constantt/circular_loader/circular_loaderr.dart';
 import '../controllers_all/dicelist_for_double_dice_controller.dart';
+import '../controllers_all/doubledice_selection2_controller.dart';
 import '../controllers_all/game_price_list_double_controller.dart';
 import '../controllers_all/wining_percentage_controller.dart';
 
@@ -30,8 +31,10 @@ class PriceListssfortwodice extends StatelessWidget {
   // GetGamePriceListController _getGamePriceListController =
   // Get.put(GetGamePriceListController());
 
-  GetTwoDiceListController _getTwoDiceListController =
-      Get.put(GetTwoDiceListController());
+  GetTwoDiceList1Controller _getTwoDiceListController =
+      Get.put(GetTwoDiceList1Controller());
+  DoublediceSelection2Controller _getTwoDiceList2Controller =
+      Get.put(DoublediceSelection2Controller());
 
   @override
   Widget build(BuildContext context) {
@@ -197,6 +200,8 @@ class PriceListssfortwodice extends StatelessWidget {
                                               .gameDiceList2Api(
                                                   gameTypeId3:
                                                       "${_gamePriceListDoubleController.getpricelistModel?.gameid.toString()}"
+
+                                                  ///_getTwoDiceList2Controller
 
                                                   // gameTypeId2:
                                                   // "${_gameTypeController.gametypeModel?.getGames?[index].id}"

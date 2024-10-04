@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../game_type/self_dice_game/play_now_self_game2.dart';
+import '../../../game_type/self_dice_game/play_now_self_game.dart';
 
 class WhiteDiceDilogSelfGame {
   // Method to show the dialog
@@ -105,8 +105,8 @@ class WhiteDiceDilogSelfGame {
                   ElevatedButton(
                     onPressed: () {
                       Get.back(); // Close the dialog
-                      Get.to(() =>
-                          Play_Now_self_game2()); // Navigate to next screen
+                      Get.to(
+                          () => PlayNowSelfGame()); // Navigate to next screen
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,

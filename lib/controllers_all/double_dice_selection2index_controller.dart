@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-class DoublediceSelection11Controller extends GetxController {
-  var isLoading = true.obs;
-  var selectedIndices = <int>[].obs; // RxList to store selected indices
+class DoublediceSelection22Controller extends GetxController {
+  var isLoading = false.obs;
+  var selectedIndices2 = <int>[].obs; // RxList to store selected indices
 
   // Method to toggle selection of an index
   void toggleSelection(int index) {
-    if (selectedIndices.contains(index)) {
-      selectedIndices.remove(index);
+    if (selectedIndices2.contains(index)) {
+      selectedIndices2.remove(index);
     } else {
-      if (selectedIndices.length < 2) {
-        selectedIndices.add(index);
+      if (selectedIndices2.length < 2) {
+        selectedIndices2.add(index);
       } else {
         // Show a stylish toast message
         Fluttertoast.showToast(
@@ -30,6 +30,6 @@ class DoublediceSelection11Controller extends GetxController {
 
   // Method to get color based on selection status
   Color getContainerColor(int index) {
-    return selectedIndices.contains(index) ? Colors.black54 : Colors.white;
+    return selectedIndices2.contains(index) ? Colors.black54 : Colors.white;
   }
 }

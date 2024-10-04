@@ -101,8 +101,8 @@ class RedDiceDilogSelfGame {
                   ElevatedButton(
                     onPressed: () {
                       Get.back(); // Close the dialog
-                      Get.to(() =>
-                          Play_Now_self_game()); // Navigate to next screen
+                      Get.to(
+                          () => PlayNowSelfGame()); // Navigate to next screen
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,

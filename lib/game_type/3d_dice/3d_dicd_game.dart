@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../HomePage/homePage.dart';
+import '../../controllers_all/dice_result_popup_controller.dart';
+import '../../controllers_all/play_again_controller.dart';
 import '../../price_listts/price_listtss.dart';
 import 'dice.dart'; // Make sure to import your Cube widget
 
@@ -74,6 +76,9 @@ class Dice3DAnimation extends StatefulWidget {
 }
 
 class Dice3DAnimationState extends State<Dice3DAnimation> {
+  DiceResultController _diceResultController = Get.put(DiceResultController());
+  PlayAgainSingleController _playAgainSingleController =
+      Get.put(PlayAgainSingleController());
   RxDouble _x = 0.0.obs;
   RxDouble _y = 0.0.obs;
   RxInt _diceFace = 1.obs;
@@ -82,6 +87,7 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
 
   @override
   void initState() {
+    _diceResultController.DiceResultPopupApiii();
     super.initState();
     _startDiceRollAfterDelay();
   }
@@ -171,17 +177,23 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 12),
-                      Text(
-                        'Dice face ${_diceFace.value} won!',
-                        style: GoogleFonts.raleway(
-                          color: Colors.yellow,
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.center,
+                      Obx(
+                        () => _diceResultController.isLoading.value
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Text(
+                                'Dice face ${_diceResultController.diceResultModel?.data?.die1.toString()} won!',
+                                style: GoogleFonts.raleway(
+                                  color: Colors.yellow,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                       ),
                       SizedBox(height: 25),
                       Image.asset(
-                        'assets/images/svg_images/dcc${_diceFace.value}.png',
+                        'assets/images/svg_images/dcc${_diceResultController.diceResultModel?.data?.die1.toString()}.png',
                         height: dialogSize * 0.31,
                       ),
                       SizedBox(height: 25),
@@ -196,8 +208,11 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
-                              onPressed: () {
-                                Get.to(PriceListss());
+                              onPressed: () async {
+                                await _playAgainSingleController
+                                    .playAgainSingleApi();
+
+                                Get.off(PriceListss());
                               },
                             ),
                           ),

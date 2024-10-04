@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Controllersss/pricelist_controller.dart';
 import '../HomePage/homePage.dart';
-import '../HomePage/select_dice/select_number_of_dice.dart';
+import '../HomePage/select_dice_list/select_number_of_dice.dart';
 import '../constantt/circular_loader/circular_loaderr.dart';
 import '../controllers_all/game_price_list_controller.dart';
 import '../controllers_all/game_type_get_controller.dart';

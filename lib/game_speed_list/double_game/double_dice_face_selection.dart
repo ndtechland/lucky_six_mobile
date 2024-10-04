@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constantt/red_white_dilogbox/for_double_dice_game/red_dice_double_dilogbox.dart';
 import '../../constantt/red_white_dilogbox/for_double_dice_game/white_dice_double_dilogue.dart';
+import '../../controllers_all/game_type_wht_rd_controller.dart';
 
 // class DoubleDiceRollFaceSelection extends StatefulWidget {
 //   const DoubleDiceRollFaceSelection({super.key});
@@ -289,6 +294,9 @@ class DoubleDiceRollFaceSelection extends StatefulWidget {
       _DoubleDiceRollFaceSelectionState();
 }
 
+GetDiceColorController _getDiceColorColorController =
+    Get.put(GetDiceColorController());
+
 class _DoubleDiceRollFaceSelectionState
     extends State<DoubleDiceRollFaceSelection> {
   final List<Map<String, dynamic>> items = [
@@ -388,152 +396,219 @@ class _DoubleDiceRollFaceSelectionState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(
-                    child: Container(
-                      margin: EdgeInsets.all(16),
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: isLandscape
-                          ? SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.57,
-                              height: MediaQuery.of(context).size.height * 0.45,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: items.length,
-                                itemBuilder: (context, index) {
-                                  final isSelected = selectedIndex == index;
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedIndex =
-                                            isSelected ? null : index;
-                                      });
-                                    },
-                                    child: Container(
-                                      width: 190,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 8),
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: isSelected
-                                            ? Colors
-                                                .blue.shade300 // Selected color
-                                            : Colors.grey
-                                                .shade300, // Unselected color
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          color: isSelected
-                                              ? Colors.white
-                                              : Colors.transparent,
-                                          width: 2,
-                                        ),
+                    child: Obx(
+                      () => (_getDiceColorColorController.isLoading.value)
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Container(
+                              margin: EdgeInsets.all(16),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: isLandscape
+                                  ? SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.57,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.45,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: _getDiceColorColorController
+                                            .diceList?.data?.length,
+                                        itemBuilder: (context, index) {
+                                          final isSelected =
+                                              selectedIndex == index;
+                                          return GestureDetector(
+                                            onTap: () async {
+                                              SharedPreferences sharedPrefs =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              final box =
+                                                  GetStorage(); // GetStorage instance
+
+                                              String? gameColorID =
+                                                  _getDiceColorColorController
+                                                      .diceList?.data![index].id
+                                                      .toString();
+
+                                              // Save the game color ID in SharedPreferences
+                                              await sharedPrefs.setString(
+                                                  'gameColorID', gameColorID!);
+
+                                              // Save the game color ID in GetStorage
+                                              box.write(
+                                                  'gameColorID21', gameColorID);
+
+                                              print(
+                                                  'Game color ID saved2: $gameColorID');
+                                              setState(() {
+                                                selectedIndex =
+                                                    isSelected ? null : index;
+                                              });
+                                            },
+                                            child: Container(
+                                              width: 190,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 8),
+                                              padding: EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                color: isSelected
+                                                    ? Colors.blue
+                                                        .shade300 // Selected color
+                                                    : Colors.grey
+                                                        .shade300, // Unselected color
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: isSelected
+                                                      ? Colors.white
+                                                      : Colors.transparent,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    items[index]['image'],
+                                                    height:
+                                                        80, // Adjust height as needed
+                                                  ),
+                                                  SizedBox(height: 8),
+                                                  Text(
+                                                    "${_getDiceColorColorController.diceList?.data![index].name} Dice",
+
+                                                    // items[index]['label'],
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      shadows: [
+                                                        Shadow(
+                                                          blurRadius: 3.0,
+                                                          color: Colors.black
+                                                              .withOpacity(0.4),
+                                                          offset:
+                                                              Offset(0.0, 0.0),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            items[index]['image'],
-                                            height:
-                                                80, // Adjust height as needed
-                                          ),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            items[index]['label'],
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              shadows: [
-                                                Shadow(
-                                                  blurRadius: 3.0,
-                                                  color: Colors.black
-                                                      .withOpacity(0.4),
-                                                  offset: Offset(0.0, 0.0),
+                                    )
+                                  : GridView.builder(
+                                      shrinkWrap: true,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 16,
+                                        mainAxisSpacing: 16,
+                                      ),
+                                      itemCount: _getDiceColorColorController
+                                          .diceList?.data?.length,
+                                      // itemCount: items.length,
+                                      itemBuilder: (context, index) {
+                                        final isSelected =
+                                            selectedIndex == index;
+                                        return GestureDetector(
+                                          onTap: () async {
+                                            SharedPreferences sharedPrefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            final box =
+                                                GetStorage(); // GetStorage instance
+
+                                            String? gameColorID =
+                                                _getDiceColorColorController
+                                                    .diceList?.data![index].id
+                                                    .toString();
+
+                                            // Save the game color ID in SharedPreferences
+                                            await sharedPrefs.setString(
+                                                'gameColorID', gameColorID!);
+
+                                            // Save the game color ID in GetStorage
+                                            box.write(
+                                                'gameColorID21', gameColorID);
+
+                                            print(
+                                                'Game color ID saved2: $gameColorID');
+                                            setState(() {
+                                              selectedIndex =
+                                                  isSelected ? null : index;
+                                            });
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: isSelected
+                                                  ? Colors.blue
+                                                      .shade300 // Selected color
+                                                  : Colors.grey
+                                                      .shade300, // Unselected color
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              border: Border.all(
+                                                color: isSelected
+                                                    ? Colors.white
+                                                    : Colors.transparent,
+                                                width: 2,
+                                              ),
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  items[index]['image'],
+                                                  height:
+                                                      80, // Adjust height as needed
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  "${_getDiceColorColorController.diceList?.data?[index].name}Dice",
+
+                                                  // items[index]['label'],
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    shadows: [
+                                                      Shadow(
+                                                        blurRadius: 3.0,
+                                                        color: Colors.black
+                                                            .withOpacity(0.4),
+                                                        offset:
+                                                            Offset(0.0, 0.0),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        );
+                                      },
                                     ),
-                                  );
-                                },
-                              ),
-                            )
-                          : GridView.builder(
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 16,
-                                mainAxisSpacing: 16,
-                              ),
-                              itemCount: items.length,
-                              itemBuilder: (context, index) {
-                                final isSelected = selectedIndex == index;
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedIndex = isSelected ? null : index;
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? Colors
-                                              .blue.shade300 // Selected color
-                                          : Colors.grey
-                                              .shade300, // Unselected color
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: isSelected
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          items[index]['image'],
-                                          height: 80, // Adjust height as needed
-                                        ),
-                                        SizedBox(height: 8),
-                                        Text(
-                                          items[index]['label'],
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            shadows: [
-                                              Shadow(
-                                                blurRadius: 3.0,
-                                                color: Colors.black
-                                                    .withOpacity(0.4),
-                                                offset: Offset(0.0, 0.0),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
                             ),
                     ),
                   ),
