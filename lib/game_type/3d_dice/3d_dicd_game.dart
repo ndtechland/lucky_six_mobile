@@ -45,7 +45,7 @@ class NeumorphicButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -84,7 +84,6 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
   RxInt _diceFace = 1.obs;
   Timer? _diceRollTimer;
   Timer? _startTimer;
-
   @override
   void initState() {
     _diceResultController.DiceResultPopupApiii();
@@ -134,7 +133,6 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
           MediaQuery.of(context).size.width * 0.8,
           MediaQuery.of(context).size.height * 0.8,
         );
-
         return Dialog(
           backgroundColor: Colors.transparent,
           shape: RoundedRectangleBorder(
@@ -225,8 +223,10 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
-                              onPressed: () {
-                                Get.to(Home_Page());
+                              onPressed: () async {
+                                await _playAgainSingleController
+                                    .playAgainSingleApi();
+                                await Get.offAll(Home_Page());
                               },
                             ),
                           ),
@@ -236,20 +236,20 @@ class Dice3DAnimationState extends State<Dice3DAnimation> {
                   ),
                 ),
               ),
-              Positioned(
-                right: 0,
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.cancel,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   right: 0,
+              //   child: GestureDetector(
+              //     onTap: () => Navigator.of(context).pop(),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Icon(
+              //         Icons.cancel,
+              //         color: Colors.white,
+              //         size: 30,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         );

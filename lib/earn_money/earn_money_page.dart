@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -440,7 +439,8 @@ class EarnMoney extends StatelessWidget {
                   width: containerWidth * 0.8, // Fixed width for the buttons
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent, // Use transparent background
+                      backgroundColor:
+                          Colors.transparent, // Use transparent background
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -491,7 +491,8 @@ class EarnMoney extends StatelessWidget {
                   width: containerWidth * 0.8, // Fixed width for the buttons
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent, // Use transparent background
+                      backgroundColor:
+                          Colors.transparent, // Use transparent background
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -643,7 +644,8 @@ class EarnMoney extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.red, // Cancel button background color
+                          backgroundColor:
+                              Colors.red, // Cancel button background color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -661,7 +663,7 @@ class EarnMoney extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary:
+                          backgroundColor:
                               Colors.green, // Submit button background color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -772,7 +774,8 @@ class EarnMoney extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.red, // Cancel button background color
+                          backgroundColor:
+                              Colors.red, // Cancel button background color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -790,7 +793,7 @@ class EarnMoney extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary:
+                          backgroundColor:
                               Colors.green, // Submit button background color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -847,7 +850,8 @@ class EarnMoney extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red, // Cancel button background color
+                      backgroundColor:
+                          Colors.red, // Cancel button background color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -866,7 +870,8 @@ class EarnMoney extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green, // Confirm button background color
+                      backgroundColor:
+                          Colors.green, // Confirm button background color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

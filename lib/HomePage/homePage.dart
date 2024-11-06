@@ -15,6 +15,7 @@ import '../controllers_all/game_type_get_controller.dart';
 import '../controllers_all/game_type_wht_rd_controller.dart';
 import '../controllers_all/get_dice_list_self_controller.dart';
 import '../controllers_all/get_profile_controller.dart';
+import '../controllers_all/win_loss_list_controller.dart';
 import '../earn_money/earn_money_page.dart';
 import '../game_speed_list/single_game/dice_face_selection.dart';
 import '../profiles/profile_user.dart';
@@ -49,6 +50,9 @@ class _Home_PageState extends State<Home_Page> {
 
   GetDiceColorController _getDiceColorColorController =
       Get.put(GetDiceColorController());
+
+  GetWinLossListController _getWinLossListController =
+      Get.put(GetWinLossListController());
 
   @override
   void initState() {
@@ -288,7 +292,11 @@ class _Home_PageState extends State<Home_Page> {
         // Navigate to tournament page
         break;
       case 4:
-        Navigator.push(
+        await _getWinLossListController.gameWinlossListtApi();
+        _getWinLossListController.update();
+        _getWinLossListController.refresh();
+        await Future.delayed(Duration(milliseconds: 500));
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => EarnMoney(),

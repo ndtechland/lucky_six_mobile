@@ -84,7 +84,7 @@ class RedDiceDilogSelfGame {
                       Get.back(); // Close the dialog
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
+                      backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -105,7 +105,7 @@ class RedDiceDilogSelfGame {
                           () => PlayNowSelfGame()); // Navigate to next screen
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
+                      backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),

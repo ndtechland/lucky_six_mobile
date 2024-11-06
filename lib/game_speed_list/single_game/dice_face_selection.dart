@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,7 +47,7 @@ class _DiceRollFaceSelectionState extends State<DiceRollFaceSelection> {
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.only(left: 15, right: 5, top: 10, bottom: 7),
+            padding: EdgeInsets.only(left: 15, right: 5, top: 5, bottom: 5),
             child: ElevatedButton(
               onPressed: selectedIndex == null
                   ? null
@@ -87,10 +86,10 @@ class _DiceRollFaceSelectionState extends State<DiceRollFaceSelection> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                primary: selectedIndex == null
+                foregroundColor: Colors.white,
+                backgroundColor: selectedIndex == null
                     ? Colors.grey.shade300
                     : Colors.white70,
-                onPrimary: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -244,7 +243,7 @@ class _DiceRollFaceSelectionState extends State<DiceRollFaceSelection> {
                                                     height:
                                                         80, // Adjust height as needed
                                                   ),
-                                                  SizedBox(height: 8),
+                                                  SizedBox(height: 3),
                                                   Text(
                                                     "${_getDiceColorColorController.diceList?.data![index].name} Dice",
                                                     // items[index]['label'],
@@ -359,7 +358,7 @@ class _DiceRollFaceSelectionState extends State<DiceRollFaceSelection> {
                                                   height:
                                                       80, // Adjust height as needed
                                                 ),
-                                                SizedBox(height: 8),
+                                                SizedBox(height: 4),
                                                 Text(
                                                   "${_getDiceColorColorController.diceList?.data?[index].name}Dice",
                                                   // items[index]['label'],

@@ -19,6 +19,7 @@ import '../1_models/game_type_model.dart';
 import '../1_models/get_bank_model.dart';
 import '../1_models/get_user_list_model.dart';
 import '../1_models/get_wallet_model.dart';
+import '../1_models/list_user_single_game.dart';
 import '../1_models/price_list_model.dart';
 import '../1_models/profile_model.dart';
 import '../1_models/profiles.dart';
@@ -294,8 +295,9 @@ class ApiProvider {
 
       if (r.statusCode == 200) {
         print("Request URL: $url");
-        print("Response Body: ${r.body}");
 
+        ///todo:dscscmascmsamsmsacmascascnscsacscsacs.........
+        print("Response Body: ${r.body}");
         // Parse the response body
         ProfileModel? geetprofilemodel = profileModelFromJson(r.body);
         print("Profile Email ID: ${geetprofilemodel.profile?.id}");
@@ -383,7 +385,6 @@ class ApiProvider {
   ///todo: get game type api....game ..3.01
   static GameTypeApi() async {
     var prefs = GetStorage();
-
     // Retrieve the saved user ID and token
     var userId = prefs.read("Id").toString();
     var token = prefs.read("Token").toString();
@@ -601,6 +602,13 @@ class ApiProvider {
     var token = prefs.read("Token").toString();
     print('User ID2: $userId');
     print('Token2: $token');
+    // Retrieve the saved user ID, token, RoomId, and UniqueGameID
+    var roomId = prefs.read("RoomId").toString();
+    var uniqueGameId = prefs.read("UniqueGameID").toString();
+    print('User ID: $userId');
+    print('Token: $token');
+    print('Room ID: $roomId');
+    print('UniqueGame ID: $uniqueGameId');
 
     SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
 
@@ -615,8 +623,7 @@ class ApiProvider {
       return null;
     }
 
-    var url =
-        'https://api.luckysix.in/api/Home/GetGameDetal/BAFA5196-99B8-468E-8286-F88B68179A8D/32ef4a35-4874-4a31-a47b-f81a749c8141';
+    var url = 'https://api.luckysix.in/api/Home/GetGameDetal/$roomId/$userId2';
     //'https://api.luckysix.in/api/Home/GetGameDetal/10C3AABA-80E2-4D61-9AEF-747CACA6AAA1';
     // 'https://api.luckysix.in/api/Home/GetGameDetal/2ACA5738-11B7-41AA-B53F-733404F9DC97';
     //'${baseUrl}Account/GetProfileDetail/$userId';
@@ -1051,12 +1058,11 @@ class ApiProvider {
     var token = prefs.read("Token").toString();
     print('User ID3: $userId');
     print('Token3: $token');
-
     SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-
     // Retrieve the saved user ID and token
     var userId2 = sharedPrefs.getString("Id");
     var token2 = sharedPrefs.getString("Token");
+    // Retrieve the saved user ID and token
     print('User ID3: $userId2');
     print('Token3: $token2');
 
@@ -1495,51 +1501,44 @@ class ApiProvider {
     return r;
   }
 
+  //
+
   //todo: ceate room .....game...13
   static Future<http.Response> UserCreateRoomSingleApi() async {
     var url = "${baseUrl}Home/CreateRoom";
     var prefs = GetStorage();
     SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     var gameColorID = sharedPrefs.getString('gameColorID');
-
     // Retrieve saved dice ID
     int? savedDiceId =
         sharedPrefs.getInt('selected_dice_id'); // Get saved dice ID
-
     print('Retrieved game color ID: $gameColorID');
     final box = GetStorage();
     String? gameColorID2 = box.read('gameColorID');
     print('Retrieved game color ID from GetStorage: $gameColorID');
-
     var userId = prefs.read("Id").toString();
     var token = prefs.read("Token").toString();
     print('User ID: $userId');
     print('Token: $token');
     print('color id: $gameColorID');
-
     var gameTypeIdType = sharedPrefs.getString('gameTypeId_');
-
     if (gameTypeIdType == null) {
       print("Game Type ID is null, cannot proceed with API call.");
       return Future.error("Game Type ID is null");
     }
-
     print("Retrieved Game Type ID: $gameTypeIdType");
     var gamePriceTypeId2 = sharedPrefs.getString('gamePriceTypeId_');
-
     if (gamePriceTypeId2 == null) {
       print("Game Price Type ID is null, cannot proceed with API call.");
       return Future.error("Game Price Type ID is null");
     }
-
     print("Retrieved Game Price Type ID: $gamePriceTypeId2");
-
     // Encode the body as JSON, including the saved dice ID
     var body = jsonEncode({
       "userId": userId,
       "gameId": gameTypeIdType,
-      "diceTypeId":
-          gameColorID, // This can be kept or replaced with savedDiceId
+      "diceTypeId": gameColorID,
+      // This can be kept or replaced with savedDiceId
       "gameAmountID": gamePriceTypeId2,
       "firstDiceNumberId": savedDiceId,
       //?? 1, // Use saved dice ID here
@@ -1608,10 +1607,9 @@ class ApiProvider {
     return r;
   }
 
-  ///todo: list of user...of room create..............
+  //todo: single room craeted...user...list...
   static diceRoomListApi() async {
     var prefs = GetStorage();
-
     // Retrieve the saved user ID, token, RoomId, and UniqueGameID
     var userId = prefs.read("Id").toString();
     var token = prefs.read("Token").toString();
@@ -1674,6 +1672,75 @@ class ApiProvider {
     }
     return null;
   }
+  //UserListModelSingle
+
+  ///todo: list of user...of room single list.................
+  static UserRoomSingleListApi() async {
+    var prefs = GetStorage();
+    // Retrieve the saved user ID, token, RoomId, and UniqueGameID
+    var userId = prefs.read("Id").toString();
+    var token = prefs.read("Token").toString();
+    var roomId = prefs.read("RoomId").toString();
+    var uniqueGameId = prefs.read("UniqueGameID").toString();
+    print('User ID: $userId');
+    print('Token: $token');
+    print('Room ID: $roomId');
+    print('UniqueGame ID: $uniqueGameId');
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    // Retrieve the saved user ID, token, RoomId, and UniqueGameID from SharedPreferences
+    var userId2 = sharedPrefs.getString("Id");
+    var token2 = sharedPrefs.getString("Token");
+    var roomId2 = sharedPrefs.getString("RoomId");
+    var uniqueGameId2 = sharedPrefs.getString("UniqueGameID");
+
+    print('SharedPrefs User ID: $userId2');
+    print('SharedPrefs Token: $token2');
+    print('SharedPrefs Room ID: $roomId2');
+    print('SharedPrefs UniqueGame ID: $uniqueGameId2');
+
+    // Validate the retrieved values
+    if (userId == null ||
+        token == null ||
+        roomId == null ||
+        uniqueGameId == null) {
+      print('User ID, Token, Room ID, or UniqueGame ID is null');
+      return null;
+    }
+//Home/GetUsersInRoom/663C2574-0D1F-4F40-849F-C7A98332BF6A
+    var url = '${baseUrl}Home/GetUsersInRoom/$roomId/$userId';
+    //https://api.luckysix.in/api/Home/GetUsersInRoom/D484C28F-65F6-4774-B1EC-FFFC82F9ACAB/7cb47671-4806-4d6a-872c-6d7175023654
+
+    try {
+      // Send the HTTP GET request with authorization header (if needed)
+      http.Response r = await http.get(
+        Uri.parse(url),
+        headers: {
+          // Include the token if necessary
+          // "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("Request URL: $url");
+
+      if (r.statusCode == 200) {
+        print("Response bodyweww: ${r.body}");
+
+        // Parse the response body
+        UserListModelSingle? getGameUserlistModelll =
+            userListModelSingleFromJson(r.body);
+        print(
+            "Game user List ID: ${getGameUserlistModelll.usersInRoom![0].fullName}");
+
+        return getGameUserlistModelll;
+      } else {
+        print("Failed to fetch Game. Status code: ${r.statusCode}");
+      }
+    } catch (error) {
+      print('Error fetching Game details: $error');
+    }
+    return null;
+  }
 
   ///todo:playagain....single..
   ///
@@ -1728,13 +1795,13 @@ class ApiProvider {
       // Check if the response was successful
       if (responseBody['succeeded'] == true) {}
 
-      Fluttertoast.showToast(
-          msg: "Play again Successfully",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 2,
-          backgroundColor: Colors.green,
-          textColor: Colors.white);
+      // Fluttertoast.showToast(
+      //     msg: "Play again Successfully",
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.BOTTOM,
+      //     timeInSecForIosWeb: 2,
+      //     backgroundColor: Colors.green,
+      //     textColor: Colors.white);
     } else if (r.statusCode == 401) {
       Get.snackbar(
         "Unauthorized",

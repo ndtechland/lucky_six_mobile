@@ -20,7 +20,7 @@ class GetWinLossListController extends GetxController {
       //        await Get.to(PriceListss());
       isLoading(false);
     } else {
-      isLoading(false);
+      //isLoading(false);
     }
   }
 

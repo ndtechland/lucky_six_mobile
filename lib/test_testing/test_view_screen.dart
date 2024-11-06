@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:game_app/test_testing/showcase_test_controller.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -212,7 +210,7 @@ class _DetailPageState extends State<DetailPage> {
                   await createOrUpdatePdf(); // Create or update the PDF file
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.teal, // Background color
+                  backgroundColor: Colors.teal, // Background color
                   padding: EdgeInsets.symmetric(
                       vertical: 16.0, horizontal: 24.0), // Padding
                   shape: RoundedRectangleBorder(
@@ -231,7 +229,7 @@ class _DetailPageState extends State<DetailPage> {
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue, // Background color
+                  backgroundColor: Colors.blue, // Background color
                   padding: EdgeInsets.symmetric(
                       vertical: 16.0, horizontal: 24.0), // Padding
                   shape: RoundedRectangleBorder(

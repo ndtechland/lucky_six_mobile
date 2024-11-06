@@ -156,7 +156,7 @@ class _ExitIconButtonSelfState extends State<ExitIconButtonSelf> {
                       ),
                       onPressed: () {
                         print("exit button pressed"); // Debugging
-                        Get.to(Home_Page());
+                        Get.offAll(Home_Page());
                       },
                     ),
                     SizedBox(width: 4),

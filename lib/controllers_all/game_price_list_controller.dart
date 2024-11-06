@@ -13,9 +13,7 @@ class GetGamePriceListController extends GetxController {
   Future<void> gamePriceListApi({String? gameTypeId}) async {
     isLoading(true);
     getpricelistModel = await ApiProvider.GamePriceListApi(gameTypeId);
-
     print("Game price list : ${getpricelistModel?.toJson()}");
-
     if (getpricelistModel?.getGameAmount != null) {
       //DiceRollFaceSelection
       // _getDiceColorColorController.diceList!.data[index].id.toString();

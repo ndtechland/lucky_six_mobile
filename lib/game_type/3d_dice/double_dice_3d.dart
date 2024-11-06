@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../HomePage/homePage.dart';
@@ -45,7 +44,7 @@ class NeumorphicButton2 extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -268,7 +267,7 @@ class Dice3DAnimation2State extends State<Dice3DAnimation2> {
                                 end: Alignment.bottomRight,
                               ),
                               onPressed: () {
-                                Get.to(Home_Page());
+                                Get.offAll(Home_Page());
                                 // Add logic to exit the game or navigate away
                               },
                             ),

@@ -53,6 +53,7 @@ class _Play_NowState extends State<Play_Now> {
       body: Stack(
         clipBehavior: Clip.none,
         children: [
+          ///
           Positioned(
             // top: 10,
             child: Stack(
@@ -60,7 +61,7 @@ class _Play_NowState extends State<Play_Now> {
               children: [
                 ///table.....
                 Positioned(
-                    top: MediaQuery.of(context).size.height * 0.11,
+                    top: MediaQuery.of(context).size.height * 0.09,
                     right: MediaQuery.of(context).size.width * 0.05,
                     left: MediaQuery.of(context).size.width * 0.05,
                     //bottom: 10,
@@ -294,13 +295,17 @@ class _Play_NowState extends State<Play_Now> {
                     height: screenHeight * 0.21,
                     width: screenWidth * 0.30,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        //color: Colors.black,
-                        color: Color(0xffdcdcdc)
-                        //grey.shade200,
-                        // color:
-                        //     Color(0xffc03129), // Background color to fill corners
-                        ),
+                      shape: BoxShape.circle,
+
+                      ///todo:tdddd......offf....
+                      //color: Colors.black,
+                      color: Color(0xffdcdcdc),
+
+                      //grey.shade200,
+                      // color:
+                      //     Color(0xffc03129),
+                      // Background color to fill corners
+                    ),
                     child: Dice3DAnimation(
                         //selectedId: ScrollDirection.leftScroll
                         ),
@@ -344,7 +349,7 @@ class _Play_NowState extends State<Play_Now> {
 
                 /// 1 no user....
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.0833,
+                  top: MediaQuery.of(context).size.height * 0.0633,
                   //right: MediaQuery.of(context).size.width * 0.2765,
                   // top: MediaQuery.of(context).size.height * 0.073,
                   //right: MediaQuery.of(context).size.width * 0.27,
@@ -433,7 +438,7 @@ class _Play_NowState extends State<Play_Now> {
 
                 /// 6 no user...............
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.0833,
+                  top: MediaQuery.of(context).size.height * 0.0633,
                   right: MediaQuery.of(context).size.width * 0.2765,
                   //  left: MediaQuery.of(context).size.width * 0.333,
                   child: SizedBox(
@@ -517,7 +522,7 @@ class _Play_NowState extends State<Play_Now> {
 
                 /// 2 no user....
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.408,
+                  top: MediaQuery.of(context).size.height * 0.388,
                   //right: MediaQuery.of(context).size.width * 0.2765,
                   // top: MediaQuery.of(context).size.height * 0.073,
                   //right: MediaQuery.of(context).size.width * 0.27,
@@ -606,7 +611,7 @@ class _Play_NowState extends State<Play_Now> {
 
                 /// 5 no user....
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.408,
+                  top: MediaQuery.of(context).size.height * 0.388,
                   right: MediaQuery.of(context).size.width * 0.1446,
                   //  left: MediaQuery.of(context).size.width * 0.333,
                   child: SizedBox(
@@ -691,7 +696,7 @@ class _Play_NowState extends State<Play_Now> {
                 /// 3 no user....
                 Positioned(
                   // top: MediaQuery.of(context).size.height * 0.0833,
-                  top: MediaQuery.of(context).size.height * 0.777,
+                  top: MediaQuery.of(context).size.height * 0.757,
                   left: MediaQuery.of(context).size.width * 0.2765,
                   //right: MediaQuery.of(context).size.width * 0.2765,
                   // top: MediaQuery.of(context).size.height * 0.073,
@@ -781,7 +786,7 @@ class _Play_NowState extends State<Play_Now> {
 
                 /// 4 no user....
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.777,
+                  top: MediaQuery.of(context).size.height * 0.757,
                   right: MediaQuery.of(context).size.width * 0.2765,
                   //  left: MediaQuery.of(context).size.width * 0.333,
                   child: SizedBox(
@@ -1056,7 +1061,7 @@ class _Play_NowState extends State<Play_Now> {
                   ),
                 ),
 
-                ///todo: beeting amt...
+                ///todo:beeting amt......................................
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.22,
                   left: MediaQuery.of(context).size.width * 0.01,

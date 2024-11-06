@@ -136,7 +136,7 @@ class _SuggestionOverlayState extends State<SuggestionOverlay>
           SizedBox(height: 40),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.orangeAccent,
+              backgroundColor: Colors.orangeAccent,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),

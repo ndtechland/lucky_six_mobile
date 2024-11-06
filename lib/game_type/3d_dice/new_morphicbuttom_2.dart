@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NeumorphicButton2 extends StatelessWidget {
@@ -35,8 +34,8 @@ class NeumorphicButton2 extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
-          onPrimary: Colors.white,
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           elevation: 0,
           shape: RoundedRectangleBorder(

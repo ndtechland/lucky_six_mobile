@@ -57,7 +57,7 @@ class _PlayAgainIconButton3State extends State<PlayAgainIconButton3> {
               onTap: () {
                 _getGamePriceListSelfController.gamePriceListSelfApi();
                 _getGamePriceListSelfController.update();
-                _getGamePriceListSelfController.onInit();
+                // _getGamePriceListSelfController.onInit();
                 Future.delayed(Duration(seconds: 1));
 
                 ///Get.to(SelfDiceRollFaceSelection());

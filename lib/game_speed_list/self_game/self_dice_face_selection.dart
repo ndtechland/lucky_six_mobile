@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,7 +43,7 @@ class _SelfDiceRollFaceSelectionState extends State<SelfDiceRollFaceSelection> {
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.only(left: 15, right: 5, top: 10, bottom: 7),
+            padding: EdgeInsets.only(left: 15, right: 5, top: 5, bottom: 5),
             child: ElevatedButton(
               onPressed: selectedIndex == null
                   ? null
@@ -77,10 +76,10 @@ class _SelfDiceRollFaceSelectionState extends State<SelfDiceRollFaceSelection> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                primary: selectedIndex == null
+                foregroundColor: Colors.white,
+                backgroundColor: selectedIndex == null
                     ? Colors.grey.shade300
                     : Colors.white70,
-                onPrimary: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -171,7 +170,7 @@ class _SelfDiceRollFaceSelectionState extends State<SelfDiceRollFaceSelection> {
                                             height:
                                                 80, // Adjust height as needed
                                           ),
-                                          SizedBox(height: 8),
+                                          SizedBox(height: 4),
                                           Text(
                                             items[index]['label'],
                                             style: TextStyle(
@@ -236,7 +235,7 @@ class _SelfDiceRollFaceSelectionState extends State<SelfDiceRollFaceSelection> {
                                           items[index]['image'],
                                           height: 80, // Adjust height as needed
                                         ),
-                                        SizedBox(height: 8),
+                                        SizedBox(height: 4),
                                         Text(
                                           items[index]['label'],
                                           style: TextStyle(

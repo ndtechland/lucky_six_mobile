@@ -6,9 +6,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 
+import '../../Controllersss/player_list_room_singlegame.dart';
 import '../../HomePage/homePage.dart';
 import '../../constantt/responsive_container_text.dart';
-import '../../controllers_all/create_list_single_player_controller.dart';
 
 class PlayerLists extends StatefulWidget {
   PlayerLists({Key? key}) : super(key: key);
@@ -29,8 +29,11 @@ class _PlayerListsState extends State<PlayerLists> {
 
 //  final List<String> items2 = ['1', '2', '3', '4', '5', '6'];
 
-  GetUserListSingleController _getUserListSingleController =
-      Get.put(GetUserListSingleController());
+  // GetUserListSingleController _getUserListSingleController =
+  //     Get.put(GetUserListSingleController());
+
+  GetUserListSingleeeeController _getUserListSingleeeeController =
+      Get.put(GetUserListSingleeeeController());
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   // final List<String> _displayedItems = [];
@@ -75,15 +78,19 @@ class _PlayerListsState extends State<PlayerLists> {
   // }
 
   Future<void> _addItemsOneByOne() async {
-    if (_getUserListSingleController.getuserlistModel?.data != null &&
-        _getUserListSingleController.getuserlistModel!.data!.isNotEmpty) {
+    if (_getUserListSingleeeeController.getuserlistModelsingle?.usersInRoom !=
+            null &&
+        _getUserListSingleeeeController
+            .getuserlistModelsingle!.usersInRoom!.isNotEmpty) {
       for (int i = 0;
-          i < _getUserListSingleController.getuserlistModel!.data!.length;
+          i <
+              _getUserListSingleeeeController
+                  .getuserlistModelsingle!.usersInRoom!.length;
           i++) {
         await Future.delayed(Duration(milliseconds: 500));
         _listKey.currentState?.insertItem(i);
         _displayedItems.add(
-            "${_getUserListSingleController.getuserlistModel!.data![i].fullName}");
+            "${_getUserListSingleeeeController.getuserlistModelsingle?.usersInRoom![i].fullName}");
       }
     } else {
       // Handle the case where the list is null or empty
@@ -102,7 +109,7 @@ class _PlayerListsState extends State<PlayerLists> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Obx(
-        () => _getUserListSingleController.isLoading.value
+        () => _getUserListSingleeeeController.isLoading.value
             ? Center(
                 child: CircularProgressIndicator(),
               )
@@ -241,29 +248,30 @@ class _PlayerListsState extends State<PlayerLists> {
                                   child: AnimatedList(
                                     key: _listKey,
                                     initialItemCount:
-                                        _getUserListSingleController
-                                                .getuserlistModel
-                                                ?.data
-                                                ?.length ??
+                                        _getUserListSingleeeeController
+                                                .getuserlistModelsingle
+                                                ?.usersInRoom!
+                                                .length ??
                                             0
                                     //_displayedItems.length,
                                     ,
                                     itemBuilder: (context, index, animation) {
-                                      if (_getUserListSingleController
-                                                  .getuserlistModel?.data ==
+                                      if (_getUserListSingleeeeController
+                                                  .getuserlistModelsingle
+                                                  ?.usersInRoom! ==
                                               null ||
-                                          _getUserListSingleController
-                                              .getuserlistModel!
-                                              .data!
+                                          _getUserListSingleeeeController
+                                              .getuserlistModelsingle!
+                                              .usersInRoom!
                                               .isEmpty) {
                                         return Center(
                                             child:
                                                 Text("No players available"));
                                       }
                                       return _buildItem(
-                                        _getUserListSingleController
-                                            .getuserlistModel!
-                                            .data![index]
+                                        _getUserListSingleeeeController
+                                            .getuserlistModelsingle!
+                                            .usersInRoom![index]
                                             .fullName
                                             .toString(),
                                         "${index + 1}", // Replace length with index + 1 for incremental numbers

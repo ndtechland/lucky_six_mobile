@@ -262,8 +262,8 @@ class _PlayGameButtonSelfState extends State<PlayGameButtonSelf>
                           Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
-                                onPrimary: Colors.green,
+                                foregroundColor: Colors.green,
+                                backgroundColor: Colors.green,
                               ),
                               onPressed: () {
                                 Navigator.of(context).pop();
@@ -283,8 +283,8 @@ class _PlayGameButtonSelfState extends State<PlayGameButtonSelf>
                           Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.redAccent,
-                                onPrimary: Colors.red,
+                                foregroundColor: Colors.red,
+                                backgroundColor: Colors.redAccent,
                               ),
                               onPressed: () {
                                 Navigator.of(context).pop();

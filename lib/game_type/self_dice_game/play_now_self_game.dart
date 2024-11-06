@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../constantt/circular_loader/circular_loaderr.dart';
 import '../../controllers_all/game_price_list_self_controller.dart';
 import '../../controllers_all/get_dice_list_self_controller.dart';
+import '../../controllers_all/table_details_controller.dart';
 import '../3d_dice/3d_button_for_self_dice.dart';
 import '3D_animated_dice_self.dart';
 import 'controller_selecteddice_number.dart';
@@ -31,6 +32,8 @@ class _PlayNowSelfGameState extends State<PlayNowSelfGame> {
       Get.put(GetGamePriceListSelfController());
   GetDiceListSelfController _getDiceListSelfController =
       Get.put(GetDiceListSelfController());
+  TableDetailsController _tableDetailsController =
+      Get.put(TableDetailsController());
 
   Timer? _startTimer;
   Timer? _stopTimer;

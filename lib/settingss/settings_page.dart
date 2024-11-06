@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:game_app/constantt/responsive_text_color.dart';
 import 'package:game_app/login_email.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -323,7 +322,7 @@ class Settingsss extends StatelessWidget {
           );
         },
         style: ElevatedButton.styleFrom(
-            primary: Colors.red,
+            backgroundColor: Colors.red,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             textStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
         child: Text("Confirm"));
@@ -335,7 +334,7 @@ class Settingsss extends StatelessWidget {
           Get.back();
         },
         style: ElevatedButton.styleFrom(
-            primary: Colors.green,
+            backgroundColor: Colors.green,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             textStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
         child: Text("Cancel"));

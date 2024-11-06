@@ -345,7 +345,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                             child: ElevatedButton(
                               onPressed: _updateProfile,
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.red.shade300,
+                                backgroundColor: Colors.red.shade300,
                                 padding: EdgeInsets.symmetric(vertical: 12),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8.0),
